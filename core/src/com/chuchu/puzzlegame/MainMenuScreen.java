@@ -2,6 +2,8 @@ package com.chuchu.puzzlegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,7 +16,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenuScreen implements Screen {
-
     final PuzzleGame game;
     OrthographicCamera camera;
     Texture texture;
@@ -24,6 +25,7 @@ public class MainMenuScreen implements Screen {
     TextButton btnExit;
     TextButtonStyle textButtonStyle;
     Table menuTable;
+    Music backgroundMusic;
 
     public MainMenuScreen (final PuzzleGame game) {
         this.game = game;
@@ -33,11 +35,15 @@ public class MainMenuScreen implements Screen {
 
         texture = new Texture(Gdx.files.internal("backgroundImage.jpg"));
 
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("mainMenuMusic.mp3"));
+        backgroundMusic.setLooping(true);
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         textButtonStyle = new TextButtonStyle();
         textButtonStyle.font = game.font;
+        textButtonStyle.overFontColor = Color.RED;
 
         btnStart = new TextButton("Start Game", textButtonStyle);
         btnOption = new TextButton("Option", textButtonStyle);
@@ -71,7 +77,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
+        backgroundMusic.play();
     }
 
     @Override
@@ -114,5 +120,6 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         texture.dispose();
         stage.dispose();
+        backgroundMusic.dispose();
     }
 }
