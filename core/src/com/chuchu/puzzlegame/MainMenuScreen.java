@@ -27,6 +27,7 @@ public class MainMenuScreen implements Screen {
     TextButton btnStart;
     TextButton btnOption;
     TextButton btnExit;
+    TextButton btnTemp;
     Table menuTable;
     Table optionTable;
     Skin defaultSkin;
@@ -43,10 +44,10 @@ public class MainMenuScreen implements Screen {
         btnClickSound = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("ZEDD x VALORANT Music Theme.ogg"));
         backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.1f);
 
         // Image
         texture = new Texture(Gdx.files.internal("valorant_wallpaper_yoru.jpg"));
-
 
         // Skin
         defaultSkin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -63,6 +64,7 @@ public class MainMenuScreen implements Screen {
         btnStart = new TextButton("Start Game", textButtonStyle);
         btnOption = new TextButton("Option", textButtonStyle);
         btnExit = new TextButton("Exit Game", textButtonStyle);
+        btnTemp = new TextButton("Enter 2nd Room", textButtonStyle);
 
         btnStart.addListener(new ClickListener() {
             @Override
@@ -97,6 +99,20 @@ public class MainMenuScreen implements Screen {
                         Gdx.app.exit();
                     }
                 }, 0.5f);
+            }
+        });
+
+        btnTemp.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                btnClickSound.play();
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        game.setScreen(new GameScreen2(game));
+                        dispose();
+                    }
+                }, 0.5F);
             }
         });
 
