@@ -18,18 +18,18 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class MainMenuScreen implements Screen {
 
     final PuzzleGame game;
-    private OrthographicCamera camera;
-    private Sound btnClickSound;
-    private Music backgroundMusic;
-    private Texture texture;
-    private Stage stage;
-    private TextButtonStyle textButtonStyle;
-    private TextButton btnStart;
-    private TextButton btnOption;
-    private TextButton btnExit;
-    private Table menuTable;
-    private Table optionTable;
-    private Skin defaultSkin;
+    OrthographicCamera camera;
+    Sound btnClickSound;
+    Music backgroundMusic;
+    Texture texture;
+    Stage stage;
+    TextButtonStyle textButtonStyle;
+    TextButton btnStart;
+    TextButton btnOption;
+    TextButton btnExit;
+    Table menuTable;
+    Table optionTable;
+    Skin defaultSkin;
 //    private TextField optionWindow;
 
     public MainMenuScreen (final PuzzleGame game) {
