@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 public class MainMenuScreen implements Screen {
     final PuzzleGame game;
     OrthographicCamera camera;
@@ -27,13 +26,12 @@ public class MainMenuScreen implements Screen {
     //TextField optionWindow;
     TextButtonStyle textButtonStyle;
     Table menuTable;
+    Table optionTable;
     Music backgroundMusic;
     Sound btnClickSound;
     Skin defaultSkin;
-
     public MainMenuScreen (final PuzzleGame game) {
         this.game = game;
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
 
@@ -89,6 +87,9 @@ public class MainMenuScreen implements Screen {
                 }, 0.5f);
             }
         });
+        optionTable = new Table();
+        optionTable.setX((float)Gdx.graphics.getWidth() / 2);
+        optionTable.setY((float)Gdx.graphics.getHeight() / 2);
 
         menuTable = new Table();
         menuTable.add(btnStart);
@@ -135,23 +136,29 @@ public class MainMenuScreen implements Screen {
         });
         Label resolutionWidthText = new Label("Width", defaultSkin);
         Label resolutionHeightText = new Label("Height", defaultSkin);
-        menuTable = new Table();
-        menuTable.add(resolutionWidthText);
-        menuTable.add(resolutionWidth);
-        menuTable.row();
-        menuTable.add(resolutionHeightText);
-        menuTable.add(resolutionHeight);
-        menuTable.row();
-        menuTable.add(apply);
-        menuTable.setX((float)Gdx.graphics.getWidth() / 2);
-        menuTable.setY((float)Gdx.graphics.getHeight() / 2);
-        stage.addActor(menuTable);
+        optionTable.add(resolutionWidthText);
+        optionTable.add(resolutionWidth);
+        optionTable.row();
+        optionTable.add(resolutionHeightText);
+        optionTable.add(resolutionHeight);
+        optionTable.row();
+        optionTable.add(apply);
+
+        stage.addActor(optionTable);
 
     }
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height);
         stage.getCamera().position.set((float)Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2, 0);
+        //System.out.println(optionTable.getX());
+        //System.out.println(Gdx.graphics.getWidth());
+        //System.out.println((optionTable.getX() / Gdx.graphics.getWidth()) * 100);
+        //System.out.println((optionTable.getY() / Gdx.graphics.getHeight()) * 100);
+        //System.out.println((((float) 50 / 100) * Gdx.graphics.getWidth()));
+       // System.out.println((optionTable.getY() / Gdx.graphics.getHeight()) * 100);
+        this.optionTable.setX(((float) 50 / 100) * Gdx.graphics.getWidth());
+        this.optionTable.setY(((float) 50 / 100) * Gdx.graphics.getHeight());
     }
 
     @Override
