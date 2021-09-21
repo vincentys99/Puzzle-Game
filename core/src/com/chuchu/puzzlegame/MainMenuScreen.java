@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -158,6 +159,7 @@ public class MainMenuScreen implements Screen {
         final TextField resolutionWidth = new TextField("1920", defaultSkin);
         final TextField resolutionHeight = new TextField("1080", defaultSkin);
         final Slider volume = new Slider(0, 100, 10, false, defaultSkin);
+        final Label volumeValueText = new Label(String.valueOf(0.1f * 100), defaultSkin);
         volume.setValue(0.1f * 100);
         TextButton apply = new TextButton("Apply", defaultSkin);
         apply.addListener( new ClickListener() {
@@ -165,7 +167,12 @@ public class MainMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
                 backgroundMusic.setVolume(volume.getValue() / 100);
-                System.out.println(volume.getValue());
+            }
+        });
+        volume.addListener( new DragListener() {
+            @Override
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                volumeValueText.setText(String.valueOf(volume.getValue()));
             }
         });
         Label resolutionWidthText = new Label("Width", defaultSkin);
@@ -179,6 +186,7 @@ public class MainMenuScreen implements Screen {
         optionTable.row();
         optionTable.add(volumeText);
         optionTable.add(volume);
+        optionTable.add(volumeValueText);
         optionTable.row();
         optionTable.add(apply);
 

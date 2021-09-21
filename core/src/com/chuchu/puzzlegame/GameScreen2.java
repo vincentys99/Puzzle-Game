@@ -23,7 +23,7 @@ public class GameScreen2 implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
 
-        tiledMap = new TmxMapLoader().load("tilemap/template.tmx");
+        tiledMap = new TmxMapLoader().load("map0.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
