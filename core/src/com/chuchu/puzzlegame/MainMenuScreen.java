@@ -204,10 +204,10 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
-        stage.getCamera().position.set((float)Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2, 0);
-        optionTable.setX(((float) 50 / 100) * Gdx.graphics.getWidth());
-        optionTable.setY(((float) 50 / 100) * Gdx.graphics.getHeight());
+        stage.getViewport().update(width, height, true);
+//        stage.getCamera().position.set((float)Gdx.graphics.getWidth() / 2, (float)Gdx.graphics.getHeight() / 2, 0);
+        optionTable.setX((float) Gdx.graphics.getWidth() / 2);
+        optionTable.setY((float) Gdx.graphics.getHeight() / 2);
     }
 
     @Override
