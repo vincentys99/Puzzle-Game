@@ -1,4 +1,4 @@
-package com.chuchu.puzzlegame;
+package com.chuchu.puzzlegame.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -13,12 +13,14 @@ public class PuzzleGame extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
 
-	public float bgMusicVol;
-	public int defaultWidth;
-	public int defaultHeight;
+	public static final int defaultWidth = 1920;
+	public static final int defaultHeight = 1080;
+	public static final int PPM = 100;
 
 	FreeTypeFontGenerator generator;
 	FreeTypeFontParameter parameter;
+
+	public float bgMusicVol;
 
 	@Override
 	public void create () {
@@ -32,8 +34,6 @@ public class PuzzleGame extends Game {
 		font = generator.generateFont(parameter);
 
 		bgMusicVol = 0.1f;
-		defaultWidth = 1920;
-		defaultHeight = 1080;
 
 		this.setScreen(new MainMenuScreen(this));
 	}

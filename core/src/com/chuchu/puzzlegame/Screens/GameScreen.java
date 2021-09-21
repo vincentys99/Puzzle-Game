@@ -1,4 +1,4 @@
-package com.chuchu.puzzlegame;
+package com.chuchu.puzzlegame.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
