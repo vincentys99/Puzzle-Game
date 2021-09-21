@@ -155,20 +155,28 @@ public class MainMenuScreen implements Screen {
     private void loadOptions() {
         final TextField resolutionWidth = new TextField("1920", defaultSkin);
         final TextField resolutionHeight = new TextField("1080", defaultSkin);
+        final Slider volume = new Slider(0, 100, 10, false, defaultSkin);
+        System.out.println(volume.getValue());
         TextButton apply = new TextButton("Apply", defaultSkin);
         apply.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
+                backgroundMusic.setVolume((float)volume.getValue() / 100);
+                System.out.println(volume.getValue());
             }
         });
         Label resolutionWidthText = new Label("Width", defaultSkin);
         Label resolutionHeightText = new Label("Height", defaultSkin);
+        Label volumeText = new Label("Volume", defaultSkin);
         optionTable.add(resolutionWidthText);
         optionTable.add(resolutionWidth);
         optionTable.row();
         optionTable.add(resolutionHeightText);
         optionTable.add(resolutionHeight);
+        optionTable.row();
+        optionTable.add(volumeText);
+        optionTable.add(volume);
         optionTable.row();
         optionTable.add(apply);
 
