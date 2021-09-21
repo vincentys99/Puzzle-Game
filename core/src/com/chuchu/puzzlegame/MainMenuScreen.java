@@ -158,7 +158,7 @@ public class MainMenuScreen implements Screen {
         final TextField resolutionWidth = new TextField("1920", defaultSkin);
         final TextField resolutionHeight = new TextField("1080", defaultSkin);
         final Slider volume = new Slider(0, 100, 10, false, defaultSkin);
-        System.out.println(volume.getValue());
+        volume.setValue(0.1f * 100);
         TextButton apply = new TextButton("Apply", defaultSkin);
         apply.addListener( new ClickListener() {
             @Override

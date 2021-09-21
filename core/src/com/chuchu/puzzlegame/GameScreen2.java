@@ -24,6 +24,8 @@ public class GameScreen2 implements Screen {
 
         map = new TmxMapLoader().load("tilemap/template.tmx");
         renderer = new OrthogonalTiledMapRenderer(map,1/16f);
+
+
     }
 
     @Override
