@@ -123,6 +123,8 @@ public class MainMenuScreen implements Screen {
         menuTable.add(btnOption);
         menuTable.row();
         menuTable.add(btnExit);
+        menuTable.row();
+        menuTable.add(btnTemp);
         menuTable.setFillParent(true);
         stage.addActor(menuTable);
 
@@ -162,7 +164,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
-                backgroundMusic.setVolume((float)volume.getValue() / 100);
+                backgroundMusic.setVolume(volume.getValue() / 100);
                 System.out.println(volume.getValue());
             }
         });
