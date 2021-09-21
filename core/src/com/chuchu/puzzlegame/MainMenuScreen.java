@@ -2,15 +2,18 @@ package com.chuchu.puzzlegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -24,6 +27,7 @@ public class MainMenuScreen implements Screen {
     TextButton btnStart;
     TextButton btnOption;
     TextButton btnExit;
+    //TextField optionWindow;
     TextButtonStyle textButtonStyle;
     Table menuTable;
     Music backgroundMusic;
@@ -87,6 +91,12 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        btnOption.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                loadOptions();
+            }
+        });
         menuTable = new Table();
         menuTable.add(btnStart);
         menuTable.row();
@@ -119,6 +129,18 @@ public class MainMenuScreen implements Screen {
         stage.draw();
     }
 
+    private void loadOptions() {
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        TextField resolutionWidth = new TextField("1920", skin);
+        TextField resolutionHeight = new TextField("1080", skin);
+        menuTable = new Table();
+        menuTable.add(resolutionWidth);
+        menuTable.add(resolutionHeight);
+        menuTable.setX((float)Gdx.graphics.getWidth() / 2);
+        menuTable.setY((float)Gdx.graphics.getHeight() / 2);
+        stage.addActor(menuTable);
+    }
     @Override
     public void resize(int width, int height) {
 
@@ -146,4 +168,5 @@ public class MainMenuScreen implements Screen {
         btnClickSound.dispose();
         backgroundMusic.dispose();
     }
+
 }
