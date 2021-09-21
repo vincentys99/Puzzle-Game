@@ -162,17 +162,25 @@ public class MainMenuScreen implements Screen {
         final Label volumeValueText = new Label(String.valueOf(0.1f * 100), defaultSkin);
         volume.setValue(0.1f * 100);
         TextButton apply = new TextButton("Apply", defaultSkin);
+        TextButton close = new TextButton("Close", defaultSkin);
         apply.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
-                backgroundMusic.setVolume(volume.getValue() / 100);
+
+            }
+        });
+        close.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                optionTable.remove();
             }
         });
         volume.addListener( new DragListener() {
             @Override
             public void drag(InputEvent event, float x, float y, int pointer) {
                 volumeValueText.setText(String.valueOf(volume.getValue()));
+                backgroundMusic.setVolume(volume.getValue() / 100);
             }
         });
         Label resolutionWidthText = new Label("Width", defaultSkin);
@@ -189,7 +197,7 @@ public class MainMenuScreen implements Screen {
         optionTable.add(volumeValueText);
         optionTable.row();
         optionTable.add(apply);
-
+        optionTable.add(close);
         stage.addActor(optionTable);
 
     }
