@@ -74,6 +74,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
                 btnClickSound.play();
+                loadOptions();
             }
         });
 
@@ -91,12 +92,6 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        btnOption.addListener(new ChangeListener() {
-            @Override
-            public void changed (ChangeEvent event, Actor actor) {
-                loadOptions();
-            }
-        });
         menuTable = new Table();
         menuTable.add(btnStart);
         menuTable.row();
