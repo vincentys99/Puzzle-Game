@@ -3,9 +3,9 @@ package com.chuchu.puzzlegame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenuScreen implements Screen {
@@ -26,6 +27,7 @@ public class MainMenuScreen implements Screen {
     TextButtonStyle textButtonStyle;
     Table menuTable;
     Music backgroundMusic;
+    Sound btnClickSound;
 
     public MainMenuScreen (final PuzzleGame game) {
         this.game = game;
@@ -33,10 +35,11 @@ public class MainMenuScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
 
-        texture = new Texture(Gdx.files.internal("backgroundImage.jpg"));
-
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("mainMenuMusic.mp3"));
+        btnClickSound = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("ZEDD x VALORANT Music Theme.ogg"));
         backgroundMusic.setLooping(true);
+
+        texture = new Texture(Gdx.files.internal("valorant_wallpaper_yoru.jpg"));
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -52,16 +55,35 @@ public class MainMenuScreen implements Screen {
         btnStart.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new GameScreen(game));
-                dispose();
+                btnClickSound.play();
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        game.setScreen(new GameScreen(game));
+                        dispose();
+                    }
+                }, 0.5F);
+            }
+        });
+
+        btnOption.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                btnClickSound.play();
             }
         });
 
         btnExit.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
-                dispose();
-                Gdx.app.exit();
+                btnClickSound.play();
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        dispose();
+                        Gdx.app.exit();
+                    }
+                }, 0.5f);
             }
         });
 
@@ -90,6 +112,7 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(texture, 0, 0);
 //        game.font.draw(game.batch, "Welcome to the Puzzle Game!", 100, 150);
+
         game.batch.end();
 
         stage.act();
@@ -120,6 +143,7 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         texture.dispose();
         stage.dispose();
+        btnClickSound.dispose();
         backgroundMusic.dispose();
     }
 }

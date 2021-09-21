@@ -16,11 +16,11 @@ public class GameScreen implements Screen {
     public GameScreen(final PuzzleGame game) {
         this.game = game;
 
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("backgroundMusic.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));
         backgroundMusic.setLooping(true);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);;
+        camera.setToOrtho(false, 1920, 1080);
     }
 
     @Override
