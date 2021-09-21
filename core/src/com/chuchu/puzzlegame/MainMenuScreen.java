@@ -122,11 +122,11 @@ public class MainMenuScreen implements Screen {
         menuTable = new Table();
         menuTable.add(btnStart);
         menuTable.row();
+        menuTable.add(btnTemp);
+        menuTable.row();
         menuTable.add(btnOption);
         menuTable.row();
         menuTable.add(btnExit);
-        menuTable.row();
-        menuTable.add(btnTemp);
         menuTable.setFillParent(true);
         stage.addActor(menuTable);
 
@@ -157,17 +157,21 @@ public class MainMenuScreen implements Screen {
     }
 
     private void loadOptions() {
+        optionTable.reset();
         final TextField resolutionWidth = new TextField(String.valueOf(Gdx.graphics.getWidth()), defaultSkin);
         final TextField resolutionHeight = new TextField(String.valueOf(Gdx.graphics.getHeight()), defaultSkin);
-        final Slider volume = new Slider(0, 100, 10, false, defaultSkin);
+        final Slider volume = new Slider(0, 100, 5, false, defaultSkin);
         final Label volumeValueText = new Label(String.valueOf(game.bgMusicVol * 100), defaultSkin);
+        final TextButton btnToggleFullscreen = new TextButton((Gdx.graphics.isFullscreen()) ? "OFF" : "ON", defaultSkin);
         volume.setValue(game.bgMusicVol * 100);
         TextButton apply = new TextButton("Apply", defaultSkin);
         TextButton close = new TextButton("Close", defaultSkin);
         apply.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
+                if (btnToggleFullscreen.getText() == "ON"){
+                    Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
+                }
                 optionTable.reset();
             }
         });
@@ -185,9 +189,25 @@ public class MainMenuScreen implements Screen {
                 game.bgMusicVol = volume.getValue() / 100;
             }
         });
+        btnToggleFullscreen.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (Gdx.graphics.isFullscreen()) {
+                    Gdx.graphics.setWindowedMode(game.defaultWidth, game.defaultHeight);
+                    btnToggleFullscreen.setText("ON");
+                }
+                else {
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                    btnToggleFullscreen.setText("OFF");
+                }
+                resolutionWidth.setText(String.valueOf(Gdx.graphics.getWidth()));
+                resolutionHeight.setText(String.valueOf(Gdx.graphics.getHeight()));
+            }
+        });
         Label resolutionWidthText = new Label("Width", defaultSkin);
         Label resolutionHeightText = new Label("Height", defaultSkin);
         Label volumeText = new Label("Volume", defaultSkin);
+        Label fullscreenText = new Label("Fullscreen", defaultSkin);
         optionTable.add(resolutionWidthText);
         optionTable.add(resolutionWidth);
         optionTable.row();
@@ -197,6 +217,9 @@ public class MainMenuScreen implements Screen {
         optionTable.add(volumeText);
         optionTable.add(volume);
         optionTable.add(volumeValueText);
+        optionTable.row();
+        optionTable.add(fullscreenText);
+        optionTable.add(btnToggleFullscreen);
         optionTable.row();
         optionTable.add(apply);
         optionTable.add(close);

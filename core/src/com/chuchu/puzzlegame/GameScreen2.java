@@ -40,19 +40,19 @@ public class GameScreen2 implements Screen {
         camera.setToOrtho(false, game.defaultWidth, game.defaultHeight);
         viewport = new StretchViewport(game.defaultWidth, game.defaultHeight, camera);
 
-        tiledMap = new TmxMapLoader().load("tilemap/test_map0.tmx");
+        tiledMap = new TmxMapLoader().load("tilemap_test2/untitled.tmx");
 //        tiledMap = new TmxMapLoader().load("tilemap_test/template.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 5);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
-        characterImg = new Texture(Gdx.files.internal("cc3.png"));
+        characterImg = new Texture(Gdx.files.internal("cc2.png"));
 
         characterRectangle = new Rectangle();
-        characterRectangle.x = (float)(game.defaultWidth / 2 - 128 / 2);
-        characterRectangle.y = (float)(game.defaultHeight / 2 - 190 / 2);
-        characterRectangle.width = 128;
-        characterRectangle.height = 190;
+        characterRectangle.x = (float)(game.defaultWidth / 2 - 64 / 2);
+        characterRectangle.y = (float)(game.defaultHeight / 2 - 95 / 2);
+        characterRectangle.width = 64;
+        characterRectangle.height = 95;
 
-        movementSpeed = 10;
+        movementSpeed = 5;
     }
 
     @Override
@@ -79,19 +79,19 @@ public class GameScreen2 implements Screen {
             dispose();
         }
         if (Gdx.input.isKeyPressed(Keys.A)) {
-            camera.translate(-movementSpeed,0);
+//            camera.translate(-movementSpeed,0);
             characterRectangle.x -= movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Keys.D)){
-            camera.translate(movementSpeed,0);
+//            camera.translate(movementSpeed,0);
             characterRectangle.x += movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Keys.W)) {
-            camera.translate(0,movementSpeed);
+//            camera.translate(0,movementSpeed);
             characterRectangle.y += movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Keys.S)) {
-            camera.translate(0,-movementSpeed);
+//            camera.translate(0,-movementSpeed);
             characterRectangle.y -= movementSpeed;
         }
 //        if(Gdx.input.isKeyPressed(Keys.NUM_1))
