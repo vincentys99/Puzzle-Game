@@ -27,16 +27,21 @@ public class GameScreen2 implements Screen {
     Texture characterImg;
     Rectangle characterRectangle;
 
+    float bgMusicVol = 0.3f;
+    float movementSpeed;
+    int defaultWidth = 1920;
+    int defaultHeight = 1080;
+
     public GameScreen2(final PuzzleGame game) {
         this.game = game;
 
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.1f);
+        backgroundMusic.setVolume(bgMusicVol);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
-        viewport = new StretchViewport(1920, 1080, camera);
+        camera.setToOrtho(false, defaultWidth, defaultHeight);
+        viewport = new StretchViewport(defaultWidth, defaultHeight, camera);
 
         tiledMap = new TmxMapLoader().load("tilemap/test_map0.tmx");
 //        tiledMap = new TmxMapLoader().load("tilemap_test/template.tmx");
@@ -45,10 +50,12 @@ public class GameScreen2 implements Screen {
         characterImg = new Texture(Gdx.files.internal("cc3.png"));
 
         characterRectangle = new Rectangle();
-        characterRectangle.x = (float)(1920 / 2 - 128 / 2);
-        characterRectangle.y = (float)(1080 / 2 - 190 / 2);
+        characterRectangle.x = (float)(defaultWidth / 2 - 128 / 2);
+        characterRectangle.y = (float)(defaultHeight / 2 - 190 / 2);
         characterRectangle.width = 128;
         characterRectangle.height = 190;
+
+        movementSpeed = 10;
     }
 
     @Override
@@ -75,21 +82,25 @@ public class GameScreen2 implements Screen {
             dispose();
         }
         if (Gdx.input.isKeyPressed(Keys.A)) {
-            camera.translate(-16,0);
-            characterRectangle.x -= 16;
+            camera.translate(-movementSpeed,0);
+            characterRectangle.x -= movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Keys.D)){
-            camera.translate(16,0);
-            characterRectangle.x += 16;
+            camera.translate(movementSpeed,0);
+            characterRectangle.x += movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Keys.W)) {
-            camera.translate(0,16);
-            characterRectangle.y += 16;
+            camera.translate(0,movementSpeed);
+            characterRectangle.y += movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Keys.S)) {
-            camera.translate(0,-16);
-            characterRectangle.y -= 16;
+            camera.translate(0,-movementSpeed);
+            characterRectangle.y -= movementSpeed;
         }
+//        if(Gdx.input.isKeyPressed(Keys.NUM_1))
+//            tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
+//        if(Gdx.input.isKeyPressed(Keys.NUM_2))
+//            tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
     }
 
     @Override
