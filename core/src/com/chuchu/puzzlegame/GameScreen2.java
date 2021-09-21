@@ -2,6 +2,7 @@ package com.chuchu.puzzlegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,8 +14,8 @@ public class GameScreen2 implements Screen {
     final PuzzleGame game;
 
     OrthographicCamera camera;
-    OrthogonalTiledMapRenderer renderer;
-    TiledMap map;
+    OrthogonalTiledMapRenderer tiledMapRenderer;
+    TiledMap tiledMap;
 
     public GameScreen2(final PuzzleGame game) {
         this.game = game;
@@ -22,10 +23,8 @@ public class GameScreen2 implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
 
-        map = new TmxMapLoader().load("tilemap/template.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map,1/16f);
-
-
+        tiledMap = new TmxMapLoader().load("tilemap/template.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     @Override
@@ -35,13 +34,17 @@ public class GameScreen2 implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+//        ScreenUtils.clear(0, 0, 0.2f, 1);
+
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-        renderer.setView(camera);
-        renderer.render();
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
     }
 
     @Override
@@ -66,7 +69,7 @@ public class GameScreen2 implements Screen {
 
     @Override
     public void dispose() {
-        renderer.dispose();
-        map.dispose();
+        tiledMapRenderer.dispose();
+        tiledMap.dispose();
     }
 }
