@@ -1,16 +1,16 @@
 package com.chuchu.puzzlegame.desktop;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.chuchu.puzzlegame.PuzzleGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Puzzle Game";
-		config.width = 1920;
-		config.height = 1080;
-		config.fullscreen = true;
-		new LwjglApplication(new PuzzleGame(), config);
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setTitle("Puzzle Game");
+		config.setMaximized(true);
+		config.setWindowSizeLimits(1024, 576, 3840, 2160);
+//		config.setResizable(false);
+		new Lwjgl3Application(new PuzzleGame(), config);
 	}
 }
