@@ -18,10 +18,10 @@ public class GameScreen implements Screen {
 
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.1f);
+        backgroundMusic.setVolume(game.bgMusicVol);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
+        camera.setToOrtho(false, game.defaultWidth, game.defaultHeight);
     }
 
     @Override

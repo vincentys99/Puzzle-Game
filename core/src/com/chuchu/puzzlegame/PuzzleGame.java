@@ -13,6 +13,10 @@ public class PuzzleGame extends Game {
 	public SpriteBatch batch;
 	public BitmapFont font;
 
+	public float bgMusicVol;
+	public int defaultWidth;
+	public int defaultHeight;
+
 	FreeTypeFontGenerator generator;
 	FreeTypeFontParameter parameter;
 
@@ -26,7 +30,11 @@ public class PuzzleGame extends Game {
 		parameter.borderColor = Color.WHITE;
 		parameter.borderWidth = 2;
 		font = generator.generateFont(parameter);
-//		font = new BitmapFont();
+
+		bgMusicVol = 0.1f;
+		defaultWidth = 1920;
+		defaultHeight = 1080;
+
 		this.setScreen(new MainMenuScreen(this));
 	}
 

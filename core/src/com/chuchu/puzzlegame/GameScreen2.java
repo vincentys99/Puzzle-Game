@@ -27,21 +27,18 @@ public class GameScreen2 implements Screen {
     Texture characterImg;
     Rectangle characterRectangle;
 
-    float bgMusicVol = 0.3f;
     float movementSpeed;
-    int defaultWidth = 1920;
-    int defaultHeight = 1080;
 
     public GameScreen2(final PuzzleGame game) {
         this.game = game;
 
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(bgMusicVol);
+        backgroundMusic.setVolume(game.bgMusicVol);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, defaultWidth, defaultHeight);
-        viewport = new StretchViewport(defaultWidth, defaultHeight, camera);
+        camera.setToOrtho(false, game.defaultWidth, game.defaultHeight);
+        viewport = new StretchViewport(game.defaultWidth, game.defaultHeight, camera);
 
         tiledMap = new TmxMapLoader().load("tilemap/test_map0.tmx");
 //        tiledMap = new TmxMapLoader().load("tilemap_test/template.tmx");
@@ -50,8 +47,8 @@ public class GameScreen2 implements Screen {
         characterImg = new Texture(Gdx.files.internal("cc3.png"));
 
         characterRectangle = new Rectangle();
-        characterRectangle.x = (float)(defaultWidth / 2 - 128 / 2);
-        characterRectangle.y = (float)(defaultHeight / 2 - 190 / 2);
+        characterRectangle.x = (float)(game.defaultWidth / 2 - 128 / 2);
+        characterRectangle.y = (float)(game.defaultHeight / 2 - 190 / 2);
         characterRectangle.width = 128;
         characterRectangle.height = 190;
 

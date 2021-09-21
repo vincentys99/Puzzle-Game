@@ -40,13 +40,13 @@ public class MainMenuScreen implements Screen {
 
         // Camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
+        camera.setToOrtho(false, game.defaultWidth, game.defaultHeight);
 
         // Sound & Music
         btnClickSound = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("ZEDD x VALORANT Music Theme.ogg"));
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.1f);
+        backgroundMusic.setVolume(game.bgMusicVol);
 
         // Image
         texture = new Texture(Gdx.files.internal("valorant_wallpaper_yoru.jpg"));
@@ -157,24 +157,24 @@ public class MainMenuScreen implements Screen {
     }
 
     private void loadOptions() {
-        final TextField resolutionWidth = new TextField("1920", defaultSkin);
-        final TextField resolutionHeight = new TextField("1080", defaultSkin);
+        final TextField resolutionWidth = new TextField(String.valueOf(Gdx.graphics.getWidth()), defaultSkin);
+        final TextField resolutionHeight = new TextField(String.valueOf(Gdx.graphics.getHeight()), defaultSkin);
         final Slider volume = new Slider(0, 100, 10, false, defaultSkin);
-        final Label volumeValueText = new Label(String.valueOf(0.1f * 100), defaultSkin);
-        volume.setValue(0.1f * 100);
+        final Label volumeValueText = new Label(String.valueOf(game.bgMusicVol * 100), defaultSkin);
+        volume.setValue(game.bgMusicVol * 100);
         TextButton apply = new TextButton("Apply", defaultSkin);
         TextButton close = new TextButton("Close", defaultSkin);
         apply.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
-
+                optionTable.reset();
             }
         });
         close.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                optionTable.remove();
+                optionTable.reset();
             }
         });
         volume.addListener( new DragListener() {
@@ -182,6 +182,7 @@ public class MainMenuScreen implements Screen {
             public void drag(InputEvent event, float x, float y, int pointer) {
                 volumeValueText.setText(String.valueOf(volume.getValue()));
                 backgroundMusic.setVolume(volume.getValue() / 100);
+                game.bgMusicVol = volume.getValue() / 100;
             }
         });
         Label resolutionWidthText = new Label("Width", defaultSkin);
@@ -200,7 +201,6 @@ public class MainMenuScreen implements Screen {
         optionTable.add(apply);
         optionTable.add(close);
         stage.addActor(optionTable);
-
     }
 
     @Override
