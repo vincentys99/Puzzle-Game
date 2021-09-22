@@ -72,7 +72,7 @@ public class MainMenuScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play();
+                btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -86,7 +86,7 @@ public class MainMenuScreen implements Screen {
         btnOption.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play();
+                btnClickSound.play(game.bgMusicVol);
                 loadOptions();
             }
         });
@@ -94,7 +94,7 @@ public class MainMenuScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play();
+                btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -108,7 +108,7 @@ public class MainMenuScreen implements Screen {
         btnTemp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play();
+                btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {

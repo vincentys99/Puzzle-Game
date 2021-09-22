@@ -21,7 +21,7 @@ public class PuzzleGame extends Game {
 	FreeTypeFontGenerator generator;
 	FreeTypeFontParameter parameter;
 
-	public float bgMusicVol;
+	public float bgMusicVol = 0.1f;
 
 	@Override
 	public void create () {
@@ -33,8 +33,6 @@ public class PuzzleGame extends Game {
 		parameter.borderColor = Color.WHITE;
 		parameter.borderWidth = 2;
 		font = generator.generateFont(parameter);
-
-		bgMusicVol = 0.1f;
 
 		this.setScreen(new MainMenuScreen(this));
 	}

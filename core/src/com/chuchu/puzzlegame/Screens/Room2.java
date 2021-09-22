@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -21,6 +23,7 @@ import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 public class Room2 implements Screen {
 
     final PuzzleGame game;
+    TextureAtlas atlas;
     Music backgroundMusic;
 
     Viewport viewport;
@@ -35,10 +38,13 @@ public class Room2 implements Screen {
 
     Player player;
 
+    SpriteBatch sb;
+
     private boolean isMoving = false;
 
     public Room2(final PuzzleGame game) {
         this.game = game;
+        atlas = new TextureAtlas("texture pack/Testing.pack");
 
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));
@@ -63,15 +69,28 @@ public class Room2 implements Screen {
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
 
-        // generate player
-        player = new Player(world);
-
         // generate world elements (eg. static bodies)
         new Room2WorldCreator(world, tiledMap);
+
+        // generate player
+        player = new Player(world, this);
+
+//        MapLayer objectLayer = tiledMap.getLayers().get("Player Layer");
+//        TextureMapObject tmo = new TextureMapObject(player);
+//        tmo.setX(100 / PuzzleGame.PPM);
+//        tmo.setY(100 / PuzzleGame.PPM);
+//        objectLayer.getObjects().add(tmo);
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
     }
 
     public void handleInput(float delta) {
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+            // error when set main menu screen
+//            dispose();
+//            game.setScreen(new MainMenuScreen(game));
             Gdx.app.exit();
         }
         if (Gdx.input.isKeyPressed(Keys.W) && player.b2body.getLinearVelocity().y <= 4) {
@@ -105,12 +124,13 @@ public class Room2 implements Screen {
 
         world.step(1/60f, 6, 2);
 
+        player.update(delta);
+
         // camera following player x and y position
         camera.position.x = player.b2body.getPosition().x;
         camera.position.y = player.b2body.getPosition().y;
 
         camera.update();
-        tiledMapRenderer.setView(camera);
     }
 
     @Override
@@ -126,9 +146,15 @@ public class Room2 implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
         b2dr.render(world, camera.combined);
+
+        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
     }
 
     @Override

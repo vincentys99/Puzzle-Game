@@ -15,7 +15,7 @@ public class Room2WorldCreator {
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
-        for (MapLayer wallLayer : ((MapGroupLayer)tiledMap.getLayers().get("Walls")).getLayers()) {
+        for (MapLayer wallLayer : ((MapGroupLayer)tiledMap.getLayers().get("Static Objects")).getLayers()) {
             for (RectangleMapObject object : wallLayer.getObjects().getByType(RectangleMapObject.class)) {
                 Rectangle rectangle = object.getRectangle();
 
