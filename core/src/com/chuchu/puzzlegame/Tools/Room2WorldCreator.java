@@ -1,6 +1,7 @@
 package com.chuchu.puzzlegame.Tools;
 
-import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapGroupLayer;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,20 +15,20 @@ public class Room2WorldCreator {
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
-        for (int x = 2; x <= 5; x++){
-            for (MapObject object : tiledMap.getLayers().get(x).getObjects().getByType(RectangleMapObject.class)) {
-                Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+        for (MapLayer wallLayer : ((MapGroupLayer)tiledMap.getLayers().get("Walls")).getLayers()) {
+            for (RectangleMapObject object : wallLayer.getObjects().getByType(RectangleMapObject.class)) {
+                Rectangle rectangle = object.getRectangle();
 
                 bodyDef.type = BodyDef.BodyType.StaticBody;
                 bodyDef.position.set(
-                        (rectangle.getX() + rectangle.getWidth() / 2) / PuzzleGame.PPM,
-                        (rectangle.getY() + rectangle.getHeight() / 2) / PuzzleGame.PPM
+                    (rectangle.getX() + rectangle.getWidth() / 2) / PuzzleGame.PPM,
+                    (rectangle.getY() + rectangle.getHeight() / 2) / PuzzleGame.PPM
                 );
                 body = world.createBody(bodyDef);
 
                 polygonShape.setAsBox(
-                        rectangle.getWidth() / 2 / PuzzleGame.PPM,
-                        rectangle.getHeight() / 2 / PuzzleGame.PPM
+                    rectangle.getWidth() / 2 / PuzzleGame.PPM,
+                    rectangle.getHeight() / 2 / PuzzleGame.PPM
                 );
                 fixtureDef.shape = polygonShape;
                 body.createFixture(fixtureDef);

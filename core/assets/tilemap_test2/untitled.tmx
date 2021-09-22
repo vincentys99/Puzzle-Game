@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="9">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="9">
  <tileset firstgid="1" source="test.tsx"/>
  <layer id="1" name="Layer Floor" width="60" height="40">
   <data encoding="csv">
@@ -89,17 +89,19 @@
 580,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,531,578
 </data>
  </layer>
- <objectgroup id="3" name="Walls">
-  <object id="4" x="0" y="0" width="1920" height="64"/>
-  <object id="5" x="2842.42" y="-378.788"/>
- </objectgroup>
- <objectgroup id="4" name="Side Wall Left">
-  <object id="6" x="0" y="64" width="10" height="1216"/>
- </objectgroup>
- <objectgroup id="5" name="Side Wall Right">
-  <object id="7" x="1910" y="64" width="10" height="1216"/>
- </objectgroup>
- <objectgroup id="6" name="Side Wall Bottom">
-  <object id="8" x="0" y="1272" width="1920" height="8"/>
- </objectgroup>
+ <group id="8" name="Walls">
+  <objectgroup id="3" name="Wall Top">
+   <object id="4" x="0" y="0" width="1920" height="10"/>
+   <object id="5" x="2842.42" y="-378.788"/>
+  </objectgroup>
+  <objectgroup id="4" name="Wall Left">
+   <object id="6" x="0" y="0" width="10" height="1280"/>
+  </objectgroup>
+  <objectgroup id="5" name="Wall Right">
+   <object id="7" x="1910" y="0" width="10" height="1280"/>
+  </objectgroup>
+  <objectgroup id="6" name="Wall Bottom">
+   <object id="8" x="0" y="1272" width="1920" height="8"/>
+  </objectgroup>
+ </group>
 </map>
