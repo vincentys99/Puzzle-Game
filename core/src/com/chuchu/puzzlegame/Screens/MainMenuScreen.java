@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.chuchu.puzzlegame.PuzzleGame;
 
 public class MainMenuScreen implements Screen {
 
@@ -75,7 +76,7 @@ public class MainMenuScreen implements Screen {
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
-                        game.setScreen(new GameScreen(game));
+                        game.setScreen(new Room1(game));
                         dispose();
                     }
                 }, 0.5F);
@@ -111,7 +112,7 @@ public class MainMenuScreen implements Screen {
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
-                        game.setScreen(new GameScreen2(game));
+                        game.setScreen(new Room2(game));
                         dispose();
                     }
                 }, 0.5F);

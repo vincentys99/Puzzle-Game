@@ -6,14 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.chuchu.puzzlegame.PuzzleGame;
 
-public class GameScreen implements Screen {
+public class Room1 implements Screen {
     final PuzzleGame game;
 
     OrthographicCamera camera;
     Music backgroundMusic;
 
-    public GameScreen(final PuzzleGame game) {
+    public Room1(final PuzzleGame game) {
         this.game = game;
 
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));

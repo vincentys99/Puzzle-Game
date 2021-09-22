@@ -2,7 +2,7 @@ package com.chuchu.puzzlegame.desktop;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.chuchu.puzzlegame.Screens.PuzzleGame;
+import com.chuchu.puzzlegame.PuzzleGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

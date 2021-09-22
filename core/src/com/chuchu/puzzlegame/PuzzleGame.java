@@ -1,4 +1,4 @@
-package com.chuchu.puzzlegame.Screens;
+package com.chuchu.puzzlegame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.chuchu.puzzlegame.Screens.MainMenuScreen;
 
 public class PuzzleGame extends Game {
 

@@ -2,7 +2,7 @@ package com.chuchu.puzzlegame.Sprites;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
-import com.chuchu.puzzlegame.Screens.PuzzleGame;
+import com.chuchu.puzzlegame.PuzzleGame;
 
 public class Player extends Sprite {
 
@@ -18,11 +18,12 @@ public class Player extends Sprite {
         BodyDef bdef = new BodyDef();
         bdef.position.set(100 / PuzzleGame.PPM, 100 / PuzzleGame.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
+        bdef.gravityScale = 0;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(100 / PuzzleGame.PPM);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(16 / PuzzleGame.PPM, 32 / PuzzleGame.PPM);
 
         fdef.shape = shape;
         b2body.createFixture(fdef);

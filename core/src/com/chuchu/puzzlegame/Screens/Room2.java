@@ -6,19 +6,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Player;
+import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 
-public class GameScreen2 implements Screen {
+public class Room2 implements Screen {
 
     final PuzzleGame game;
     Music backgroundMusic;
@@ -35,7 +35,9 @@ public class GameScreen2 implements Screen {
 
     Player player;
 
-    public GameScreen2(final PuzzleGame game) {
+    private boolean isMoving = false;
+
+    public Room2(final PuzzleGame game) {
         this.game = game;
 
         // create music
@@ -57,49 +59,44 @@ public class GameScreen2 implements Screen {
         // set camera
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
+        // create world
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
 
+        // generate player
         player = new Player(world);
 
-        BodyDef bodyDef = new BodyDef();
-        PolygonShape polygonShape = new PolygonShape();
-        FixtureDef fixtureDef = new FixtureDef();
-        Body body;
-
-        for (int x = 2; x <= 5; x++){
-            for (MapObject object : tiledMap.getLayers().get(x).getObjects().getByType(RectangleMapObject.class)) {
-                Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
-
-                bodyDef.type = BodyDef.BodyType.StaticBody;
-                bodyDef.position.set(
-                    (rectangle.getX() + rectangle.getWidth() / 2) / PuzzleGame.PPM,
-                    (rectangle.getY() + rectangle.getHeight() / 2) / PuzzleGame.PPM
-                );
-                body = world.createBody(bodyDef);
-
-                polygonShape.setAsBox(
-                    rectangle.getWidth() / 2 / PuzzleGame.PPM,
-                    rectangle.getHeight() / 2 / PuzzleGame.PPM
-                );
-                fixtureDef.shape = polygonShape;
-                body.createFixture(fixtureDef);
-            }
-        }
+        // generate world elements (eg. static bodies)
+        new Room2WorldCreator(world, tiledMap);
     }
 
     public void handleInput(float delta) {
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.W)) {
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.W) && player.b2body.getLinearVelocity().y <= 4) {
+            player.b2body.setLinearDamping(0);
+            player.b2body.applyLinearImpulse(new Vector2(0, 0.4f), player.b2body.getWorldCenter(), true);
+            isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Keys.D) && player.b2body.getLinearVelocity().x <= 2) {
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.S) && player.b2body.getLinearVelocity().y >= -4) {
+            player.b2body.setLinearDamping(0);
+            player.b2body.applyLinearImpulse(new Vector2(0, -0.4f), player.b2body.getWorldCenter(), true);
+            isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Keys.A) && player.b2body.getLinearVelocity().x >= -2) {
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.D) && player.b2body.getLinearVelocity().x <= 4) {
+            player.b2body.setLinearDamping(0);
+            player.b2body.applyLinearImpulse(new Vector2(0.4f, 0), player.b2body.getWorldCenter(), true);
+            isMoving = true;
+        }
+        if (Gdx.input.isKeyPressed(Keys.A) && player.b2body.getLinearVelocity().x >= -4) {
+            player.b2body.setLinearDamping(0);
+            player.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), player.b2body.getWorldCenter(), true);
+            isMoving = true;
+        }
+        if (isMoving) {
+            player.b2body.setLinearDamping(10f);
+            isMoving = false;
         }
     }
 
@@ -108,6 +105,7 @@ public class GameScreen2 implements Screen {
 
         world.step(1/60f, 6, 2);
 
+        // camera following player x and y position
         camera.position.x = player.b2body.getPosition().x;
         camera.position.y = player.b2body.getPosition().y;
 
