@@ -15,7 +15,7 @@ public class PuzzleGame extends Game {
 
 	public static final int defaultWidth = 1920;
 	public static final int defaultHeight = 1080;
-	public static final int PPM = 100;
+	public static final float PPM = 100; // Pixel per Meter
 
 	FreeTypeFontGenerator generator;
 	FreeTypeFontParameter parameter;

@@ -16,10 +16,8 @@ public class Player extends Sprite {
 
     public void definePlayer() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(320 / PuzzleGame.PPM, 320 / PuzzleGame.PPM);
+        bdef.position.set(100 / PuzzleGame.PPM, 100 / PuzzleGame.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
-//        bdef.gravityScale = 0;
-        bdef.fixedRotation = true;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();

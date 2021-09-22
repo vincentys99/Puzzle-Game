@@ -40,7 +40,7 @@ public class MainMenuScreen implements Screen {
 
         // Camera
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.defaultWidth, game.defaultHeight);
+        camera.setToOrtho(false, PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
 
         // Sound & Music
         btnClickSound = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
@@ -193,7 +193,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (Gdx.graphics.isFullscreen()) {
-                    Gdx.graphics.setWindowedMode(game.defaultWidth, game.defaultHeight);
+                    Gdx.graphics.setWindowedMode(PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
                     btnToggleFullscreen.setText("ON");
                 }
                 else {

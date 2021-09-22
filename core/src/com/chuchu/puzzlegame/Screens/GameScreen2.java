@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -47,13 +46,16 @@ public class GameScreen2 implements Screen {
         // create cam to follow players
         camera = new OrthographicCamera();
 
+        // create viewport
         viewport = new FitViewport(PuzzleGame.defaultWidth / PuzzleGame.PPM, PuzzleGame.defaultHeight / PuzzleGame.PPM, camera);
 
+        // load tilemap and scale it based on PPM
         mapLoader = new TmxMapLoader();
         tiledMap = mapLoader.load("tilemap_test2/untitled.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PuzzleGame.PPM);
 
-        camera.position.set(viewport.getScreenWidth() / 2, viewport.getScreenHeight() / 2, 0);
+        // set camera
+        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
@@ -70,11 +72,16 @@ public class GameScreen2 implements Screen {
                 Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
 
                 bodyDef.type = BodyDef.BodyType.StaticBody;
-                bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / PuzzleGame.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / PuzzleGame.PPM);
-
+                bodyDef.position.set(
+                    (rectangle.getX() + rectangle.getWidth() / 2) / PuzzleGame.PPM,
+                    (rectangle.getY() + rectangle.getHeight() / 2) / PuzzleGame.PPM
+                );
                 body = world.createBody(bodyDef);
 
-                polygonShape.setAsBox((rectangle.getWidth() / 2) / PuzzleGame.PPM, (rectangle.getHeight() / 2) / PuzzleGame.PPM);
+                polygonShape.setAsBox(
+                    rectangle.getWidth() / 2 / PuzzleGame.PPM,
+                    rectangle.getHeight() / 2 / PuzzleGame.PPM
+                );
                 fixtureDef.shape = polygonShape;
                 body.createFixture(fixtureDef);
             }
@@ -82,9 +89,6 @@ public class GameScreen2 implements Screen {
     }
 
     public void handleInput(float delta) {
-//        if (Gdx.input.isTouched()) {
-//            camera.position.x += 100 * delta;
-//        }
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             Gdx.app.exit();
         }
@@ -105,6 +109,7 @@ public class GameScreen2 implements Screen {
         world.step(1/60f, 6, 2);
 
         camera.position.x = player.b2body.getPosition().x;
+        camera.position.y = player.b2body.getPosition().y;
 
         camera.update();
         tiledMapRenderer.setView(camera);
@@ -130,7 +135,7 @@ public class GameScreen2 implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        viewport.update(width, height);
     }
 
     @Override

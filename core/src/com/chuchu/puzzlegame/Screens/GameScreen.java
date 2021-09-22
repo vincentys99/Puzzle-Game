@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
         backgroundMusic.setVolume(game.bgMusicVol);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.defaultWidth, game.defaultHeight);
+        camera.setToOrtho(false, PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
     }
 
     @Override
