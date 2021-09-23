@@ -10,12 +10,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.chuchu.puzzlegame.PuzzleGame;
-import com.chuchu.puzzlegame.Sprites.Player2;
+import com.chuchu.puzzlegame.Sprites.Player1;
 
 public class Room1 implements Screen {
-    private Player2 player;
+    private Player1 player;
     private TextureRegion currentFrame;
     final PuzzleGame game;
     private static final int FRAME_COLS = 5, FRAME_ROWS = 1;
@@ -38,7 +37,7 @@ public class Room1 implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
 
-        player = new Player2();
+        player = new Player1();
         currentFrame = (TextureRegion) player.walkAnimations[0].getKeyFrame(stateTime, true);
 
         spriteBatch = new SpriteBatch();

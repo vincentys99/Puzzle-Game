@@ -17,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chuchu.puzzlegame.PuzzleGame;
-import com.chuchu.puzzlegame.Sprites.Player;
+import com.chuchu.puzzlegame.Sprites.Player2;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 
 public class Room2 implements Screen {
@@ -36,7 +36,7 @@ public class Room2 implements Screen {
     World world;
     Box2DDebugRenderer b2dr;
 
-    Player player;
+    Player2 player2;
 
     SpriteBatch sb;
 
@@ -44,7 +44,7 @@ public class Room2 implements Screen {
 
     public Room2(final PuzzleGame game) {
         this.game = game;
-        atlas = new TextureAtlas("texture pack/Testing.pack");
+        atlas = new TextureAtlas("Player2/Testing.pack");
 
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/CRSED Music Theme.mp3"));
@@ -72,11 +72,11 @@ public class Room2 implements Screen {
         // generate world elements (eg. static bodies)
         new Room2WorldCreator(world, tiledMap);
 
-        // generate player
-        player = new Player(world, this);
+        // generate player2
+        player2 = new Player2(world, this);
 
-//        MapLayer objectLayer = tiledMap.getLayers().get("Player Layer");
-//        TextureMapObject tmo = new TextureMapObject(player);
+//        MapLayer objectLayer = tiledMap.getLayers().get("Player2 Layer");
+//        TextureMapObject tmo = new TextureMapObject(player2);
 //        tmo.setX(100 / PuzzleGame.PPM);
 //        tmo.setY(100 / PuzzleGame.PPM);
 //        objectLayer.getObjects().add(tmo);
@@ -93,28 +93,28 @@ public class Room2 implements Screen {
 //            game.setScreen(new MainMenuScreen(game));
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyPressed(Keys.W) && player.b2body.getLinearVelocity().y <= 4) {
-            player.b2body.setLinearDamping(0);
-            player.b2body.applyLinearImpulse(new Vector2(0, 0.4f), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.W) && player2.b2body.getLinearVelocity().y <= 4) {
+            player2.b2body.setLinearDamping(0);
+            player2.b2body.applyLinearImpulse(new Vector2(0, 0.4f), player2.b2body.getWorldCenter(), true);
             isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Keys.S) && player.b2body.getLinearVelocity().y >= -4) {
-            player.b2body.setLinearDamping(0);
-            player.b2body.applyLinearImpulse(new Vector2(0, -0.4f), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.S) && player2.b2body.getLinearVelocity().y >= -4) {
+            player2.b2body.setLinearDamping(0);
+            player2.b2body.applyLinearImpulse(new Vector2(0, -0.4f), player2.b2body.getWorldCenter(), true);
             isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Keys.D) && player.b2body.getLinearVelocity().x <= 4) {
-            player.b2body.setLinearDamping(0);
-            player.b2body.applyLinearImpulse(new Vector2(0.4f, 0), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.D) && player2.b2body.getLinearVelocity().x <= 4) {
+            player2.b2body.setLinearDamping(0);
+            player2.b2body.applyLinearImpulse(new Vector2(0.4f, 0), player2.b2body.getWorldCenter(), true);
             isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Keys.A) && player.b2body.getLinearVelocity().x >= -4) {
-            player.b2body.setLinearDamping(0);
-            player.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.A) && player2.b2body.getLinearVelocity().x >= -4) {
+            player2.b2body.setLinearDamping(0);
+            player2.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), player2.b2body.getWorldCenter(), true);
             isMoving = true;
         }
         if (isMoving) {
-            player.b2body.setLinearDamping(10f);
+            player2.b2body.setLinearDamping(10f);
             isMoving = false;
         }
     }
@@ -124,11 +124,11 @@ public class Room2 implements Screen {
 
         world.step(1/60f, 6, 2);
 
-        player.update(delta);
+        player2.update(delta);
 
-        // camera following player x and y position
-        camera.position.x = player.b2body.getPosition().x;
-        camera.position.y = player.b2body.getPosition().y;
+        // camera following player2 x and y position
+        camera.position.x = player2.b2body.getPosition().x;
+        camera.position.y = player2.b2body.getPosition().y;
 
         camera.update();
     }
@@ -153,7 +153,7 @@ public class Room2 implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        player.draw(game.batch);
+        player2.draw(game.batch);
         game.batch.end();
     }
 
