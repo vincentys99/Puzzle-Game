@@ -28,7 +28,7 @@ public class Room1 implements Screen {
     public Room1(final PuzzleGame game) {
         this.game = game;
 
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/CRSED Music Theme.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 

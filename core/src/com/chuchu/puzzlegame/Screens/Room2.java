@@ -47,7 +47,7 @@ public class Room2 implements Screen {
         atlas = new TextureAtlas("texture pack/Testing.pack");
 
         // create music
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("CRSED Music Theme.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/CRSED Music Theme.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 

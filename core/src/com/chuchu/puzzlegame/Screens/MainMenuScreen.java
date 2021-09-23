@@ -44,8 +44,8 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
 
         // Sound & Music
-        btnClickSound = Gdx.audio.newSound(Gdx.files.internal("button_click.mp3"));
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("ZEDD x VALORANT Music Theme.ogg"));
+        btnClickSound = Gdx.audio.newSound(Gdx.files.internal("sound/button_click.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/ZEDD x VALORANT Music Theme.ogg"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 
