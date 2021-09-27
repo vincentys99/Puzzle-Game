@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -37,10 +36,6 @@ public class Room2 implements Screen {
     Box2DDebugRenderer b2dr;
 
     Player2 player2;
-
-    SpriteBatch sb;
-
-    private boolean isMoving = false;
 
     public Room2(final PuzzleGame game) {
         this.game = game;
@@ -75,10 +70,12 @@ public class Room2 implements Screen {
         // generate player2
         player2 = new Player2(world, this);
 
-//        MapLayer objectLayer = tiledMap.getLayers().get("Player2 Layer");
+//        tiledMapRenderer.addSprite(player2);
+//
+//        MapLayer objectLayer = tiledMap.getLayers().get("Player Layer");
 //        TextureMapObject tmo = new TextureMapObject(player2);
-//        tmo.setX(100 / PuzzleGame.PPM);
-//        tmo.setY(100 / PuzzleGame.PPM);
+//        tmo.setX(16 / PuzzleGame.PPM);
+//        tmo.setY(16 / PuzzleGame.PPM);
 //        objectLayer.getObjects().add(tmo);
     }
 
@@ -96,26 +93,37 @@ public class Room2 implements Screen {
         if (Gdx.input.isKeyPressed(Keys.W) && player2.b2body.getLinearVelocity().y <= 4) {
             player2.b2body.setLinearDamping(0);
             player2.b2body.applyLinearImpulse(new Vector2(0, 0.4f), player2.b2body.getWorldCenter(), true);
-            isMoving = true;
-        }
-        if (Gdx.input.isKeyPressed(Keys.S) && player2.b2body.getLinearVelocity().y >= -4) {
-            player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0, -0.4f), player2.b2body.getWorldCenter(), true);
-            isMoving = true;
-        }
-        if (Gdx.input.isKeyPressed(Keys.D) && player2.b2body.getLinearVelocity().x <= 4) {
-            player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0.4f, 0), player2.b2body.getWorldCenter(), true);
-            isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Keys.A) && player2.b2body.getLinearVelocity().x >= -4) {
             player2.b2body.setLinearDamping(0);
             player2.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), player2.b2body.getWorldCenter(), true);
-            isMoving = true;
         }
-        if (isMoving) {
-            player2.b2body.setLinearDamping(10f);
-            isMoving = false;
+        if (Gdx.input.isKeyPressed(Keys.S) && player2.b2body.getLinearVelocity().y >= -4) {
+            player2.b2body.setLinearDamping(0);
+            player2.b2body.applyLinearImpulse(new Vector2(0, -0.4f), player2.b2body.getWorldCenter(), true);
+        }
+        if (Gdx.input.isKeyPressed(Keys.D) && player2.b2body.getLinearVelocity().x <= 4) {
+            player2.b2body.setLinearDamping(0);
+            player2.b2body.applyLinearImpulse(new Vector2(0.4f, 0), player2.b2body.getWorldCenter(), true);
+        }
+//        if (!Gdx.input.isKeyPressed(Keys.W) && isMoveUp) {
+//            player2.b2body.setLinearVelocity(player2.b2body.getLinearVelocity().x, 0);
+//            isMoveUp = false;
+//        }
+//        if (!Gdx.input.isKeyPressed(Keys.A) && isMoveLeft) {
+//            player2.b2body.setLinearVelocity(0, player2.b2body.getLinearVelocity().y);
+//            isMoveLeft = false;
+//        }
+//        if (!Gdx.input.isKeyPressed(Keys.S) && isMoveDown) {
+//            player2.b2body.setLinearVelocity(player2.b2body.getLinearVelocity().x, 0);
+//            isMoveDown = false;
+//        }
+//        if (!Gdx.input.isKeyPressed(Keys.D) && isMoveRight) {
+//            player2.b2body.setLinearVelocity(0, player2.b2body.getLinearVelocity().y);
+//            isMoveRight = false;
+//        }
+        if (!(Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.D))) {
+            player2.b2body.setLinearVelocity(0, 0);
         }
     }
 

@@ -16,6 +16,7 @@ public class Room2WorldCreator {
         Body body;
 
         for (MapLayer wallLayer : ((MapGroupLayer)tiledMap.getLayers().get("Static Objects")).getLayers()) {
+            System.out.println(wallLayer.isVisible());
             for (RectangleMapObject object : wallLayer.getObjects().getByType(RectangleMapObject.class)) {
                 Rectangle rectangle = object.getRectangle();
 

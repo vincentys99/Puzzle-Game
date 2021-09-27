@@ -3,10 +3,31 @@ Testing.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-cc
+WalkDown
   rotate: false
-  xy: 1, 1
-  size: 32, 64
-  orig: 32, 64
+  xy: 0, 0
+  size: 80, 32
+  orig: 80, 32
+  offset: 0, 0
+  index: -1
+WalkLeft
+  rotate: false
+  xy: 80, 0
+  size: 80, 32
+  orig: 80, 32
+  offset: 0, 0
+  index: -1
+WalkRight
+  rotate: false
+  xy: 160, 0
+  size: 80, 32
+  orig: 80, 32
+  offset: 0, 0
+  index: -1
+WalkUp
+  rotate: false
+  xy: 240, 0
+  size: 80, 32
+  orig: 80, 32
   offset: 0, 0
   index: -1
