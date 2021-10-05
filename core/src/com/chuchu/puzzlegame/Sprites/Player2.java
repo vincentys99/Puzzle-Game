@@ -11,7 +11,7 @@ import com.chuchu.puzzlegame.Screens.Room2;
 
 public class Player2 extends Sprite {
 
-    public enum State { Standing, WalkDown, WalkLeft, WalkRight, WalkUp };
+    public enum State { Standing, WalkDown, WalkLeft, WalkRight, WalkUp, FaceDown, FaceLeft, FaceRight, FaceUp };
     private final String[] walkImages = new String[] { "WalkDown", "WalkLeft", "WalkRight", "WalkUp" };
     private Animation<TextureRegion> playerWalkDown;
     private Animation<TextureRegion> playerWalkLeft;
@@ -23,7 +23,10 @@ public class Player2 extends Sprite {
 
     public World world;
     public Body b2body;
-    TextureRegion playerStand;
+    TextureRegion playerFaceDown;
+    TextureRegion playerFaceLeft;
+    TextureRegion playerFaceRight;
+    TextureRegion playerFaceUp;
 
     public Player2(World world, Room2 screen) {
         super(screen.getAtlas().findRegion("WalkDown"));
@@ -40,28 +43,31 @@ public class Player2 extends Sprite {
         playerWalkDown = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
-        for(int i = 5; i < 10; i++) {
+        for(int i = 6; i < 10; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
         playerWalkLeft = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
-        for(int i = 10; i < 15; i++) {
+        for(int i = 11; i < 15; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
         playerWalkRight = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
-        for(int i = 15; i < 20; i++) {
+        for(int i = 16; i < 20; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
         playerWalkUp = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
         definePlayer();
-        playerStand = new TextureRegion(getTexture(), 0, 0, 16, 32);
+        playerFaceDown = new TextureRegion(getTexture(), 0, 0, 16, 32);
+        playerFaceLeft = new TextureRegion(getTexture(), 5 * 16, 0, 16, 32);
+        playerFaceRight = new TextureRegion(getTexture(), 10 * 16, 0, 16, 32);
+        playerFaceUp = new TextureRegion(getTexture(), 15 * 16, 0, 16, 32);
         setBounds(0, 0, 16 * 2 / PuzzleGame.PPM, 32 * 2 / PuzzleGame.PPM);
-        setRegion(playerStand);
+        setRegion(playerFaceDown);
     }
 
     public void update(float delta) {
@@ -86,8 +92,20 @@ public class Player2 extends Sprite {
             case WalkUp:
                 region = playerWalkUp.getKeyFrame(stateTimer, true);
                 break;
+//            case FaceDown:
+//                region = playerFaceDown; //already set as default
+//                break;
+            case FaceLeft:
+                region = playerFaceLeft;
+                break;
+            case FaceRight:
+                region = playerFaceRight;
+                break;
+            case FaceUp:
+                region = playerFaceUp;
+                break;
             default:
-                region = playerStand;
+                region = playerFaceDown;
                 break;
         }
 
@@ -105,8 +123,16 @@ public class Player2 extends Sprite {
             return State.WalkRight;
         else if (b2body.getLinearVelocity().x < 0)
             return State.WalkLeft;
+        else if (previousState == State.WalkUp)
+            return State.FaceUp;
+        else if (previousState == State.WalkDown)
+            return State.FaceDown;
+        else if (previousState == State.WalkRight)
+            return State.FaceRight;
+        else if (previousState == State.WalkLeft)
+            return State.FaceLeft;
         else
-            return State.Standing;
+            return previousState;
     }
 
     public void definePlayer() {

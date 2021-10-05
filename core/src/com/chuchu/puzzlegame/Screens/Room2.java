@@ -95,25 +95,22 @@ public class Room2 implements Screen {
 //            game.setScreen(new MainMenuScreen(game));
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyPressed(Keys.W) && player2.b2body.getLinearVelocity().y <= 2) {
-            player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0, 0.2f), player2.b2body.getWorldCenter(), true);
+
+        float x = 0f;
+        float y = 0f;
+        if (Gdx.input.isKeyPressed(Keys.A)) {
+            x -= 2;
         }
-        if (Gdx.input.isKeyPressed(Keys.A) && player2.b2body.getLinearVelocity().x >= -2) {
-            player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(-0.2f, 0), player2.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.D)) {
+            x += 2;
         }
-        if (Gdx.input.isKeyPressed(Keys.S) && player2.b2body.getLinearVelocity().y >= -2) {
-            player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0, -0.2f), player2.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.W)) {
+            y += 2;
         }
-        if (Gdx.input.isKeyPressed(Keys.D) && player2.b2body.getLinearVelocity().x <= 2) {
-            player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0.2f, 0), player2.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Keys.S)) {
+            y -= 2;
         }
-        if (!(Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.D))) {
-            player2.b2body.setLinearVelocity(0, 0);
-        }
+        player2.b2body.setLinearVelocity(x, y);
     }
 
     public void update(float delta) {
