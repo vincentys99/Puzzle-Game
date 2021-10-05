@@ -3,6 +3,7 @@ package com.chuchu.puzzlegame.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.chuchu.puzzlegame.PuzzleGame;
@@ -116,12 +117,17 @@ public class Player2 extends Sprite {
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
-//        PolygonShape shape = new PolygonShape();
-//        shape.setAsBox(16 / PuzzleGame.PPM, 16 / PuzzleGame.PPM);
         CircleShape shape = new CircleShape();
         shape.setRadius(8 / PuzzleGame.PPM);
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
+
+        EdgeShape edge = new EdgeShape();
+        edge.set(new Vector2(-2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM), new Vector2(2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM));
+        fdef.shape = edge;
+        fdef.isSensor = true;
+
+        b2body.createFixture(fdef).setUserData("edge");
     }
 }

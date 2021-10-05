@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Player2;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
+import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
 public class Room2 implements Screen {
 
@@ -70,6 +71,10 @@ public class Room2 implements Screen {
         // generate player2
         player2 = new Player2(world, this);
 
+        world.setContactListener(new WorldContactListener());
+
+        // TODO: set player to one of the layers and allow the effect of "user is behind object(s)"
+
 //        tiledMapRenderer.addSprite(player2);
 //
 //        MapLayer objectLayer = tiledMap.getLayers().get("Player Layer");
@@ -90,38 +95,22 @@ public class Room2 implements Screen {
 //            game.setScreen(new MainMenuScreen(game));
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyPressed(Keys.W) && player2.b2body.getLinearVelocity().y <= 4) {
+        if (Gdx.input.isKeyPressed(Keys.W) && player2.b2body.getLinearVelocity().y <= 2) {
             player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0, 0.4f), player2.b2body.getWorldCenter(), true);
+            player2.b2body.applyLinearImpulse(new Vector2(0, 0.2f), player2.b2body.getWorldCenter(), true);
         }
-        if (Gdx.input.isKeyPressed(Keys.A) && player2.b2body.getLinearVelocity().x >= -4) {
+        if (Gdx.input.isKeyPressed(Keys.A) && player2.b2body.getLinearVelocity().x >= -2) {
             player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(-0.4f, 0), player2.b2body.getWorldCenter(), true);
+            player2.b2body.applyLinearImpulse(new Vector2(-0.2f, 0), player2.b2body.getWorldCenter(), true);
         }
-        if (Gdx.input.isKeyPressed(Keys.S) && player2.b2body.getLinearVelocity().y >= -4) {
+        if (Gdx.input.isKeyPressed(Keys.S) && player2.b2body.getLinearVelocity().y >= -2) {
             player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0, -0.4f), player2.b2body.getWorldCenter(), true);
+            player2.b2body.applyLinearImpulse(new Vector2(0, -0.2f), player2.b2body.getWorldCenter(), true);
         }
-        if (Gdx.input.isKeyPressed(Keys.D) && player2.b2body.getLinearVelocity().x <= 4) {
+        if (Gdx.input.isKeyPressed(Keys.D) && player2.b2body.getLinearVelocity().x <= 2) {
             player2.b2body.setLinearDamping(0);
-            player2.b2body.applyLinearImpulse(new Vector2(0.4f, 0), player2.b2body.getWorldCenter(), true);
+            player2.b2body.applyLinearImpulse(new Vector2(0.2f, 0), player2.b2body.getWorldCenter(), true);
         }
-//        if (!Gdx.input.isKeyPressed(Keys.W) && isMoveUp) {
-//            player2.b2body.setLinearVelocity(player2.b2body.getLinearVelocity().x, 0);
-//            isMoveUp = false;
-//        }
-//        if (!Gdx.input.isKeyPressed(Keys.A) && isMoveLeft) {
-//            player2.b2body.setLinearVelocity(0, player2.b2body.getLinearVelocity().y);
-//            isMoveLeft = false;
-//        }
-//        if (!Gdx.input.isKeyPressed(Keys.S) && isMoveDown) {
-//            player2.b2body.setLinearVelocity(player2.b2body.getLinearVelocity().x, 0);
-//            isMoveDown = false;
-//        }
-//        if (!Gdx.input.isKeyPressed(Keys.D) && isMoveRight) {
-//            player2.b2body.setLinearVelocity(0, player2.b2body.getLinearVelocity().y);
-//            isMoveRight = false;
-//        }
         if (!(Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.D))) {
             player2.b2body.setLinearVelocity(0, 0);
         }
