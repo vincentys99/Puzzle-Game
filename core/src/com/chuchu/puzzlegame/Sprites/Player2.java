@@ -232,9 +232,10 @@ public class Player2 extends Sprite {
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
-        EdgeShape edge = new EdgeShape();
-        edge.set(new Vector2(-2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM), new Vector2(2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM));
-        fdef.shape = edge;
+//        EdgeShape edge = new EdgeShape();
+//        edge.set(new Vector2(-2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM), new Vector2(2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM));
+        shape.setRadius(9 / PuzzleGame.PPM);
+        fdef.shape = shape;
         fdef.isSensor = true;
 
         b2body.createFixture(fdef).setUserData("edge");
