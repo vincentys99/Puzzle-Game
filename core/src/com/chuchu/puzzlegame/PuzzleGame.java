@@ -3,6 +3,8 @@ package com.chuchu.puzzlegame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -33,6 +35,11 @@ public class PuzzleGame extends Game {
 		parameter.borderColor = Color.WHITE;
 		parameter.borderWidth = 2;
 		font = generator.generateFont(parameter);
+
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("images/cursor/cursor.png"));
+		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
+		Gdx.graphics.setCursor(cursor);
+		pixmap.dispose();
 
 		this.setScreen(new MainMenuScreen(this));
 	}
