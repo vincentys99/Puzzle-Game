@@ -11,57 +11,55 @@ import com.chuchu.puzzlegame.Screens.Room2;
 
 public class Player2 extends Sprite {
 
-    public enum State { Standing, WalkDown, WalkLeft, WalkRight, WalkUp };
-    private final String[] walkImages = new String[] { "WalkDown", "WalkLeft", "WalkRight", "WalkUp" };
+    public enum State { Standing,
+        WalkDown, WalkLeft, WalkRight, WalkUp,
+        FaceDown, FaceLeft, FaceRight, FaceUp,
+        WalkBottomRight, WalkBottomLeft, WalkTopLeft, WalkTopRight,
+        FaceBottomRight, FaceBottomLeft, FaceTopLeft, FaceTopRight };
     private Animation<TextureRegion> playerWalkDown;
     private Animation<TextureRegion> playerWalkLeft;
     private Animation<TextureRegion> playerWalkRight;
     private Animation<TextureRegion> playerWalkUp;
+    private Animation<TextureRegion> playerWalkBottomRight;
+    private Animation<TextureRegion> playerWalkBottomLeft;
+    private Animation<TextureRegion> playerWalkTopLeft;
+    private Animation<TextureRegion> playerWalkTopRight;
     public State currentState;
     public State previousState;
     private float stateTimer;
 
     public World world;
     public Body b2body;
-    TextureRegion playerStand;
+    TextureRegion playerFaceDown;
+    TextureRegion playerFaceLeft;
+    TextureRegion playerFaceRight;
+    TextureRegion playerFaceUp;
+    TextureRegion playerFaceBottomRight;
+    TextureRegion playerFaceBottomLeft;
+    TextureRegion playerFaceTopLeft;
+    TextureRegion playerFaceTopRight;
 
     public Player2(World world, Room2 screen) {
-        super(screen.getAtlas().findRegion("WalkDown"));
+        super(screen.getAtlas().findRegion("WalkBottomLeft"));
         this.world = world;
 
         currentState = State.Standing;
         previousState = State.Standing;
         stateTimer = 0;
 
-        Array<TextureRegion> frames = new Array<TextureRegion>();
-        for(int i = 1; i < 5; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
-        }
-        playerWalkDown = new Animation<TextureRegion>(0.1f, frames);
-        frames.clear();
-
-        for(int i = 5; i < 10; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
-        }
-        playerWalkLeft = new Animation<TextureRegion>(0.1f, frames);
-        frames.clear();
-
-        for(int i = 10; i < 15; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
-        }
-        playerWalkRight = new Animation<TextureRegion>(0.1f, frames);
-        frames.clear();
-
-        for(int i = 15; i < 20; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
-        }
-        playerWalkUp = new Animation<TextureRegion>(0.1f, frames);
-        frames.clear();
+        setAnimations();
 
         definePlayer();
-        playerStand = new TextureRegion(getTexture(), 0, 0, 16, 32);
+        playerFaceBottomLeft = new TextureRegion(getTexture(), 0, 0, 16, 32);
+        playerFaceBottomRight = new TextureRegion(getTexture(), 5 * 16, 0, 16, 32);
+        playerFaceDown = new TextureRegion(getTexture(), 10 * 16, 0, 16, 32);
+        playerFaceLeft = new TextureRegion(getTexture(), 15 * 16, 0, 16, 32);
+        playerFaceRight = new TextureRegion(getTexture(), 20 * 16, 0, 16, 32);
+        playerFaceTopLeft = new TextureRegion(getTexture(), 25 * 16, 0, 16, 32);
+        playerFaceTopRight = new TextureRegion(getTexture(), 30 * 16, 0, 16, 32);
+        playerFaceUp = new TextureRegion(getTexture(), 35 * 16, 0, 16, 32);
         setBounds(0, 0, 16 * 2 / PuzzleGame.PPM, 32 * 2 / PuzzleGame.PPM);
-        setRegion(playerStand);
+        setRegion(playerFaceDown);
     }
 
     public void update(float delta) {
@@ -86,8 +84,44 @@ public class Player2 extends Sprite {
             case WalkUp:
                 region = playerWalkUp.getKeyFrame(stateTimer, true);
                 break;
+            case WalkBottomLeft:
+                region = playerWalkBottomLeft.getKeyFrame(stateTimer, true);
+                break;
+            case WalkBottomRight:
+                region = playerWalkBottomRight.getKeyFrame(stateTimer, true);
+                break;
+            case WalkTopLeft:
+                region = playerWalkTopLeft.getKeyFrame(stateTimer, true);
+                break;
+            case WalkTopRight:
+                region = playerWalkTopRight.getKeyFrame(stateTimer, true);
+                break;
+//            case FaceDown:
+//                region = playerFaceDown; //already set as default
+//                break;
+            case FaceLeft:
+                region = playerFaceLeft;
+                break;
+            case FaceRight:
+                region = playerFaceRight;
+                break;
+            case FaceUp:
+                region = playerFaceUp;
+                break;
+            case FaceBottomLeft:
+                region = playerFaceBottomLeft;
+                break;
+            case FaceBottomRight:
+                region = playerFaceBottomRight;
+                break;
+            case FaceTopLeft:
+                region = playerFaceTopLeft;
+                break;
+            case FaceTopRight:
+                region = playerFaceTopRight;
+                break;
             default:
-                region = playerStand;
+                region = playerFaceDown;
                 break;
         }
 
@@ -97,7 +131,15 @@ public class Player2 extends Sprite {
     }
 
     public State getState() {
-        if (b2body.getLinearVelocity().y > 0)
+        if (b2body.getLinearVelocity().y < 0 && b2body.getLinearVelocity().x < 0)
+            return State.WalkBottomLeft;
+        else if (b2body.getLinearVelocity().y < 0 && b2body.getLinearVelocity().x > 0)
+            return State.WalkBottomRight;
+        else if (b2body.getLinearVelocity().y > 0 && b2body.getLinearVelocity().x < 0)
+            return State.WalkTopLeft;
+        else if (b2body.getLinearVelocity().y > 0 && b2body.getLinearVelocity().x > 0)
+            return State.WalkTopRight;
+        else if (b2body.getLinearVelocity().y > 0)
             return State.WalkUp;
         else if (b2body.getLinearVelocity().y < 0)
             return State.WalkDown;
@@ -105,8 +147,75 @@ public class Player2 extends Sprite {
             return State.WalkRight;
         else if (b2body.getLinearVelocity().x < 0)
             return State.WalkLeft;
+        else if (previousState == State.WalkUp)
+            return State.FaceUp;
+        else if (previousState == State.WalkDown)
+            return State.FaceDown;
+        else if (previousState == State.WalkRight)
+            return State.FaceRight;
+        else if (previousState == State.WalkLeft)
+            return State.FaceLeft;
+        else if (previousState == State.WalkBottomLeft)
+            return State.FaceBottomLeft;
+        else if (previousState == State.WalkBottomRight)
+            return State.FaceBottomRight;
+        else if (previousState == State.WalkTopLeft)
+            return State.FaceTopLeft;
+        else if (previousState == State.WalkTopRight)
+            return State.FaceTopRight;
         else
-            return State.Standing;
+            return previousState;
+    }
+
+    public void setAnimations() {
+        Array<TextureRegion> frames = new Array<TextureRegion>();
+        for(int i = 1; i < 5; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkBottomLeft = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 6; i < 10; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkBottomRight = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 11; i < 15; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkDown = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 16; i < 20; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkLeft = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 21; i < 25; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkRight = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 26; i < 30; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkTopLeft = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 31; i < 35; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkTopRight = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
+
+        for(int i = 36; i < 40; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+        }
+        playerWalkUp = new Animation<TextureRegion>(0.1f, frames);
+        frames.clear();
     }
 
     public void definePlayer() {
