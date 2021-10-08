@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -14,14 +15,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Player2;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 public class Room2 implements Screen {
+    public static Boolean showDialogue = false;
+
 
     final PuzzleGame game;
     TextureAtlas atlas;
@@ -39,7 +46,7 @@ public class Room2 implements Screen {
     Box2DDebugRenderer b2dr;
 
     Player2 player2;
-
+    public static Stage stageTesting;
     public Stage stage;
 
     public Room2(final PuzzleGame game) {
@@ -81,6 +88,8 @@ public class Room2 implements Screen {
         player2 = new Player2(world, this, tiledMap);
 
         world.setContactListener(new WorldContactListener());
+        stageTesting = new Stage(new ScreenViewport());
+
 
         // TODO: set player to one of the layers and allow the effect of "user is behind object(s)"
     }
@@ -149,9 +158,14 @@ public class Room2 implements Screen {
         game.batch.begin();
         player2.draw(game.batch);
         game.batch.end();
+        if(showDialogue) {
+            stageTesting.act();
+            stageTesting.draw();
+        }
 
         stage.act();
         stage.draw();
+
     }
 
     @Override
