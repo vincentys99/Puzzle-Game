@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.chuchu.puzzlegame.PuzzleGame;
+import com.chuchu.puzzlegame.Screens.Room2;
 import com.chuchu.puzzlegame.Tools.TileObjectClickListener;
 
 public abstract class InteractiveTileObject extends Actor {
@@ -67,5 +68,11 @@ public abstract class InteractiveTileObject extends Actor {
 
     public void removeActor() {
         stage.clear();
+        removeDialog();
+    }
+
+    public void removeDialog() {
+        Room2.showDialogue = false;
+        Room2.stageTesting.clear();
     }
 }
