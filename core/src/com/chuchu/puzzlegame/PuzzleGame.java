@@ -36,7 +36,7 @@ public class PuzzleGame extends Game {
 		parameter.borderWidth = 2;
 		font = generator.generateFont(parameter);
 
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("images/cursor/cursor.png"));
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("images/cursor/cursor01.png"));
 		Cursor cursor = Gdx.graphics.newCursor(pixmap, 0, 0);
 		Gdx.graphics.setCursor(cursor);
 		pixmap.dispose();

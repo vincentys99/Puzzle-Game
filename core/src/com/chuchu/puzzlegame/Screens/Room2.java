@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chuchu.puzzlegame.PuzzleGame;
@@ -32,11 +33,14 @@ public class Room2 implements Screen {
     TmxMapLoader mapLoader;
     TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
+    float unitScale;
 
     World world;
     Box2DDebugRenderer b2dr;
 
     Player2 player2;
+
+    public Stage stage;
 
     public Room2(final PuzzleGame game) {
         this.game = game;
@@ -55,8 +59,9 @@ public class Room2 implements Screen {
 
         // load tilemap and scale it based on PPM
         mapLoader = new TmxMapLoader();
-        tiledMap = mapLoader.load("tilemap_test2/untitled.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PuzzleGame.PPM);
+        tiledMap = mapLoader.load("tilemap_test3/untitled.tmx");
+        unitScale = 2;
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
 
         // set camera
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
@@ -65,34 +70,27 @@ public class Room2 implements Screen {
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
 
+        // create stage
+        stage = new Stage(viewport);
+        Gdx.input.setInputProcessor(stage);
+
         // generate world elements (eg. static bodies)
-        new Room2WorldCreator(world, tiledMap);
+        new Room2WorldCreator(world, tiledMap, unitScale, stage);
 
         // generate player2
-        player2 = new Player2(world, this);
+        player2 = new Player2(world, this, tiledMap);
 
         world.setContactListener(new WorldContactListener());
 
         // TODO: set player to one of the layers and allow the effect of "user is behind object(s)"
-
-//        tiledMapRenderer.addSprite(player2);
-//
-//        MapLayer objectLayer = tiledMap.getLayers().get("Player Layer");
-//        TextureMapObject tmo = new TextureMapObject(player2);
-//        tmo.setX(16 / PuzzleGame.PPM);
-//        tmo.setY(16 / PuzzleGame.PPM);
-//        objectLayer.getObjects().add(tmo);
     }
 
     public TextureAtlas getAtlas() {
         return atlas;
     }
 
-    public void handleInput(float delta) {
+    public void handleInput() {
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-            // error when set main menu screen
-//            dispose();
-//            game.setScreen(new MainMenuScreen(game));
             Gdx.app.exit();
         }
 
@@ -114,7 +112,7 @@ public class Room2 implements Screen {
     }
 
     public void update(float delta) {
-        handleInput(delta);
+        handleInput();
 
         world.step(1/60f, 6, 2);
 
@@ -136,19 +134,24 @@ public class Room2 implements Screen {
     public void render(float delta) {
         update(delta);
 
-        // clear screen with black color
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
+        //=============================================================//
+        //  the line below is used to display the lines of the objects //
+        //=============================================================//
         b2dr.render(world, camera.combined);
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         player2.draw(game.batch);
         game.batch.end();
+
+        stage.act();
+        stage.draw();
     }
 
     @Override
@@ -178,5 +181,6 @@ public class Room2 implements Screen {
         tiledMapRenderer.dispose();
         world.dispose();
         b2dr.dispose();
+        stage.dispose();
     }
 }

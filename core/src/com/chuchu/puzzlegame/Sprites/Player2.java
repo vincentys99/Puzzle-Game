@@ -3,7 +3,8 @@ package com.chuchu.puzzlegame.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.chuchu.puzzlegame.PuzzleGame;
@@ -15,7 +16,7 @@ public class Player2 extends Sprite {
         WalkDown, WalkLeft, WalkRight, WalkUp,
         FaceDown, FaceLeft, FaceRight, FaceUp,
         WalkBottomRight, WalkBottomLeft, WalkTopLeft, WalkTopRight,
-        FaceBottomRight, FaceBottomLeft, FaceTopLeft, FaceTopRight };
+        FaceBottomRight, FaceBottomLeft, FaceTopLeft, FaceTopRight }
     private Animation<TextureRegion> playerWalkDown;
     private Animation<TextureRegion> playerWalkLeft;
     private Animation<TextureRegion> playerWalkRight;
@@ -39,7 +40,7 @@ public class Player2 extends Sprite {
     TextureRegion playerFaceTopLeft;
     TextureRegion playerFaceTopRight;
 
-    public Player2(World world, Room2 screen) {
+    public Player2(World world, Room2 screen, TiledMap tiledMap) {
         super(screen.getAtlas().findRegion("WalkBottomLeft"));
         this.world = world;
 
@@ -49,7 +50,7 @@ public class Player2 extends Sprite {
 
         setAnimations();
 
-        definePlayer();
+        definePlayer(tiledMap);
         playerFaceBottomLeft = new TextureRegion(getTexture(), 0, 0, 16, 32);
         playerFaceBottomRight = new TextureRegion(getTexture(), 5 * 16, 0, 16, 32);
         playerFaceDown = new TextureRegion(getTexture(), 10 * 16, 0, 16, 32);
@@ -168,59 +169,70 @@ public class Player2 extends Sprite {
     }
 
     public void setAnimations() {
-        Array<TextureRegion> frames = new Array<TextureRegion>();
+        Array<TextureRegion> frames = new Array<>();
         for(int i = 1; i < 5; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkBottomLeft = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkBottomLeft = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 6; i < 10; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkBottomRight = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkBottomRight = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 11; i < 15; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkDown = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkDown = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 16; i < 20; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkLeft = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkLeft = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 21; i < 25; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkRight = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkRight = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 26; i < 30; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkTopLeft = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkTopLeft = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 31; i < 35; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkTopRight = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkTopRight = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 36; i < 40; i++) {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
         }
-        playerWalkUp = new Animation<TextureRegion>(0.1f, frames);
+        playerWalkUp = new Animation<>(0.1f, frames);
         frames.clear();
     }
 
-    public void definePlayer() {
+    public void definePlayer(TiledMap tiledMap) {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(100 / PuzzleGame.PPM, 100 / PuzzleGame.PPM);
+
+        // set player to center of tile map
+        MapProperties prop = tiledMap.getProperties();
+        int mapWidth = prop.get("width", Integer.class);
+        int mapHeight = prop.get("height", Integer.class);
+        int tilePixelWidth = prop.get("tilewidth", Integer.class);
+        int tilePixelHeight = prop.get("tileheight", Integer.class);
+
+        int mapPixelWidth = mapWidth * tilePixelWidth;
+        int mapPixelHeight = mapHeight * tilePixelHeight;
+
+        bdef.position.set( (mapPixelWidth - 16) / PuzzleGame.PPM,  (mapPixelHeight - 16) / PuzzleGame.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.gravityScale = 0;
         b2body = world.createBody(bdef);
@@ -238,6 +250,13 @@ public class Player2 extends Sprite {
         fdef.shape = shape;
         fdef.isSensor = true;
 
-        b2body.createFixture(fdef).setUserData("edge");
+        b2body.createFixture(fdef).setUserData("collidable");
+
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(48 / PuzzleGame.PPM, 48 / PuzzleGame.PPM);
+        fdef.shape = polygonShape;
+        fdef.isSensor = true;
+
+        b2body.createFixture(fdef).setUserData("clickable");
     }
 }
