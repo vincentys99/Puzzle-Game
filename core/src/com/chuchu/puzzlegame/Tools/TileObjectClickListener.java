@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.Screens.Room2;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
@@ -23,9 +24,9 @@ public class TileObjectClickListener extends ClickListener {
         super(Input.Buttons.RIGHT);
         this.actor = actor;
 
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal(Files.uiskin));
 
-        dialogueBox = new Image(new Texture(Gdx.files.internal("dialog.png")));
+        dialogueBox = new Image(new Texture(Gdx.files.internal(Files.dialogImg)));
         dialogueBox.setSize(700, 200);
         dialogueBox.setPosition((Gdx.graphics.getWidth()/2) - (dialogueBox.getWidth() / 2),0);
 
@@ -45,11 +46,11 @@ public class TileObjectClickListener extends ClickListener {
 
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("images/cursor/cursor02.png")), 0, 0));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(Files.cursorDialog)), 0, 0));
     }
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("images/cursor/cursor01.png")), 0, 0));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(Files.cursorNormalSelect)), 0, 0));
     }
 }

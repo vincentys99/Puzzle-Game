@@ -26,7 +26,7 @@ public class Player1 {
     private void setup_directory() {
         int counter = 0;
         for(String imageDir: walkImages) {
-            walkTextures[counter] = new Texture(Gdx.files.internal("Player1/" + imageDir));
+            walkTextures[counter] = new Texture(Gdx.files.internal("player/Player1/" + imageDir));
             System.out.println(imageDir);
             counter++;
         }

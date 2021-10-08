@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -15,16 +14,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Player2;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
-import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 public class Room2 implements Screen {
     public static Boolean showDialogue = false;
@@ -51,10 +48,10 @@ public class Room2 implements Screen {
 
     public Room2(final PuzzleGame game) {
         this.game = game;
-        atlas = new TextureAtlas("Player2/Testing.pack");
+        atlas = new TextureAtlas("player/Player2/Testing.pack");
 
         // create music
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/CRSED Music Theme.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 
@@ -66,7 +63,7 @@ public class Room2 implements Screen {
 
         // load tilemap and scale it based on PPM
         mapLoader = new TmxMapLoader();
-        tiledMap = mapLoader.load("tilemap_test3/untitled.tmx");
+        tiledMap = mapLoader.load(Files.room2Tilemap);
         unitScale = 2;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
 

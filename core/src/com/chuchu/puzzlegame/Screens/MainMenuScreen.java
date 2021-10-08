@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
 
 public class MainMenuScreen implements Screen {
@@ -44,16 +45,16 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
 
         // Sound & Music
-        btnClickSound = Gdx.audio.newSound(Gdx.files.internal("sound/button_click.mp3"));
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/ZEDD x VALORANT Music Theme.ogg"));
+        btnClickSound = Gdx.audio.newSound(Gdx.files.internal(Files.buttonClickSound));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.mainMenuMusic));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 
         // Image
-        texture = new Texture(Gdx.files.internal("valorant_wallpaper_yoru.jpg"));
+        texture = new Texture(Gdx.files.internal(Files.mainMenuBg));
 
         // Skin
-        defaultSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));
 
         // Stage for buttons
         stage = new Stage(new ScreenViewport());

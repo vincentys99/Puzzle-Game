@@ -13,9 +13,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Player1;
-import com.rafaskoberg.gdx.typinglabel.TypingConfig;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -40,7 +40,7 @@ public class Room1 implements Screen {
     private float yPos = 0;
     public Room1(final PuzzleGame game) {
         this.game = game;
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/CRSED Music Theme.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 
@@ -51,10 +51,10 @@ public class Room1 implements Screen {
         currentFrame = (TextureRegion) player.walkAnimations[0].getKeyFrame(stateTime, true);
 
         spriteBatch = new SpriteBatch();
-        defaultSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));
         stage = new Stage(new ScreenViewport());
 
-        dialogueBox = new Image(new Texture(Gdx.files.internal("dialog.png")));
+        dialogueBox = new Image(new Texture(Gdx.files.internal(Files.dialogImg)));
         dialogueBox.setSize(700, 200);
         dialogueBox.setPosition((Gdx.graphics.getWidth()/2) - (dialogueBox.getWidth() / 2),0);
         dialogue = new TypingLabel("Once upon a time in the village of motherfuckers a guy named Dema married an elephant", defaultSkin);
