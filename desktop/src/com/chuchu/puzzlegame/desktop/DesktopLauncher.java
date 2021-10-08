@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.setMaximized(true);
 		config.setWindowSizeLimits(1024, 576, 3840, 2160);
 //		config.setResizable(false);
+		config.setWindowIcon("images/icon/icon_transparent.png");
 		new Lwjgl3Application(new PuzzleGame(), config);
 	}
 }
