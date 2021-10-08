@@ -10,19 +10,29 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Player1;
+import com.rafaskoberg.gdx.typinglabel.TypingConfig;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Room1 implements Screen {
     private Player1 player;
     private TextureRegion currentFrame;
     final PuzzleGame game;
+    private TypingLabel dialogue;
+    private Image dialogueBox;
     private static final int FRAME_COLS = 5, FRAME_ROWS = 1;
     OrthographicCamera camera;
     Music backgroundMusic;
     Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
     Texture walkSheet;
     SpriteBatch spriteBatch;
+    Skin defaultSkin;
+    Stage stage;
 
     // A variable for tracking elapsed time for the animation
     float stateTime;
@@ -41,6 +51,16 @@ public class Room1 implements Screen {
         currentFrame = (TextureRegion) player.walkAnimations[0].getKeyFrame(stateTime, true);
 
         spriteBatch = new SpriteBatch();
+        defaultSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        stage = new Stage(new ScreenViewport());
+
+        dialogueBox = new Image(new Texture(Gdx.files.internal("dialog.png")));
+        dialogueBox.setSize(700, 200);
+        dialogueBox.setPosition((Gdx.graphics.getWidth()/2) - (dialogueBox.getWidth() / 2),0);
+        dialogue = new TypingLabel("Once upon a time in the village of motherfuckers a guy named Dema married an elephant", defaultSkin);
+        dialogue.setPosition(dialogueBox.getX() + 22, dialogueBox.getHeight() - 100);
+        stage.addActor(dialogueBox);
+        stage.addActor(dialogue);
 
     }
 
@@ -55,7 +75,8 @@ public class Room1 implements Screen {
         stateTime += Gdx.graphics.getDeltaTime();
         spriteBatch.begin();
         handleInput();
-
+        stage.act();
+        stage.draw();
         spriteBatch.draw(currentFrame, xPos, yPos); // Draw current frame at (50, 50)
         spriteBatch.end();
 
@@ -67,7 +88,6 @@ public class Room1 implements Screen {
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             currentFrame = (TextureRegion) player.walkAnimations[1].getKeyFrame(stateTime, true);
-
             xPos -= 1;
         }
         else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {

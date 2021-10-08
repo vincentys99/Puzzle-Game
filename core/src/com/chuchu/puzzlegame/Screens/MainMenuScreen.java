@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chuchu.puzzlegame.PuzzleGame;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 public class MainMenuScreen implements Screen {
 
@@ -224,6 +225,8 @@ public class MainMenuScreen implements Screen {
         optionTable.row();
         optionTable.add(apply);
         optionTable.add(close);
+
+
         stage.addActor(optionTable);
     }
 
