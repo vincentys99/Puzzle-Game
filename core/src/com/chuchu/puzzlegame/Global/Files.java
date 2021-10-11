@@ -37,7 +37,7 @@ public class Files {
     //---------//
     // Tilemap //
     //---------//
-    public static final String room1Tilemap = "";
+    public static final String room1Tilemap = "Tilesmaps/Room1 Tilemap/untitled.tmx";
     public static final String room2Tilemap = "Tilesmaps/Room2 Tilemap/untitled.tmx";
 
     //--------//

@@ -240,14 +240,14 @@ public class Player2 extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(8 / PuzzleGame.PPM);
+        shape.setRadius(22 / PuzzleGame.PPM);
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
 //        EdgeShape edge = new EdgeShape();
 //        edge.set(new Vector2(-2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM), new Vector2(2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM));
-        shape.setRadius(9 / PuzzleGame.PPM);
+        shape.setRadius(22 / PuzzleGame.PPM);
         fdef.shape = shape;
         fdef.isSensor = true;
 

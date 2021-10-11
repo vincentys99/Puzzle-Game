@@ -17,27 +17,29 @@ public class Room2WorldCreator {
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
-        for (MapLayer objectLayer : ((MapGroupLayer)tiledMap.getLayers().get("Static Objects")).getLayers()) {
-            for (RectangleMapObject object : objectLayer.getObjects().getByType(RectangleMapObject.class)) {
-                Rectangle rectangle = object.getRectangle();
+        if (tiledMap.getLayers().get("Static Objects") != null) {
+            for (MapLayer objectLayer : ((MapGroupLayer)tiledMap.getLayers().get("Static Objects")).getLayers()) {
+                for (RectangleMapObject object : objectLayer.getObjects().getByType(RectangleMapObject.class)) {
+                    Rectangle rectangle = object.getRectangle();
 
-                if (objectLayer.getName().equals("Tables")) {
-                    new TableObject(world, tiledMap, rectangle, unitScale, stage);
-                }
-                else {
-                    bodyDef.type = BodyDef.BodyType.StaticBody;
-                    bodyDef.position.set(
-                            (rectangle.getX() + rectangle.getWidth() / 2) / PuzzleGame.PPM * unitScale,
-                            (rectangle.getY() + rectangle.getHeight() / 2) / PuzzleGame.PPM * unitScale
-                    );
-                    body = world.createBody(bodyDef);
+                    if (objectLayer.getName().equals("Tables")) {
+                        new TableObject(world, tiledMap, rectangle, unitScale, stage);
+                    }
+                    else {
+                        bodyDef.type = BodyDef.BodyType.StaticBody;
+                        bodyDef.position.set(
+                                (rectangle.getX() + rectangle.getWidth() / 2) / PuzzleGame.PPM * unitScale,
+                                (rectangle.getY() + rectangle.getHeight() / 2) / PuzzleGame.PPM * unitScale
+                        );
+                        body = world.createBody(bodyDef);
 
-                    polygonShape.setAsBox(
-                            rectangle.getWidth() / 2 / PuzzleGame.PPM * unitScale,
-                            rectangle.getHeight() / 2 / PuzzleGame.PPM * unitScale
-                    );
-                    fixtureDef.shape = polygonShape;
-                    body.createFixture(fixtureDef);
+                        polygonShape.setAsBox(
+                                rectangle.getWidth() / 2 / PuzzleGame.PPM * unitScale,
+                                rectangle.getHeight() / 2 / PuzzleGame.PPM * unitScale
+                        );
+                        fixtureDef.shape = polygonShape;
+                        body.createFixture(fixtureDef);
+                    }
                 }
             }
         }

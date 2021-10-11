@@ -7,7 +7,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -36,7 +38,9 @@ public class Room2 implements Screen {
 
     TmxMapLoader mapLoader;
     TiledMap tiledMap;
+    TiledMap tiledMap2;
     OrthogonalTiledMapRenderer tiledMapRenderer;
+    OrthogonalTiledMapRenderer tiledMapRenderer2;
     float unitScale;
 
     World world;
@@ -67,6 +71,13 @@ public class Room2 implements Screen {
         unitScale = 2;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
 
+        // filter tilemap
+        tiledMap2 = mapLoader.load(Files.room2Tilemap);
+        for (MapLayer mapLayer : tiledMap2.getLayers()) {
+            mapLayer.setVisible(!mapLayer.isVisible());
+        }
+        tiledMapRenderer2 = new OrthogonalTiledMapRenderer(tiledMap2, unitScale / PuzzleGame.PPM);
+
         // set camera
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
@@ -88,6 +99,7 @@ public class Room2 implements Screen {
         stageTesting = new Stage(new ScreenViewport());
 
 
+        // TODO: set player to one of the layers and allow the effect of "user is behind object(s)"
     }
 
     public TextureAtlas getAtlas() {
@@ -158,6 +170,9 @@ public class Room2 implements Screen {
             stageTesting.act();
             stageTesting.draw();
         }
+
+        tiledMapRenderer2.setView(camera);
+        tiledMapRenderer2.render();
 
         stage.act();
         stage.draw();

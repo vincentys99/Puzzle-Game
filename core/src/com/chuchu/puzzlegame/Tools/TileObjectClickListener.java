@@ -50,7 +50,7 @@ public class TileObjectClickListener extends ClickListener {
 
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(Files.cursorDialog)), 0, 0));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(Files.cursorHand)), 0, 0));
     }
 
     @Override
