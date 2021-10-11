@@ -2,6 +2,7 @@ package com.chuchu.puzzlegame.Sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -40,8 +41,8 @@ public class Player2 extends Sprite {
     TextureRegion playerFaceTopLeft;
     TextureRegion playerFaceTopRight;
 
-    public Player2(World world, Room2 screen, TiledMap tiledMap) {
-        super(screen.getAtlas().findRegion("WalkBottomLeft"));
+    public Player2(World world, TextureAtlas atlas, TiledMap tiledMap) {
+        super(atlas.findRegion("WalkBottomLeft"));
         this.world = world;
 
         currentState = State.Standing;

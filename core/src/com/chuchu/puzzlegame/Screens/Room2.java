@@ -82,13 +82,12 @@ public class Room2 implements Screen {
         new Room2WorldCreator(world, tiledMap, unitScale, stage);
 
         // generate player2
-        player2 = new Player2(world, this, tiledMap);
+        player2 = new Player2(world, atlas, tiledMap);
 
         world.setContactListener(new WorldContactListener());
         stageTesting = new Stage(new ScreenViewport());
 
 
-        // TODO: set player to one of the layers and allow the effect of "user is behind object(s)"
     }
 
     public TextureAtlas getAtlas() {
