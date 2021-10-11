@@ -21,6 +21,7 @@ public class Files {
 
     public static final String cursorNormalSelect = "images/cursor/cursor01.png";
     public static final String cursorDialog = "images/cursor/cursor02.png";
+    public static final String cursorHand = "images/cursor/cursor03.png";
 
     //--------//
     // Musics //
