@@ -1,76 +1,136 @@
 package com.chuchu.puzzlegame.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
-import com.chuchu.puzzlegame.Sprites.Player1;
-import com.rafaskoberg.gdx.typinglabel.TypingLabel;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.chuchu.puzzlegame.Sprites.Player2;
+import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
+import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
 public class Room1 implements Screen {
-    private Player1 player;
-    private TextureRegion currentFrame;
-    final PuzzleGame game;
-    private TypingLabel dialogue;
-    private Image dialogueBox;
-    private static final int FRAME_COLS = 5, FRAME_ROWS = 1;
-    OrthographicCamera camera;
-    Music backgroundMusic;
-    Animation<TextureRegion> walkAnimation; // Must declare frame type (TextureRegion)
-    Texture walkSheet;
-    SpriteBatch spriteBatch;
-    Skin defaultSkin;
-    Stage stage;
+    public static Boolean showDialogue = false;
 
-    // A variable for tracking elapsed time for the animation
-    float stateTime;
-    private float xPos = 0;
-    private float yPos = 0;
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer renderer;
+
+    final PuzzleGame game;
+    TextureAtlas atlas;
+    Music backgroundMusic;
+
+    Viewport viewport;
+    OrthographicCamera camera;
+
+    TmxMapLoader mapLoader;
+    TiledMap tiledMap;
+    OrthogonalTiledMapRenderer tiledMapRenderer;
+    float unitScale;
+
+    World world;
+    Box2DDebugRenderer b2dr;
+
+    Player2 player2;
+    public static Stage stageTesting;
+    public Stage stage;
+
     public Room1(final PuzzleGame game) {
         this.game = game;
-        mapLoader = new TmxMapLoader();
-        map = mapLoader.load("untitled.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+        atlas = new TextureAtlas("player/Player2/Testing.pack");
+
+        // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 
+        // create cam to follow players
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
 
-        player = new Player1();
-        currentFrame = (TextureRegion) player.walkAnimations[0].getKeyFrame(stateTime, true);
+        // create viewport
+        viewport = new FitViewport(PuzzleGame.defaultWidth / PuzzleGame.PPM, PuzzleGame.defaultHeight / PuzzleGame.PPM, camera);
 
-        spriteBatch = new SpriteBatch();
-        defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));
-        stage = new Stage(new ScreenViewport());
+        // load tilemap and scale it based on PPM
+        mapLoader = new TmxMapLoader();
+        tiledMap = mapLoader.load(Files.room1Tilemap);
+        System.out.println(tiledMap.toString());
+        unitScale = 2;
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
 
-        dialogueBox = new Image(new Texture(Gdx.files.internal(Files.dialogImg)));
-        dialogueBox.setSize(700, 200);
-        dialogueBox.setPosition((Gdx.graphics.getWidth()/2) - (dialogueBox.getWidth() / 2),0);
-        dialogue = new TypingLabel("Once upon a time in the village of motherfuckers a guy named Dema married an elephant", defaultSkin);
-        dialogue.setPosition(dialogueBox.getX() + 22, dialogueBox.getHeight() - 100);
-        stage.addActor(dialogueBox);
-        stage.addActor(dialogue);
+        // set camera
+        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
+        // create world
+        world = new World(new Vector2(0, -10), true);
+        b2dr = new Box2DDebugRenderer();
+
+        // create stage
+        stage = new Stage(viewport);
+        Gdx.input.setInputProcessor(stage);
+
+        // generate world elements (eg. static bodies)
+        new Room2WorldCreator(world, tiledMap, unitScale, stage);
+
+        // generate player2
+       // player2 = new Player2(this);
+        player2 = new Player2(world, atlas, tiledMap);
+
+        world.setContactListener(new WorldContactListener());
+        stageTesting = new Stage(new ScreenViewport());
+
+
+        // TODO: set player to one of the layers and allow the effect of "user is behind object(s)"
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
+
+    public void handleInput() {
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
+
+        float x = 0f;
+        float y = 0f;
+        if (Gdx.input.isKeyPressed(Keys.A)) {
+            x -= 2;
+        }
+        if (Gdx.input.isKeyPressed(Keys.D)) {
+            x += 2;
+        }
+        if (Gdx.input.isKeyPressed(Keys.W)) {
+            y += 2;
+        }
+        if (Gdx.input.isKeyPressed(Keys.S)) {
+            y -= 2;
+        }
+        player2.b2body.setLinearVelocity(x, y);
+    }
+
+    public void update(float delta) {
+        handleInput();
+
+        world.step(1/60f, 6, 2);
+
+        player2.update(delta);
+
+        // camera following player2 x and y position
+        camera.position.x = player2.b2body.getPosition().x;
+        camera.position.y = player2.b2body.getPosition().y;
+
+        camera.update();
     }
 
     @Override
@@ -80,38 +140,36 @@ public class Room1 implements Screen {
 
     @Override
     public void render(float delta) {
+        update(delta);
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stateTime += Gdx.graphics.getDeltaTime();
-        spriteBatch.begin();
-        handleInput();
+
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.render();
+
+        //=============================================================//
+        //  the line below is used to display the lines of the objects //
+        //=============================================================//
+        b2dr.render(world, camera.combined);
+
+        game.batch.setProjectionMatrix(camera.combined);
+        game.batch.begin();
+        player2.draw(game.batch);
+        game.batch.end();
+        if(showDialogue) {
+            stageTesting.act();
+            stageTesting.draw();
+        }
+
         stage.act();
         stage.draw();
-        renderer.render();
-        spriteBatch.draw(currentFrame, xPos, yPos); // Draw current frame at (50, 50)
-        spriteBatch.end();
 
     }
-    private void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            currentFrame = (TextureRegion) player.walkAnimations[0].getKeyFrame(stateTime, true);
-            xPos += 1;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            currentFrame = (TextureRegion) player.walkAnimations[1].getKeyFrame(stateTime, true);
-            xPos -= 1;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            currentFrame = (TextureRegion) player.walkAnimations[2].getKeyFrame(stateTime, true);
-            yPos += 1;
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            currentFrame = (TextureRegion) player.walkAnimations[3].getKeyFrame(stateTime, true);
-            yPos -= 1;
-        }
-    }
+
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
     }
 
     @Override
@@ -132,7 +190,10 @@ public class Room1 implements Screen {
     @Override
     public void dispose() {
         backgroundMusic.dispose();
-        spriteBatch.dispose();
-        walkSheet.dispose();
+        tiledMap.dispose();
+        tiledMapRenderer.dispose();
+        world.dispose();
+        b2dr.dispose();
+        stage.dispose();
     }
 }
