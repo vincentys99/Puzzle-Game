@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -38,8 +41,14 @@ public class Room1 implements Screen {
     float stateTime;
     private float xPos = 0;
     private float yPos = 0;
+    private TmxMapLoader mapLoader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
     public Room1(final PuzzleGame game) {
         this.game = game;
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load("untitled.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map);
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
@@ -77,6 +86,7 @@ public class Room1 implements Screen {
         handleInput();
         stage.act();
         stage.draw();
+        renderer.render();
         spriteBatch.draw(currentFrame, xPos, yPos); // Draw current frame at (50, 50)
         spriteBatch.end();
 
