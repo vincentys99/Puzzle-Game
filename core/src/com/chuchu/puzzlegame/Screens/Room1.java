@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -48,7 +49,7 @@ public class Room1 implements Screen {
 
     public Room1(final PuzzleGame game) {
         this.game = game;
-        atlas = new TextureAtlas("player/Player2/Testing.pack");
+        atlas = new TextureAtlas(Files.Player3);
 
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
@@ -91,7 +92,9 @@ public class Room1 implements Screen {
         world.setContactListener(new WorldContactListener());
         stageTesting = new Stage(new ScreenViewport());
 
-
+        // set initial camera position
+        camera.position.x = player2.b2body.getPosition().x;
+        camera.position.y = player2.b2body.getPosition().y;
     }
 
     public TextureAtlas getAtlas() {
@@ -128,8 +131,12 @@ public class Room1 implements Screen {
         player2.update(delta);
 
         // camera following player2 x and y position
-        camera.position.x = player2.b2body.getPosition().x;
-        camera.position.y = player2.b2body.getPosition().y;
+        float lerp = 1f;
+        Vector3 position = camera.position;
+        position.x += (player2.b2body.getPosition().x - position.x) * lerp * delta;
+        position.y += (player2.b2body.getPosition().y - position.y) * lerp * delta;
+//        camera.position.x = player2.b2body.getPosition().x;
+//        camera.position.y = player2.b2body.getPosition().y;
 
         camera.update();
     }

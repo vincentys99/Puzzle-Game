@@ -15,7 +15,7 @@ public class Files {
     // Images //
     //--------//
     public static final String applicationIcon = "images/icon/icon_transparent.png";
-    public static final String mainMenuBg = "images/wallpaper/valorant_wallpaper_yoru.jpg";
+    public static final String mainMenuBg = "images/wallpaper/code geass walpaper.jpg";
 
     public static final String dialogImg = "images/dialog/dialog.png";
 
@@ -40,6 +40,15 @@ public class Files {
     public static final String room1Tilemap = "Tilesmaps/Room1 Tilemap/untitled.tmx";
     public static final String room2Tilemap = "Tilesmaps/Room2 Tilemap/untitled.tmx";
     public static final String DemaMap = "Tilesmaps/map 1/map_1.tmx";
+
+
+    //--------//
+    // Player //
+    //--------//
+    public static final String Player1 = "player/Player1/Testing.pack";
+    public static final String Player2 = "player/Player2/Testing.pack"; // 16 x 32
+    public static final String Player3 = "player/Player3/Testing.pack"; // 24 x 48
+    public static final String Player4 = "player/Player4/Testing.pack"; // 32 x 64
 
 
     //--------//

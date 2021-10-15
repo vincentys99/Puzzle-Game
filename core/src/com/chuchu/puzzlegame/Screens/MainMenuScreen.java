@@ -1,6 +1,7 @@
 package com.chuchu.puzzlegame.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -28,6 +29,7 @@ public class MainMenuScreen implements Screen {
     Texture texture;
     Stage stage;
     TextButtonStyle textButtonStyle;
+    TextButtonStyle textButtonStyle2;
     TextButton btnStart;
     TextButton btnOption;
     TextButton btnExit;
@@ -65,6 +67,19 @@ public class MainMenuScreen implements Screen {
         textButtonStyle.font = game.font;
         textButtonStyle.overFontColor = Color.RED;
 
+        textButtonStyle2 = new TextButtonStyle();
+        textButtonStyle2.font = game.font;
+
+        menuTable = new Table();
+        generateMenuButtons(false);
+
+        // Option Table
+        optionTable = new Table();
+        optionTable.setX((float)Gdx.graphics.getWidth() / 2);
+        optionTable.setY((float)Gdx.graphics.getHeight() / 2);
+    }
+
+    private void generateMenuButtons(boolean displayOption) {
         btnStart = new TextButton("Start Game", textButtonStyle);
         btnOption = new TextButton("Option", textButtonStyle);
         btnExit = new TextButton("Exit Game", textButtonStyle);
@@ -121,44 +136,33 @@ public class MainMenuScreen implements Screen {
         });
 
         // Menu Table
-        menuTable = new Table();
-        menuTable.add(btnStart);
-        menuTable.row();
-        menuTable.add(btnTemp);
-        menuTable.row();
-        menuTable.add(btnOption);
-        menuTable.row();
-        menuTable.add(btnExit);
+        menuTable.reset();
+
+        menuTable.bottom();
+        menuTable.left();
+        menuTable.padBottom(50f);
+        menuTable.padLeft(100f);
+
+        if (!displayOption) {
+            menuTable.add(btnStart);
+            menuTable.row();
+            menuTable.add(btnOption);
+            menuTable.row();
+            menuTable.add(btnExit);
+        }
+        else {
+            menuTable.add(new TextButton("Esc = back", textButtonStyle2));
+        }
+//        menuTable.add(btnTemp);
+//        menuTable.row();
+
         menuTable.setFillParent(true);
         stage.addActor(menuTable);
-
-        // Option Table
-        optionTable = new Table();
-        optionTable.setX((float)Gdx.graphics.getWidth() / 2);
-        optionTable.setY((float)Gdx.graphics.getHeight() / 2);
-    }
-
-    @Override
-    public void show() {
-        backgroundMusic.play();
-    }
-
-    @Override
-    public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
-
-        game.batch.begin();
-        game.batch.draw(texture, 0, 0);
-        game.batch.end();
-
-        stage.act();
-        stage.draw();
     }
 
     private void loadOptions() {
+        generateMenuButtons(true);
+
         optionTable.reset();
         final TextField resolutionWidth = new TextField(String.valueOf(Gdx.graphics.getWidth()), defaultSkin);
         final TextField resolutionHeight = new TextField(String.valueOf(Gdx.graphics.getHeight()), defaultSkin);
@@ -174,13 +178,13 @@ public class MainMenuScreen implements Screen {
                 if (btnToggleFullscreen.getText() == "ON"){
                     Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
                 }
-                optionTable.reset();
+                closeOptionMenu();
             }
         });
         close.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                optionTable.reset();
+                closeOptionMenu();
             }
         });
         volume.addListener( new DragListener() {
@@ -228,6 +232,43 @@ public class MainMenuScreen implements Screen {
 
 
         stage.addActor(optionTable);
+    }
+
+    private void closeOptionMenu() {
+        generateMenuButtons(false);
+        optionTable.reset();
+    }
+
+    public void handleInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            closeOptionMenu();
+        }
+    }
+
+    public void update(float delta) {
+        handleInput();
+    }
+
+    @Override
+    public void show() {
+        backgroundMusic.play();
+    }
+
+    @Override
+    public void render(float delta) {
+        update(delta);
+
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
+
+        game.batch.begin();
+        game.batch.draw(texture, 0, 0);
+        game.batch.end();
+
+        stage.act();
+        stage.draw();
     }
 
     @Override

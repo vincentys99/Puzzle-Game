@@ -41,6 +41,9 @@ public class Player2 extends Sprite {
     TextureRegion playerFaceTopLeft;
     TextureRegion playerFaceTopRight;
 
+    private final int PlayerWidth = 24;
+    private final int PlayerHeight = 48;
+
     public Player2(World world, TextureAtlas atlas, TiledMap tiledMap) {
         super(atlas.findRegion("WalkBottomLeft"));
         this.world = world;
@@ -52,15 +55,15 @@ public class Player2 extends Sprite {
         setAnimations();
 
         definePlayer(tiledMap);
-        playerFaceBottomLeft = new TextureRegion(getTexture(), 0, 0, 16, 32);
-        playerFaceBottomRight = new TextureRegion(getTexture(), 5 * 16, 0, 16, 32);
-        playerFaceDown = new TextureRegion(getTexture(), 10 * 16, 0, 16, 32);
-        playerFaceLeft = new TextureRegion(getTexture(), 15 * 16, 0, 16, 32);
-        playerFaceRight = new TextureRegion(getTexture(), 20 * 16, 0, 16, 32);
-        playerFaceTopLeft = new TextureRegion(getTexture(), 25 * 16, 0, 16, 32);
-        playerFaceTopRight = new TextureRegion(getTexture(), 30 * 16, 0, 16, 32);
-        playerFaceUp = new TextureRegion(getTexture(), 35 * 16, 0, 16, 32);
-        setBounds(0, 0, 16 * 2 / PuzzleGame.PPM, 32 * 2 / PuzzleGame.PPM);
+        playerFaceBottomLeft = new TextureRegion(getTexture(), 0, 0, PlayerWidth, PlayerHeight);
+        playerFaceBottomRight = new TextureRegion(getTexture(), 5 * PlayerWidth, 0, PlayerWidth, PlayerHeight);
+        playerFaceDown = new TextureRegion(getTexture(), 10 * PlayerWidth, 0, PlayerWidth, PlayerHeight);
+        playerFaceLeft = new TextureRegion(getTexture(), 15 * PlayerWidth, 0, PlayerWidth, PlayerHeight);
+        playerFaceRight = new TextureRegion(getTexture(), 20 * PlayerWidth, 0, PlayerWidth, PlayerHeight);
+        playerFaceTopLeft = new TextureRegion(getTexture(), 25 * PlayerWidth, 0, PlayerWidth, PlayerHeight);
+        playerFaceTopRight = new TextureRegion(getTexture(), 30 * PlayerWidth, 0, PlayerWidth, PlayerHeight);
+        playerFaceUp = new TextureRegion(getTexture(), 35 * PlayerWidth, 0, PlayerWidth, PlayerHeight);
+        setBounds(0, 0, PlayerWidth * 2 / PuzzleGame.PPM, PlayerHeight * 2 / PuzzleGame.PPM);
         setRegion(playerFaceDown);
     }
 
@@ -172,49 +175,49 @@ public class Player2 extends Sprite {
     public void setAnimations() {
         Array<TextureRegion> frames = new Array<>();
         for(int i = 1; i < 5; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkBottomLeft = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 6; i < 10; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkBottomRight = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 11; i < 15; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkDown = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 16; i < 20; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkLeft = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 21; i < 25; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkRight = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 26; i < 30; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkTopLeft = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 31; i < 35; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkTopRight = new Animation<>(0.1f, frames);
         frames.clear();
 
         for(int i = 36; i < 40; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 32));
+            frames.add(new TextureRegion(getTexture(), i * PlayerWidth, 0, PlayerWidth, PlayerHeight));
         }
         playerWalkUp = new Animation<>(0.1f, frames);
         frames.clear();
@@ -233,31 +236,31 @@ public class Player2 extends Sprite {
         int mapPixelWidth = mapWidth * tilePixelWidth;
         int mapPixelHeight = mapHeight * tilePixelHeight;
 
-        bdef.position.set( (mapPixelWidth - 16) / PuzzleGame.PPM,  (mapPixelHeight - 16) / PuzzleGame.PPM);
+        bdef.position.set( (mapPixelWidth - PlayerWidth) / PuzzleGame.PPM,  (mapPixelHeight - PlayerWidth) / PuzzleGame.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.gravityScale = 0;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
+
+        // set shape around player's leg for collision
         CircleShape shape = new CircleShape();
-        shape.setRadius(22 / PuzzleGame.PPM);
+        shape.setRadius((PlayerWidth + (PlayerWidth * 0.5f)) / PuzzleGame.PPM);
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
-//        EdgeShape edge = new EdgeShape();
-//        edge.set(new Vector2(-2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM), new Vector2(2 / PuzzleGame.PPM, 7 / PuzzleGame.PPM));
-        shape.setRadius(22 / PuzzleGame.PPM);
+        // set shape outside the collision zone to detect collision
+        shape.setRadius((PlayerWidth + (PlayerWidth * 0.5f)) / PuzzleGame.PPM);
         fdef.shape = shape;
         fdef.isSensor = true;
-
         b2body.createFixture(fdef).setUserData("collidable");
 
+        // set shape outside player to detect player intractable zone
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(48 / PuzzleGame.PPM, 48 / PuzzleGame.PPM);
+        polygonShape.setAsBox(PlayerWidth * 3 / PuzzleGame.PPM, PlayerWidth * 3 / PuzzleGame.PPM);
         fdef.shape = polygonShape;
         fdef.isSensor = true;
-
         b2body.createFixture(fdef).setUserData("clickable");
     }
 }
