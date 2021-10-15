@@ -52,7 +52,7 @@ public class Room1 implements Screen {
         atlas = new TextureAtlas(Files.Player3);
 
         // create music
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.horrorMusic));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
 
@@ -159,7 +159,7 @@ public class Room1 implements Screen {
         //=============================================================//
         //  the line below is used to display the lines of the objects //
         //=============================================================//
-        b2dr.render(world, camera.combined);
+//        b2dr.render(world, camera.combined);
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();

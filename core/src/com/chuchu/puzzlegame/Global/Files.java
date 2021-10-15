@@ -28,6 +28,7 @@ public class Files {
     //--------//
     public static final String mainMenuMusic = "music/ZEDD x VALORANT Music Theme.ogg";
     public static final String inGameMusic = "music/CRSED Music Theme.mp3";
+    public static final String horrorMusic = "music/piano_horror2.mp3";
 
     //--------//
     // Sounds //
