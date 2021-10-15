@@ -39,6 +39,8 @@ public class Files {
     //---------//
     public static final String room1Tilemap = "Tilesmaps/Room1 Tilemap/untitled.tmx";
     public static final String room2Tilemap = "Tilesmaps/Room2 Tilemap/untitled.tmx";
+    public static final String DemaMap = "Tilesmaps/map 1/map_1.tmx";
+
 
     //--------//
     // uiskin //

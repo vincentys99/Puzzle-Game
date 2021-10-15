@@ -63,7 +63,7 @@ public class Room1 implements Screen {
 
         // load tilemap and scale it based on PPM
         mapLoader = new TmxMapLoader();
-        tiledMap = mapLoader.load(Files.room1Tilemap);
+        tiledMap = mapLoader.load(Files.DemaMap);
         //tiledMap.getLayers().get(2).setVisible(true);
 
         System.out.println(tiledMap.toString());
