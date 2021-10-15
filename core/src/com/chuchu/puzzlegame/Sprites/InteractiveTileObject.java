@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.chuchu.puzzlegame.PuzzleGame;
+import com.chuchu.puzzlegame.Screens.Room1;
 import com.chuchu.puzzlegame.Screens.Room2;
 import com.chuchu.puzzlegame.Tools.TileObjectClickListener;
 
@@ -75,6 +76,10 @@ public abstract class InteractiveTileObject extends Actor {
         if (Room2.stageTesting != null) {
             Room2.showDialogue = false;
             Room2.stageTesting.clear();
+        }
+        if (Room1.stageTesting != null) {
+            Room1.showDialogue = false;
+            Room1.stageTesting.clear();
         }
     }
 }

@@ -67,7 +67,7 @@ public class Room1 implements Screen {
         //tiledMap.getLayers().get(2).setVisible(true);
 
         System.out.println(tiledMap.toString());
-        unitScale = 2;
+        unitScale = 4;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
 
         // set camera

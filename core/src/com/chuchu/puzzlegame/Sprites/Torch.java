@@ -19,11 +19,12 @@ public class Torch extends InteractiveTileObject {
         Gdx.app.log("Torch", "HIT!");
         torchOn = !torchOn;
         if(torchOn) {
-            Room1.tiledMap.getLayers().get(2).setVisible(true);
-            Room1.tiledMap.getLayers().get(3).setVisible(false);
+            Room1.tiledMap.getLayers().get(10).setVisible(true);
+            Room1.tiledMap.getLayers().get(11).setVisible(false);
+            System.out.println("Shit123");
         } else {
-            Room1.tiledMap.getLayers().get(2).setVisible(false);
-            Room1.tiledMap.getLayers().get(3).setVisible(true);
+            Room1.tiledMap.getLayers().get(10).setVisible(false);
+            Room1.tiledMap.getLayers().get(11).setVisible(true);
         }
     }
 
