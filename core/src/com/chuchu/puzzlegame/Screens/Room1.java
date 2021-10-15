@@ -35,7 +35,7 @@ public class Room1 implements Screen {
     OrthographicCamera camera;
 
     TmxMapLoader mapLoader;
-    TiledMap tiledMap;
+    public static TiledMap tiledMap;
     OrthogonalTiledMapRenderer tiledMapRenderer;
     float unitScale;
 
@@ -64,6 +64,8 @@ public class Room1 implements Screen {
         // load tilemap and scale it based on PPM
         mapLoader = new TmxMapLoader();
         tiledMap = mapLoader.load(Files.room1Tilemap);
+        //tiledMap.getLayers().get(2).setVisible(true);
+
         System.out.println(tiledMap.toString());
         unitScale = 2;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
@@ -90,7 +92,6 @@ public class Room1 implements Screen {
         stageTesting = new Stage(new ScreenViewport());
 
 
-        // TODO: set player to one of the layers and allow the effect of "user is behind object(s)"
     }
 
     public TextureAtlas getAtlas() {

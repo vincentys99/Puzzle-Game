@@ -35,7 +35,6 @@ public class TileObjectClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log(actor.getName(), "Player has clicked!");
-
         if (!Room2.showDialogue) {
             dialogue = new TypingLabel("Dialog text...", skin);
             dialogue.setPosition(dialogueBox.getX() + 22, dialogueBox.getHeight() - 100);
@@ -52,6 +51,7 @@ public class TileObjectClickListener extends ClickListener {
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(Files.cursorHand)), 0, 0));
     }
+
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
