@@ -6,7 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -15,6 +17,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -26,6 +30,8 @@ import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
 public class Room1 implements Screen {
     public static Boolean showDialogue = false;
+    public static Boolean showTape = false;
+    private ImageButton tape_1, tape_2, tape_3;
 
 
     final PuzzleGame game;
@@ -45,10 +51,12 @@ public class Room1 implements Screen {
 
     Player2 player2;
     public static Stage stageTesting;
+    public Stage stage_1;
     public Stage stage;
 
     public Room1(final PuzzleGame game) {
         this.game = game;
+
         atlas = new TextureAtlas(Files.Player3);
 
         // create music
@@ -65,9 +73,7 @@ public class Room1 implements Screen {
         // load tilemap and scale it based on PPM
         mapLoader = new TmxMapLoader();
         tiledMap = mapLoader.load(Files.DemaMap);
-        //tiledMap.getLayers().get(2).setVisible(true);
 
-        System.out.println(tiledMap.toString());
         unitScale = 4;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
 
@@ -85,18 +91,40 @@ public class Room1 implements Screen {
         // generate world elements (eg. static bodies)
         new Room2WorldCreator(world, tiledMap, unitScale, stage);
 
-        // generate player2
-       // player2 = new Player2(this);
         player2 = new Player2(world, atlas, tiledMap);
 
         world.setContactListener(new WorldContactListener());
         stageTesting = new Stage(new ScreenViewport());
+        stage_1 = new Stage(new ScreenViewport());
 
         // set initial camera position
+        setup_tapes();
         camera.position.x = player2.b2body.getPosition().x;
         camera.position.y = player2.b2body.getPosition().y;
     }
+    private void setup_tapes() {
+        int counter = 1;
+        int tapeX = 600;
+        ImageButton[] tapes = {this.tape_1, this.tape_2, this.tape_3};
 
+        for(ImageButton tapesButton: tapes) {
+            TextureRegion idleRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + ".png")));
+            TextureRegion hoverRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + "Hover.png")));
+            ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+            style.imageUp = new TextureRegionDrawable(new TextureRegion(idleRegion));
+            style.imageOver = new TextureRegionDrawable(new TextureRegion(hoverRegion));
+            style.imageDown = new TextureRegionDrawable(new TextureRegion(idleRegion));
+            tapesButton = new ImageButton(style);
+            tapesButton.setPosition(tapeX, 400);
+            tapesButton.setSize(200, 80);
+
+            stage_1.addActor(tapesButton);
+
+            tapeX += 150;
+            counter ++;
+        }
+        Gdx.input.setInputProcessor(stage_1);
+    }
     public TextureAtlas getAtlas() {
         return atlas;
     }
@@ -169,7 +197,10 @@ public class Room1 implements Screen {
             stageTesting.act();
             stageTesting.draw();
         }
-
+        if(showTape) {
+            stage_1.act();
+            stage_1.draw();
+        }
         stage.act();
         stage.draw();
 

@@ -12,25 +12,25 @@ public class Torch extends InteractiveTileObject {
     public Torch(World world, TiledMap map, Rectangle bounds, float unitScale, Stage stage) {
         super(world, map, bounds, unitScale, stage);
         fixture.setUserData(this);
-    }
 
+    }
     @Override
     public void onHit() {
         Gdx.app.log("Torch", "HIT!");
         torchOn = !torchOn;
         if(torchOn) {
-            Room1.tiledMap.getLayers().get(10).setVisible(true);
-            Room1.tiledMap.getLayers().get(11).setVisible(false);
-            System.out.println("Shit123");
+            Room1.tiledMap.getLayers().get(9).setVisible(true);
+            Room1.tiledMap.getLayers().get(8).setVisible(false);
         } else {
-            Room1.tiledMap.getLayers().get(10).setVisible(false);
-            Room1.tiledMap.getLayers().get(11).setVisible(true);
+            Room1.tiledMap.getLayers().get(8).setVisible(true);
+            Room1.tiledMap.getLayers().get(9).setVisible(false);
         }
     }
 
     @Override
     public void onBeginContact() {
         Gdx.app.log("Torch", "Begin contact");
+        this.setName("TorchObject");
         addActor();
     }
 

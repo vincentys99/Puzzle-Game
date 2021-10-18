@@ -63,7 +63,6 @@ public abstract class InteractiveTileObject extends Actor {
         float actorWidth = bounds.getWidth() / PuzzleGame.PPM * unitScale;
         float actorHeight = bounds.getHeight() / PuzzleGame.PPM * unitScale;
         this.setBounds(actorX, actorY, actorWidth, actorHeight);
-        this.setName("TableObject");
         stage.addActor(this);
     }
 

@@ -20,6 +20,7 @@ public class TableObject extends InteractiveTileObject {
     @Override
     public void onBeginContact() {
         Gdx.app.log("Table", "Begin contact");
+        this.setName("TableObject");
         addActor();
     }
 

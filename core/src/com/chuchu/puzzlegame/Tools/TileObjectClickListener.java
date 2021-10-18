@@ -10,15 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.chuchu.puzzlegame.Global.Files;
-import com.chuchu.puzzlegame.Screens.Room2;
 import com.chuchu.puzzlegame.Sprites.InteractiveTileObject;
-import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
 public class TileObjectClickListener extends ClickListener {
     private final InteractiveTileObject actor;
 
     Skin skin;
-    private TypingLabel dialogue;
     private Image dialogueBox;
 
     public TileObjectClickListener(InteractiveTileObject actor) {
@@ -35,16 +32,6 @@ public class TileObjectClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log(actor.getName(), "Player has clicked!");
-        if (!Room2.showDialogue) {
-            dialogue = new TypingLabel("Dialog text...", skin);
-            dialogue.setPosition(dialogueBox.getX() + 22, dialogueBox.getHeight() - 100);
-            Room2.stageTesting.addActor(dialogueBox);
-            Room2.stageTesting.addActor(dialogue);
-            Room2.showDialogue = true;
-        }
-        else {
-            actor.removeDialog();
-        }
     }
 
     @Override
