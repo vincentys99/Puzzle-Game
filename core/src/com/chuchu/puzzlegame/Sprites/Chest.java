@@ -21,17 +21,21 @@ public class Chest extends InteractiveTileObject {
     @Override
     public void onHit() {
         Gdx.app.log("Chest", "Hit contact");
+        Room1.setup_tapes();
         Room1.showTape = true;
     }
 
     @Override
     public void onBeginContact() {
         Gdx.app.log("Chest", "Begin contact");
+        addActor();
     }
 
     @Override
     public void onEndContact() {
         Gdx.app.log("Chest", "End contact");
         Room1.showTape = false;
+        Room1.stage_1.clear();
+        removeActor();
     }
 }

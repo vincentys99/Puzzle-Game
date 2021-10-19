@@ -146,6 +146,8 @@ public class MainMenuScreen implements Screen {
         if (!displayOption) {
             menuTable.add(btnStart);
             menuTable.row();
+            menuTable.add(btnTemp);
+            menuTable.row();
             menuTable.add(btnOption);
             menuTable.row();
             menuTable.add(btnExit);
@@ -153,8 +155,6 @@ public class MainMenuScreen implements Screen {
         else {
             menuTable.add(new TextButton("Esc = back", textButtonStyle2));
         }
-//        menuTable.add(btnTemp);
-//        menuTable.row();
 
         menuTable.setFillParent(true);
         stage.addActor(menuTable);

@@ -16,7 +16,7 @@ import com.chuchu.puzzlegame.Screens.MainMenuScreen;
 public class PuzzleGame extends Game {
 
 	public SpriteBatch batch;
-	public BitmapFont font;
+	public static BitmapFont font;
 
 	public static final int defaultWidth = Constants.defaultX;
 	public static final int defaultHeight = Constants.defaultY;

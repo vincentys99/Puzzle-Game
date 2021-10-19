@@ -16,17 +16,12 @@ public class TileObjectClickListener extends ClickListener {
     private final InteractiveTileObject actor;
 
     Skin skin;
-    private Image dialogueBox;
 
     public TileObjectClickListener(InteractiveTileObject actor) {
         super(Input.Buttons.RIGHT);
         this.actor = actor;
 
         skin = new Skin(Gdx.files.internal(Files.uiskin));
-
-        dialogueBox = new Image(new Texture(Gdx.files.internal(Files.dialogImg)));
-        dialogueBox.setSize(700, 200);
-        dialogueBox.setPosition((Gdx.graphics.getWidth() / 2f) - (dialogueBox.getWidth() / 2),0);
     }
 
     @Override
@@ -38,7 +33,6 @@ public class TileObjectClickListener extends ClickListener {
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal(Files.cursorHand)), 0, 0));
     }
-
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {

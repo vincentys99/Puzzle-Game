@@ -427,7 +427,7 @@
   <objectgroup id="25" name="Torch">
    <object id="4" x="21.875" y="76.125" width="8.75" height="16.75"/>
   </objectgroup>
-  <objectgroup id="24" name="Door" visible="0">
+  <objectgroup id="24" name="Door">
    <object id="6" x="84.875" y="14.5" width="26.875" height="27.75"/>
   </objectgroup>
   <objectgroup id="23" name="Chest">

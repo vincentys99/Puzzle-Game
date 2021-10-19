@@ -52,7 +52,7 @@ public class Room2 implements Screen {
 
     public Room2(final PuzzleGame game) {
         this.game = game;
-        atlas = new TextureAtlas("player/Player2/Testing.pack");
+        atlas = new TextureAtlas(Files.Player3);
 
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
@@ -68,7 +68,7 @@ public class Room2 implements Screen {
         // load tilemap and scale it based on PPM
         mapLoader = new TmxMapLoader();
         tiledMap = mapLoader.load(Files.room2Tilemap);
-        unitScale = 2;
+        unitScale = 4;
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale / PuzzleGame.PPM);
 
         // filter tilemap

@@ -31,8 +31,6 @@ import com.chuchu.puzzlegame.Tools.WorldContactListener;
 public class Room1 implements Screen {
     public static Boolean showDialogue = false;
     public static Boolean showTape = false;
-    private ImageButton tape_1, tape_2, tape_3;
-
 
     final PuzzleGame game;
     TextureAtlas atlas;
@@ -50,9 +48,9 @@ public class Room1 implements Screen {
     Box2DDebugRenderer b2dr;
 
     Player2 player2;
-    public static Stage stageTesting;
-    public Stage stage_1;
     public Stage stage;
+    public static Stage stageTesting;
+    public static Stage stage_1;
 
     public Room1(final PuzzleGame game) {
         this.game = game;
@@ -98,23 +96,23 @@ public class Room1 implements Screen {
         stage_1 = new Stage(new ScreenViewport());
 
         // set initial camera position
-        setup_tapes();
+//        setup_tapes();
         camera.position.x = player2.b2body.getPosition().x;
         camera.position.y = player2.b2body.getPosition().y;
     }
-    private void setup_tapes() {
+
+    public static void setup_tapes() {
         int counter = 1;
         int tapeX = 600;
-        ImageButton[] tapes = {this.tape_1, this.tape_2, this.tape_3};
 
-        for(ImageButton tapesButton: tapes) {
+        for(int i = 0; i < 3; i++) {
             TextureRegion idleRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + ".png")));
             TextureRegion hoverRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + "Hover.png")));
             ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
             style.imageUp = new TextureRegionDrawable(new TextureRegion(idleRegion));
             style.imageOver = new TextureRegionDrawable(new TextureRegion(hoverRegion));
             style.imageDown = new TextureRegionDrawable(new TextureRegion(idleRegion));
-            tapesButton = new ImageButton(style);
+            ImageButton tapesButton = new ImageButton(style);
             tapesButton.setPosition(tapeX, 400);
             tapesButton.setSize(200, 80);
 
@@ -125,6 +123,7 @@ public class Room1 implements Screen {
         }
         Gdx.input.setInputProcessor(stage_1);
     }
+
     public TextureAtlas getAtlas() {
         return atlas;
     }
@@ -159,12 +158,10 @@ public class Room1 implements Screen {
         player2.update(delta);
 
         // camera following player2 x and y position
-        float lerp = 1f;
+        float lerp = 8f;
         Vector3 position = camera.position;
         position.x += (player2.b2body.getPosition().x - position.x) * lerp * delta;
         position.y += (player2.b2body.getPosition().y - position.y) * lerp * delta;
-//        camera.position.x = player2.b2body.getPosition().x;
-//        camera.position.y = player2.b2body.getPosition().y;
 
         camera.update();
     }
@@ -187,20 +184,23 @@ public class Room1 implements Screen {
         //=============================================================//
         //  the line below is used to display the lines of the objects //
         //=============================================================//
-//        b2dr.render(world, camera.combined);
+        b2dr.render(world, camera.combined);
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         player2.draw(game.batch);
         game.batch.end();
+
         if(showDialogue) {
             stageTesting.act();
             stageTesting.draw();
         }
+
         if(showTape) {
             stage_1.act();
             stage_1.draw();
         }
+
         stage.act();
         stage.draw();
 
