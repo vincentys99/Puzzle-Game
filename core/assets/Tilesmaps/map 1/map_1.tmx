@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="65" height="34" tilewidth="3" tileheight="5" infinite="0" nextlayerid="27" nextobjectid="7">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="65" height="34" tilewidth="3" tileheight="5" infinite="0" nextlayerid="29" nextobjectid="25">
  <editorsettings>
   <export target="map_1.csv" format="csv"/>
  </editorsettings>
@@ -424,13 +424,24 @@
 </data>
  </layer>
  <group id="22" name="Static Objects">
-  <objectgroup id="25" name="Torch">
+  <objectgroup id="28" name="Pillar">
+   <object id="23" x="66" y="20" width="15" height="30"/>
+   <object id="24" x="114" y="20" width="15" height="30"/>
+  </objectgroup>
+  <objectgroup id="27" name="Wall">
+   <object id="11" x="9" y="10" width="57" height="20"/>
+   <object id="15" x="129" y="10" width="63" height="20"/>
+   <object id="17" x="-3" y="0" width="9" height="170"/>
+   <object id="18" x="0" y="155" width="195" height="20"/>
+   <object id="22" x="192" y="0" width="9" height="160"/>
+  </objectgroup>
+  <objectgroup id="25" name="Torch" visible="0">
    <object id="4" x="21.875" y="76.125" width="8.75" height="16.75"/>
   </objectgroup>
-  <objectgroup id="24" name="Door">
+  <objectgroup id="24" name="Door" visible="0">
    <object id="6" x="84.875" y="14.5" width="26.875" height="27.75"/>
   </objectgroup>
-  <objectgroup id="23" name="Chest">
+  <objectgroup id="23" name="Chest" visible="0">
    <object id="5" x="158.875" y="57" width="24.875" height="44.75"/>
   </objectgroup>
  </group>

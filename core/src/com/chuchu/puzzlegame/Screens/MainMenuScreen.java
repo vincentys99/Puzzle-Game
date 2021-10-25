@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -94,6 +95,7 @@ public class MainMenuScreen implements Screen {
                     public void run() {
                         game.setScreen(new Room1(game));
                         dispose();
+
                     }
                 }, 0.5F);
             }
@@ -299,7 +301,7 @@ public class MainMenuScreen implements Screen {
         btnClickSound.dispose();
         backgroundMusic.dispose();
         texture.dispose();
-        stage.dispose();
         defaultSkin.dispose();
+        stage.dispose();
     }
 }

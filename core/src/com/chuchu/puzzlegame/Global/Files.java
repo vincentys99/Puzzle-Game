@@ -29,7 +29,7 @@ public class Files {
     public static final String mainMenuMusic = "music/ZEDD x VALORANT Music Theme.ogg";
     public static final String inGameMusic = "music/CRSED Music Theme.mp3";
     public static final String horrorMusic = "music/piano_horror2.mp3";
-
+    public static final String[] tapeMusic = {"music/ZEDD x VALORANT Music Theme.ogg", "music/CRSED Music Theme.mp3", "music/piano_horror2.mp3"};
     //--------//
     // Sounds //
     //--------//
@@ -46,10 +46,7 @@ public class Files {
     //--------//
     // Player //
     //--------//
-    public static final String Player1 = "player/Player1/Testing.pack";
-    public static final String Player2 = "player/Player2/Testing.pack"; // 16 x 32
     public static final String Player3 = "player/Player3/Testing.pack"; // 24 x 48
-    public static final String Player4 = "player/Player4/Testing.pack"; // 32 x 64
 
 
     //--------//
