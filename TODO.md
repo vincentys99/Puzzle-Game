@@ -10,3 +10,4 @@
 - Add a pause and play button for each tapes
 - Add a wall collision
 - Add a pause menu
+- Add intro scene
