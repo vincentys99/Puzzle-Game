@@ -41,9 +41,10 @@ import com.chuchu.puzzlegame.Tools.WorldContactListener;
 import java.io.IOException;
 
 public class Room1 implements Screen {
+    private static boolean is_playing = true;
     public static Boolean showDialogue = false;
     public static Boolean showTape = false;
-    public static Music tape_1;
+    public static Music tape_player;
     public static float timer = 60;
     public static Boolean timerBool = false;
     public static Label timerLabel;
@@ -88,8 +89,6 @@ public class Room1 implements Screen {
 
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
-
-        tape_1 = Gdx.audio.newMusic(Gdx.files.internal(Files.inGameMusic));
 
         // create cam to follow players
         camera = new OrthographicCamera();
@@ -208,40 +207,52 @@ public class Room1 implements Screen {
             tapesButton.setPosition(tapeX, 300);
             tapesButton.setSize(160, 60);
             tapesButton.getImage().setScaling(Scaling.fill);
-            TextureRegion idlePause = new TextureRegion(new Texture(Gdx.files.internal(Files.pause_button_off)));
-            TextureRegion activePause = new TextureRegion(new Texture(Gdx.files.internal(Files.pause_button_on)));
-            TextureRegion idlePlay = new TextureRegion(new Texture(Gdx.files.internal(Files.play_button_off)));
-            TextureRegion activePlay = new TextureRegion(new Texture(Gdx.files.internal(Files.play_button_on)));
+            final TextureRegion idlePause = new TextureRegion(new Texture(Gdx.files.internal(Files.pause_button_off)));
+            final TextureRegion activePause = new TextureRegion(new Texture(Gdx.files.internal(Files.pause_button_on)));
+            final TextureRegion idlePlay = new TextureRegion(new Texture(Gdx.files.internal(Files.play_button_off)));
+            final TextureRegion activePlay = new TextureRegion(new Texture(Gdx.files.internal(Files.play_button_on)));
 
-            ImageButton.ImageButtonStyle pause_style = new ImageButton.ImageButtonStyle();
-            ImageButton.ImageButtonStyle play_style = new ImageButton.ImageButtonStyle();
+            final ImageButton.ImageButtonStyle pause_style = new ImageButton.ImageButtonStyle();
+            final ImageButton.ImageButtonStyle play_style = new ImageButton.ImageButtonStyle();
             pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
             play_style.up = new TextureRegionDrawable(new TextureRegion(idlePlay));
-            play_style.over = new TextureRegionDrawable(new TextureRegion(idlePause));
             ImageButton playButton = new ImageButton(play_style);
-            // ImageButton pauseButton = new ImageButton(pause_style);
+            ImageButton pauseButton = new ImageButton(pause_style);
 
             playButton.setSize(30, 25);
-            // pauseButton.setSize(30, 25);
+            pauseButton.setSize(30, 25);
             playButton.getImage().setScaling(Scaling.stretch);
 
             playButton.setPosition(tapeX, tapesButton.getY() - playButton.getHeight() - 20);
-            //pauseButton.setPosition(playButton.getX() - playButton.getWidth() - 20, playButton.getY());
-            tapesButton.addListener(new ClickListener() {
-                boolean bol;
-
+            pauseButton.setPosition(playButton.getX() + playButton.getWidth() + 20, playButton.getY());
+            tape_player = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeMusic[i]));
+            playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    bol = !bol;
-                    if (bol)
-                        tape_1.play();
-                    else
-                        tape_1.stop();
+                    is_playing = !is_playing;
+                    if(!is_playing) {
+                        play_style.up = new TextureRegionDrawable(new TextureRegion(activePlay));
+                        pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
+                        tape_player.play();
+                    }
+
                 }
             });
+            pauseButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    is_playing = !is_playing;
+                    if(is_playing) {
+                        pause_style.up = new TextureRegionDrawable(new TextureRegion(activePause));
+                        play_style.up = new TextureRegionDrawable(new TextureRegion(idlePlay));
+                        tape_player.stop();
+                    }
+                }
+            });
+
             stageTesting.addActor(tapesButton);
             stageTesting.addActor(playButton);
-            //stageTesting.addActor(pauseButton);
+            stageTesting.addActor(pauseButton);
             tapeX += 180;
             counter++;
         }
@@ -357,6 +368,8 @@ public class Room1 implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
+        //stage.getViewport().update(width, height, true);
+        stageTesting.getViewport().update(width, height, true);
     }
 
     @Override

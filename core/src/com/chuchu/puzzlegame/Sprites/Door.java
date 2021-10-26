@@ -25,7 +25,6 @@ public class Door extends InteractiveTileObject {
     @Override
     public void onHit() {
         Gdx.app.log("Door", "HIT!");
-        this.setName("Door");
     }
 
     @Override

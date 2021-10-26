@@ -21,12 +21,12 @@ public class Chest extends InteractiveTileObject {
     @Override
     public void onHit() {
         Gdx.app.log("Chest", "Hit contact");
-        this.setName("Chest");
     }
 
     @Override
     public void onBeginContact() {
         Gdx.app.log("Chest", "Begin contact");
+        this.setName("Chest");
         addActor();
     }
 
