@@ -47,7 +47,6 @@ public class TileObjectClickListener extends ClickListener {
                 break;
             case "Door":
                 if (!doorUnlocked) {
-                    //run_dialogue("The door is locked ...");
                     if (lock_counter == 0) {
                         Dialogue dialog = new Dialogue("The door is locked.....");
                         dialog.setup_dialogue();

@@ -38,7 +38,5 @@ public class Door extends InteractiveTileObject {
     @Override
     public void onEndContact() {
         Gdx.app.log("Door", "End contact");
-        Gdx.input.setInputProcessor(Room1.stage);
-        removeActor();
     }
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,7 +23,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -187,23 +190,43 @@ public class Room1 implements Screen {
         int counter = 1;
         int tapeX = 280;
         Gdx.input.setInputProcessor(stageTesting);
+       // System.out.println(stageTesting.getWidth() + "==" + stageTesting.getHeight());
+        //stageTesting.getViewport().update((int)stageTesting.getWidth(), (int)stageTesting.getHeight());
         Image transparentBG = new Image(new Texture(Gdx.files.internal("images/ingame-assets/transparent.png")));
         transparentBG.setSize(1920, 1080);
         transparentBG.setPosition(0, 0);
 
-        stageTesting.addActor(transparentBG);
-
-        for(int i = 0; i < 3; i++) {
+       // stageTesting.addActor(transparentBG);
+        for (int i = 0; i < 3; i++) {
             TextureRegion idleRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + ".png")));
             TextureRegion hoverRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + "Hover.png")));
+
             ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
             style.imageUp = new TextureRegionDrawable(new TextureRegion(idleRegion));
             style.imageOver = new TextureRegionDrawable(new TextureRegion(hoverRegion));
-            style.imageDown = new TextureRegionDrawable(new TextureRegion(idleRegion));
             ImageButton tapesButton = new ImageButton(style);
             tapesButton.setPosition(tapeX, 300);
-            tapesButton.setSize(200, 80);
+            tapesButton.setSize(160, 60);
+            tapesButton.getImage().setScaling(Scaling.fill);
+            TextureRegion idlePause = new TextureRegion(new Texture(Gdx.files.internal(Files.pause_button_off)));
+            TextureRegion activePause = new TextureRegion(new Texture(Gdx.files.internal(Files.pause_button_on)));
+            TextureRegion idlePlay = new TextureRegion(new Texture(Gdx.files.internal(Files.play_button_off)));
+            TextureRegion activePlay = new TextureRegion(new Texture(Gdx.files.internal(Files.play_button_on)));
 
+            ImageButton.ImageButtonStyle pause_style = new ImageButton.ImageButtonStyle();
+            ImageButton.ImageButtonStyle play_style = new ImageButton.ImageButtonStyle();
+            pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
+            play_style.up = new TextureRegionDrawable(new TextureRegion(idlePlay));
+            play_style.over = new TextureRegionDrawable(new TextureRegion(idlePause));
+            ImageButton playButton = new ImageButton(play_style);
+            // ImageButton pauseButton = new ImageButton(pause_style);
+
+            playButton.setSize(30, 25);
+            // pauseButton.setSize(30, 25);
+            playButton.getImage().setScaling(Scaling.stretch);
+
+            playButton.setPosition(tapeX, tapesButton.getY() - playButton.getHeight() - 20);
+            //pauseButton.setPosition(playButton.getX() - playButton.getWidth() - 20, playButton.getY());
             tapesButton.addListener(new ClickListener() {
                 boolean bol;
 
@@ -216,19 +239,19 @@ public class Room1 implements Screen {
                         tape_1.stop();
                 }
             });
-
             stageTesting.addActor(tapesButton);
-            tapeX += 150;
+            stageTesting.addActor(playButton);
+            //stageTesting.addActor(pauseButton);
+            tapeX += 180;
             counter++;
         }
-
     }
-
 
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             if (!moveable) {
                 stageTesting.clear();
+                Gdx.input.setInputProcessor(stage);
                 moveable = true;
                 if (Door.second_password && !Door.third_password && who_counter == 0) {
                     System.out.println("Dildo");
@@ -295,7 +318,6 @@ public class Room1 implements Screen {
     @Override
     public void render(float delta) {
         update(delta);
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

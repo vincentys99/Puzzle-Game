@@ -22,6 +22,10 @@ public class Files {
     public static final String cursorNormalSelect = "images/cursor/cursor01.png";
     public static final String cursorDialog = "images/cursor/cursor02.png";
     public static final String cursorHand = "images/cursor/cursor03.png";
+    public static final String pause_button_off = "images/ingame-assets/pause_button_off.png";
+    public static final String pause_button_on = "images/ingame-assets/pause_button_on.png";
+    public static final String play_button_off = "images/ingame-assets/play_button_off.png";
+    public static final String play_button_on = "images/ingame-assets/play_button_on.png";
 
     //--------//
     // Musics //
@@ -53,4 +57,5 @@ public class Files {
     // uiskin //
     //--------//
     public static final String uiskin = "uiskin/uiskin.json";
+    public static final String glassy = "glassy/glassy-ui.json";
 }
