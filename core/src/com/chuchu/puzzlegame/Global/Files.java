@@ -16,6 +16,7 @@ public class Files {
     //--------//
     public static final String applicationIcon = "images/icon/icon_transparent.png";
     public static final String mainMenuBg = "images/wallpaper/code geass walpaper.jpg";
+    public static final String gameOverBg = "images/wallpaper/game-over.jpg";
 
     public static final String dialogImg = "images/ingame-assets/dialog.png";
 

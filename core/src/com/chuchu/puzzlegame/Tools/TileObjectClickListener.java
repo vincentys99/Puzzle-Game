@@ -21,7 +21,7 @@ public class TileObjectClickListener extends ClickListener {
     Skin skin;
     private int lock_counter = 0;
     public TileObjectClickListener(InteractiveTileObject actor) {
-        super(Input.Buttons.RIGHT);
+        super(Input.Buttons.LEFT);
         this.actor = actor;
         skin = new Skin(Gdx.files.internal(Files.uiskin));
     }

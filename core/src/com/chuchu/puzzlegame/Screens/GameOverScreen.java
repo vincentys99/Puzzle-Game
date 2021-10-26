@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
 
-public class MainMenuScreen implements Screen {
+public class GameOverScreen implements Screen {
 
     final PuzzleGame game;
     OrthographicCamera camera;
@@ -34,13 +33,12 @@ public class MainMenuScreen implements Screen {
     TextButton btnStart;
     TextButton btnOption;
     TextButton btnExit;
-    TextButton btnTemp;
     Table menuTable;
     Table optionTable;
     Skin defaultSkin;
 //    private TextField optionWindow;
 
-    public MainMenuScreen (final PuzzleGame game) {
+    public GameOverScreen(final PuzzleGame game) {
         this.game = game;
 
         // Camera
@@ -54,7 +52,7 @@ public class MainMenuScreen implements Screen {
         backgroundMusic.setVolume(game.bgMusicVol);
 
         // Image
-        texture = new Texture(Gdx.files.internal(Files.mainMenuBg));
+        texture = new Texture(Gdx.files.internal(Files.gameOverBg));
 
         // Skin
         defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));
@@ -81,10 +79,9 @@ public class MainMenuScreen implements Screen {
     }
 
     private void generateMenuButtons(boolean displayOption) {
-        btnStart = new TextButton("Start Game", textButtonStyle);
+        btnStart = new TextButton("Start Again", textButtonStyle);
         btnOption = new TextButton("Option", textButtonStyle);
         btnExit = new TextButton("Exit Game", textButtonStyle);
-        btnTemp = new TextButton("Enter 2nd Room", textButtonStyle);
 
         btnStart.addListener(new ClickListener() {
             @Override
@@ -94,8 +91,6 @@ public class MainMenuScreen implements Screen {
                     @Override
                     public void run() {
                         game.setScreen(new Room1(game));
-                        Gdx.input.setInputProcessor(Room1.stage);
-
                         dispose();
 
                     }
@@ -125,19 +120,6 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        btnTemp.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
-                Timer.schedule(new Timer.Task(){
-                    @Override
-                    public void run() {
-                        game.setScreen(new Room2(game));
-                        dispose();
-                    }
-                }, 0.5F);
-            }
-        });
 
         // Menu Table
         menuTable.reset();
@@ -150,7 +132,6 @@ public class MainMenuScreen implements Screen {
         if (!displayOption) {
             menuTable.add(btnStart);
             menuTable.row();
-            menuTable.add(btnTemp);
             menuTable.row();
             menuTable.add(btnOption);
             menuTable.row();
@@ -305,5 +286,5 @@ public class MainMenuScreen implements Screen {
         texture.dispose();
         defaultSkin.dispose();
         stage.dispose();
-    }
+     }
 }
