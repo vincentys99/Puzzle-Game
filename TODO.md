@@ -12,3 +12,4 @@
 - Add a game over screen when the timer reached 0
 - Add a correct/incorrect password label
 - Add a pause menu
+- Add intro scene
