@@ -3,6 +3,7 @@
 - Tape should be in the middle of the screen
 - Escape key should quit the tapes appearance
 - Player should spawn in the center
+- Timer should be in the top right of the screen
 -
 
 # Features
