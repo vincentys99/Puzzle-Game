@@ -7,29 +7,31 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.chuchu.puzzlegame.Screens.Room1;
 
-public class Torch extends InteractiveTileObject {
-    public static boolean torchOn;
-    public Torch(World world, TiledMap map, Rectangle bounds, float unitScale, Stage stage) {
+
+public class DoorUnlocked extends InteractiveTileObject {
+    public DoorUnlocked(World world, TiledMap map, Rectangle bounds, float unitScale, Stage stage) {
         super(world, map, bounds, unitScale, stage);
         fixture.setUserData(this);
 
     }
 
+
+
     @Override
     public void onHit() {
-        Gdx.app.log("Torch", "HIT!");
+        Gdx.app.log("DoorUnlock Open", "HIT!");
+        Room1.switchable = true;
     }
 
     @Override
     public void onBeginContact() {
-        Gdx.app.log("Torch", "Begin contact");
-        this.setName("Torch");
+        Gdx.app.log("DoorUnlock Open", "Begin contact");
+        this.setName("DoorUnlocked");
         addActor();
     }
 
     @Override
     public void onEndContact() {
-        Gdx.app.log("Torch", "End contact");
-        removeActor();
+        Gdx.app.log("DoorUnlock Open", "End contact");
     }
 }

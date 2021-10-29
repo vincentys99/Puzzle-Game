@@ -11,9 +11,16 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapGroupLayer;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -34,13 +41,22 @@ import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Dialogue;
 import com.chuchu.puzzlegame.Sprites.Door;
+import com.chuchu.puzzlegame.Sprites.InteractiveTileObject;
 import com.chuchu.puzzlegame.Sprites.Player2;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
+import com.chuchu.puzzlegame.Tools.TileObjectClickListener;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Room1 implements Screen {
+    private static boolean moveDown = false;
+    public static final short DEFAULT_BIT = 1;
+    public static final short PLAYER_BIT = 2;
+    public static final short DOOR_BIT = 4;
+    public static final short DESTROYED_BIT = 8;
+
     public static Boolean showDialogue = false;
     public static Boolean showTape = false;
     public static Music tape_player;
@@ -48,11 +64,13 @@ public class Room1 implements Screen {
     public static Boolean timerBool = false;
     public static Label timerLabel;
     public static boolean moveable = true;
+    public static boolean switchable = false;
     private int who_counter = 0;
     FileHandle logFile = Gdx.files.local("log.txt");
     ///public static Music tape_2 = Gdx.audio.newMusic(Gdx.files.internal("music/promise.mp3"));
     //public static Music tape_3 = Gdx.audio.newMusic(Gdx.files.internal("music/summer.mp3"));
     final PuzzleGame game;
+    private  static PuzzleGame static_game;
     TextureAtlas atlas;
     Music backgroundMusic;
 
@@ -73,10 +91,11 @@ public class Room1 implements Screen {
     private Skin skin;
     public Room1(final PuzzleGame game) {
         this.game = game;
+        static_game = game;
         skin = new Skin(Gdx.files.internal(Files.uiskin));
         this.timerLabel = new Label("", skin);
 
-       timerLabel.setSize(30, 30);
+        timerLabel.setSize(30, 30);
 
         timerLabel.setFontScale(2);
         timerLabel.setPosition(Gdx.graphics.getWidth() - timerLabel.getWidth() - 20, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20);
@@ -118,8 +137,7 @@ public class Room1 implements Screen {
         camera.position.x = player2.b2body.getPosition().x;
         camera.position.y = player2.b2body.getPosition().y;
     }
-
-    public static void setup_passwordfield(String text, final String passwordText, final String password_level) {
+    public static void setup_passwordfield(String text, final String[] passwordText) {
         Gdx.input.setInputProcessor(stageTesting);
         Image transparentBG = new Image(new Texture(Gdx.files.internal("images/ingame-assets/transparent.png")));
         transparentBG.setSize(1920, 1080);
@@ -134,19 +152,26 @@ public class Room1 implements Screen {
         enter.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(password.getText().equals(passwordText)) {
+                if(password.getText().equals(passwordText[0]) || password.getText().equals(passwordText[1])) {
                     stageTesting.clear();
                     if(!Door.first_password) {
                         Door.first_password = true;
-                        setup_passwordfield("Input your second password", "meneng", "Level_1");
+                        String[] pass = {"meneng", "Meneng"};
+                        setup_passwordfield("Input your second password", pass);
                     }
                     else if(!Door.second_password) {
                         Door.second_password = true;
-                        Room1.setup_passwordfield("Input your third password", "C2", "Level_2");
+                        String[] pass = {"C2", "c2"};
+                        Room1.setup_passwordfield("Input your third password", pass);
                     }
                     else if (!Door.third_password) {
                         Door.third_password = true;
+                        moveable = true;
+                        tiledMap.getLayers().get(5).setVisible(false);
+                        tiledMap.getLayers().get(6).setVisible(true);
                         Label bitch = new Label("DOOR IS NOW UNLOCKED SON OF A BITCH", skin);
+                        TileObjectClickListener.doorUnlocked = true;
+                        moveDown = true;
                         bitch.setSize(400, 400);
                         stageTesting.clear();
                         bitch.setPosition((Gdx.graphics.getWidth() / 2) - (bitch.getWidth() / 2),Gdx.graphics.getHeight() / 2);
@@ -311,7 +336,12 @@ public class Room1 implements Screen {
 
     public void update(float delta) {
         handleInput();
-
+        if(moveDown)
+        {
+            System.out.println("Shit");
+            player2.b2body.setLinearVelocity(player2.getX(), player2.getY() - 10);
+            moveDown = false;
+        }
         world.step(1/60f, 6, 2);
 
         player2.update(delta);
@@ -338,7 +368,6 @@ public class Room1 implements Screen {
 
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
-
         //=============================================================//
         //  the line below is used to display the lines of the objects //
         //=============================================================//
@@ -348,6 +377,11 @@ public class Room1 implements Screen {
         game.batch.begin();
         player2.draw(game.batch);
         game.batch.end();
+        if(switchable) {
+            Screen b = new Room2(this.game);
+            game.setScreen(b);
+            dispose();
+        }
         if(timerBool) {
             timer -= Gdx.graphics.getDeltaTime();
             if(timer <= 0){

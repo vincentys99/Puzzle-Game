@@ -48,7 +48,6 @@ public abstract class InteractiveTileObject extends Actor {
         );
         fdef.shape = shape;
         fixture = body.createFixture(fdef);
-
         EventListener eventListener = new TileObjectClickListener(this);
         this.addListener(eventListener);
     }
@@ -59,6 +58,11 @@ public abstract class InteractiveTileObject extends Actor {
 
     public abstract void onEndContact();
 
+    public void setCategoryFilter(short filterBit) {
+        Filter filter = new Filter();
+        filter.categoryBits = filterBit;
+        fixture.setFilterData(filter);
+    }
     public void addActor() {
         float actorX = bounds.getX() / PuzzleGame.PPM * unitScale;
         float actorY = bounds.getY() / PuzzleGame.PPM * unitScale;
@@ -66,8 +70,8 @@ public abstract class InteractiveTileObject extends Actor {
         float actorHeight = bounds.getHeight() / PuzzleGame.PPM * unitScale;
         this.setBounds(actorX, actorY, actorWidth, actorHeight);
         stage.addActor(this);
-    }
 
+    }
     public void removeActor() {
         stage.clear();
         removeDialog();

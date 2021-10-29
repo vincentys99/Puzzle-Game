@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="65" height="34" tilewidth="3" tileheight="5" infinite="0" nextlayerid="29" nextobjectid="25">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="65" height="34" tilewidth="3" tileheight="5" infinite="0" nextlayerid="32" nextobjectid="35">
  <editorsettings>
   <export target="map_1.csv" format="csv"/>
  </editorsettings>
@@ -233,7 +233,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="20" name="Door open" width="65" height="34" visible="0">
+ <layer id="20" name="DoorOpen" width="65" height="34" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,483,484,485,486,487,488,489,490,491,492,493,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -424,9 +424,15 @@
 </data>
  </layer>
  <group id="22" name="Static Objects">
+  <objectgroup id="30" name="DoorOpen" visible="0">
+   <object id="32" x="87" y="15" width="23.7273" height="10.8182"/>
+  </objectgroup>
   <objectgroup id="28" name="Pillar">
    <object id="23" x="66" y="20" width="15" height="30"/>
    <object id="24" x="114" y="20" width="15" height="30"/>
+  </objectgroup>
+  <objectgroup id="24" name="Door">
+   <object id="6" x="84.875" y="14.5" width="26.875" height="27.75"/>
   </objectgroup>
   <objectgroup id="27" name="Wall">
    <object id="11" x="9" y="10" width="57" height="20"/>
@@ -437,9 +443,6 @@
   </objectgroup>
   <objectgroup id="25" name="Torch" visible="0">
    <object id="4" x="21.875" y="76.125" width="8.75" height="16.75"/>
-  </objectgroup>
-  <objectgroup id="24" name="Door" visible="0">
-   <object id="6" x="84.875" y="14.5" width="26.875" height="27.75"/>
   </objectgroup>
   <objectgroup id="23" name="Chest" visible="0">
    <object id="5" x="158.875" y="57" width="24.875" height="44.75"/>

@@ -2,12 +2,14 @@ package com.chuchu.puzzlegame.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.chuchu.puzzlegame.Global.Files;
+import com.chuchu.puzzlegame.Screens.GameOverScreen;
 import com.chuchu.puzzlegame.Screens.Room1;
 import com.chuchu.puzzlegame.Sprites.Dialogue;
 import com.chuchu.puzzlegame.Sprites.Door;
@@ -16,7 +18,7 @@ import com.chuchu.puzzlegame.Sprites.Torch;
 
 public class TileObjectClickListener extends ClickListener {
     private final InteractiveTileObject actor;
-    private static boolean doorUnlocked = false;
+    public static boolean doorUnlocked = false;
     private boolean passwordable = false;
     Skin skin;
     private int lock_counter = 0;
@@ -29,7 +31,7 @@ public class TileObjectClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log(actor.getName(), "Player has clicked!");
-
+        System.out.println("CLIKED");
         switch (actor.getName()) {
             case "Chest":
                 Room1.showDialogue = true;
@@ -45,6 +47,11 @@ public class TileObjectClickListener extends ClickListener {
                     Room1.tiledMap.getLayers().get(9).setVisible(false);
                 }
                 break;
+            case "DoorUnlocked":
+            if (Room1.tiledMap.getLayers().get(6).isVisible()) {
+                System.out.println("lets fucking switch");
+                Room1.switchable = true;
+            }
             case "Door":
                 if (!doorUnlocked) {
                     if (lock_counter == 0) {
@@ -64,8 +71,6 @@ public class TileObjectClickListener extends ClickListener {
                     if (passwordable) {
                         password_check();
                     }
-                } else {
-                    System.out.println("Door is now unlocked");
                 }
                 break;
         }
@@ -73,11 +78,14 @@ public class TileObjectClickListener extends ClickListener {
     }
     private void password_check() {
             if (!Door.first_password) {
-                Room1.setup_passwordfield("Input your first password", "feleng", "Level_1");
+                String[] pass = {"feleng", "Feleng"};
+                Room1.setup_passwordfield("Input your first password", pass);
             } else if (!Door.second_password) {
-                Room1.setup_passwordfield("Input your second password", "meneng", "Level_2");
+                String[] pass = {"meneng", "Meneng"};
+                Room1.setup_passwordfield("Input your second password", pass);
             } else if (!Door.third_password) {
-                Room1.setup_passwordfield("Input your third password", "C2", "Level_3");
+                String[] pass = {"c2", "C2"};
+                Room1.setup_passwordfield("Input your third password", pass);
             }
         }
 

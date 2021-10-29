@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.chuchu.puzzlegame.PuzzleGame;
+import com.chuchu.puzzlegame.Screens.Room1;
 import com.chuchu.puzzlegame.Screens.Room2;
 
 public class Player2 extends Sprite {
@@ -246,7 +247,8 @@ public class Player2 extends Sprite {
         // set shape around player's leg for collision
         CircleShape shape = new CircleShape();
         shape.setRadius((PlayerWidth + (PlayerWidth * 0.5f)) / PuzzleGame.PPM);
-
+        fdef.filter.categoryBits = Room1.PLAYER_BIT;
+        fdef.filter.maskBits = Room1.DEFAULT_BIT | Room1.DOOR_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef);
 

@@ -23,6 +23,8 @@ public class Chest extends InteractiveTileObject {
         Gdx.app.log("Chest", "Hit contact");
     }
 
+
+
     @Override
     public void onBeginContact() {
         Gdx.app.log("Chest", "Begin contact");
