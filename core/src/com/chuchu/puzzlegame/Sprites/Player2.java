@@ -237,7 +237,11 @@ public class Player2 extends Sprite {
         int mapPixelWidth = mapWidth * tilePixelWidth;
         int mapPixelHeight = mapHeight * tilePixelHeight;
 
-        bdef.position.set( (mapPixelWidth - PlayerWidth) / PuzzleGame.PPM,  (mapPixelHeight - PlayerWidth) / PuzzleGame.PPM);
+        float posX = ((mapPixelWidth - PlayerWidth) * 2.3f) / PuzzleGame.PPM;
+        float posY = ((mapPixelHeight - PlayerHeight) * 2.75f) / PuzzleGame.PPM;
+
+        bdef.position.set(posX, posY);
+//        bdef.position.set( (mapPixelWidth - PlayerWidth) / PuzzleGame.PPM,  (mapPixelHeight - PlayerWidth) / PuzzleGame.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.gravityScale = 0;
         b2body = world.createBody(bdef);

@@ -29,6 +29,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -47,6 +50,8 @@ import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 import com.chuchu.puzzlegame.Tools.TileObjectClickListener;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -89,6 +94,7 @@ public class Room1 implements Screen {
     public static Stage stage;
     public static Stage stageTesting;
     private Skin skin;
+
     public Room1(final PuzzleGame game) {
         this.game = game;
         static_game = game;
@@ -137,6 +143,7 @@ public class Room1 implements Screen {
         camera.position.x = player2.b2body.getPosition().x;
         camera.position.y = player2.b2body.getPosition().y;
     }
+
     public static void setup_passwordfield(String text, final String[] passwordText) {
         Gdx.input.setInputProcessor(stageTesting);
         Image transparentBG = new Image(new Texture(Gdx.files.internal("images/ingame-assets/transparent.png")));
@@ -191,11 +198,10 @@ public class Room1 implements Screen {
     }
 
     private static TextField create_textfield(String text, int x, int y, Skin skin) {
-
         final TextField field = new TextField(text, skin);
         field.setSize(250, 80);
         field.setColor(255, 0, 0 , 255);
-        field.setPosition((Gdx.graphics.getWidth() / 2) - (field.getWidth() / 2),Gdx.graphics.getHeight() / 2);
+        field.setPosition((Gdx.graphics.getWidth() / 2f) - (field.getWidth() / 2),Gdx.graphics.getHeight() / 2f);
         field.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -212,6 +218,7 @@ public class Room1 implements Screen {
         });
         return field;
     }
+
     public static void setup_tapes() {
         int counter = 1;
         int tapeX = Gdx.graphics.getWidth() / 4;
@@ -282,7 +289,6 @@ public class Room1 implements Screen {
             tapeX += tapesButton.getWidth();
             counter++;
         }
-
     }
 
     public void handleInput() {
@@ -310,7 +316,13 @@ public class Room1 implements Screen {
                     who_counter++;
                 }
             }
-            //Gdx.app.exit();
+
+//            try {
+//                Gdx.app.exit();
+//                Desktop.getDesktop().open(new File("video/test.mp4"));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         } else {
             if (moveable) {
                 float x = 0f;
