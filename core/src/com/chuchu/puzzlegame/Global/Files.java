@@ -39,7 +39,7 @@ public class Files {
     // Sounds //
     //--------//
     public static final String buttonClickSound = "sound/button_click.mp3";
-
+    public static final String typingSounds = "sound/typing-sound.mp3";
     //---------//
     // Tilemap //
     //---------//

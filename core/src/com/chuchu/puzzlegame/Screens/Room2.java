@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -21,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
-import com.chuchu.puzzlegame.Sprites.Player2;
+import com.chuchu.puzzlegame.Sprites.Player;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
@@ -46,7 +45,7 @@ public class Room2 implements Screen {
     World world;
     Box2DDebugRenderer b2dr;
 
-    Player2 player2;
+    Player player;
     public static Stage stageTesting;
     public Stage stage;
 
@@ -93,7 +92,7 @@ public class Room2 implements Screen {
         new Room2WorldCreator(world, tiledMap, unitScale, stage);
 
         // generate player2
-        player2 = new Player2(world, atlas, tiledMap);
+        player = new Player(world, atlas, tiledMap);
 
         world.setContactListener(new WorldContactListener());
         stageTesting = new Stage(new ScreenViewport());
@@ -125,7 +124,7 @@ public class Room2 implements Screen {
         if (Gdx.input.isKeyPressed(Keys.S)) {
             y -= 2;
         }
-        player2.b2body.setLinearVelocity(x, y);
+        player.b2body.setLinearVelocity(x, y);
     }
 
     public void update(float delta) {
@@ -133,18 +132,18 @@ public class Room2 implements Screen {
 
         world.step(1/60f, 6, 2);
 
-        player2.update(delta);
+        player.update(delta);
 
         // camera following player2 x and y position
-        camera.position.x = player2.b2body.getPosition().x;
-        camera.position.y = player2.b2body.getPosition().y;
+        camera.position.x = player.b2body.getPosition().x;
+        camera.position.y = player.b2body.getPosition().y;
 
         camera.update();
     }
 
     @Override
     public void show() {
-        backgroundMusic.play();
+       // backgroundMusic.play();
     }
 
     @Override
@@ -164,7 +163,7 @@ public class Room2 implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        player2.draw(game.batch);
+        player.draw(game.batch);
         game.batch.end();
         if(showDialogue) {
             stageTesting.act();

@@ -89,12 +89,11 @@ public class MainMenuScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
+                //btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
-                        game.setScreen(new Room1(game));
-                        Gdx.input.setInputProcessor(Room1.stage);
+                        game.setScreen(new IntroductionScreen(game));
 
                         dispose();
 
@@ -106,7 +105,8 @@ public class MainMenuScreen implements Screen {
         btnOption.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
+                System.out.println("Clicked options");
+                //btnClickSound.play(game.bgMusicVol);
                 loadOptions();
             }
         });
@@ -114,7 +114,7 @@ public class MainMenuScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
+                //btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -128,7 +128,7 @@ public class MainMenuScreen implements Screen {
         btnTemp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
+               // btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -255,7 +255,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        backgroundMusic.play();
+        //backgroundMusic.play();
     }
 
     @Override

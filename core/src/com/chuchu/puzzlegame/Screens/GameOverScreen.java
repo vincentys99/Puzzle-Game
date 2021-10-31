@@ -86,7 +86,7 @@ public class GameOverScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
+                //btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -101,7 +101,7 @@ public class GameOverScreen implements Screen {
         btnOption.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
+                //btnClickSound.play(game.bgMusicVol);
                 loadOptions();
             }
         });
@@ -109,7 +109,7 @@ public class GameOverScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                btnClickSound.play(game.bgMusicVol);
+              //  btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -236,7 +236,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void show() {
-        backgroundMusic.play();
+        //backgroundMusic.play();
     }
 
     @Override

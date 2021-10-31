@@ -7,20 +7,12 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapGroupLayer;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -28,15 +20,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -44,8 +35,7 @@ import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Sprites.Dialogue;
 import com.chuchu.puzzlegame.Sprites.Door;
-import com.chuchu.puzzlegame.Sprites.InteractiveTileObject;
-import com.chuchu.puzzlegame.Sprites.Player2;
+import com.chuchu.puzzlegame.Sprites.Player;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 import com.chuchu.puzzlegame.Tools.TileObjectClickListener;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
@@ -90,7 +80,7 @@ public class Room1 implements Screen {
     World world;
     Box2DDebugRenderer b2dr;
 
-    Player2 player2;
+    Player player;
     public static Stage stage;
     public static Stage stageTesting;
     private Skin skin;
@@ -105,8 +95,9 @@ public class Room1 implements Screen {
 
         timerLabel.setFontScale(2);
         timerLabel.setPosition(Gdx.graphics.getWidth() - timerLabel.getWidth() - 20, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20);
+        logFile.writeString("before", true);
         atlas = new TextureAtlas("player/Player3/Testing.pack");
-
+        logFile.writeString("yes", true);
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.horrorMusic));
 
@@ -135,13 +126,13 @@ public class Room1 implements Screen {
 
         // generate world elements (eg. static bodies)
         new Room2WorldCreator(world, tiledMap, unitScale, stage);
-        player2 = new Player2(world, atlas, tiledMap);
+        player = new Player(world, atlas, tiledMap);
 
         world.setContactListener(new WorldContactListener());
         stageTesting = new Stage(new ScreenViewport());
         // set initial camera position
-        camera.position.x = player2.b2body.getPosition().x;
-        camera.position.y = player2.b2body.getPosition().y;
+        camera.position.x = player.b2body.getPosition().x;
+        camera.position.y = player.b2body.getPosition().y;
     }
 
     public static void setup_passwordfield(String text, final String[] passwordText) {
@@ -265,7 +256,7 @@ public class Room1 implements Screen {
                     if(!is_playing[0]) {
                         play_style.up = new TextureRegionDrawable(new TextureRegion(activePlay));
                         pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
-                        tape_player.play();
+                       // tape_player.play();
                         is_playing[0] = true;
                     }
 
@@ -293,6 +284,11 @@ public class Room1 implements Screen {
 
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            try {
+                Desktop.getDesktop().open(new File("test.mp4"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             stageTesting.clear();
             Gdx.input.setInputProcessor(stage);
             if (!moveable) {
@@ -317,12 +313,6 @@ public class Room1 implements Screen {
                 }
             }
 
-//            try {
-//                Gdx.app.exit();
-//                Desktop.getDesktop().open(new File("video/test.mp4"));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         } else {
             if (moveable) {
                 float x = 0f;
@@ -341,7 +331,7 @@ public class Room1 implements Screen {
                 if (Gdx.input.isKeyPressed(Keys.S)) {
                     y -= 2;
                 }
-                player2.b2body.setLinearVelocity(x, y);
+                player.b2body.setLinearVelocity(x, y);
             }
         }
     }
@@ -351,25 +341,28 @@ public class Room1 implements Screen {
         if(moveDown)
         {
             System.out.println("Shit");
-            player2.b2body.setLinearVelocity(player2.getX(), player2.getY() - 10);
+            player.b2body.setLinearVelocity(player.getX(), player.getY() - 10);
             moveDown = false;
         }
         world.step(1/60f, 6, 2);
 
-        player2.update(delta);
+        player.update(delta);
 
         // camera following player2 x and y position
         float lerp = 8f;
         Vector3 position = camera.position;
-        position.x += (player2.b2body.getPosition().x - position.x) * lerp * delta;
-        position.y += (player2.b2body.getPosition().y - position.y) * lerp * delta;
+        position.x += (player.b2body.getPosition().x - position.x) * lerp * delta;
+        position.y += (player.b2body.getPosition().y - position.y) * lerp * delta;
 
         camera.update();
     }
 
     @Override
     public void show() {
-        backgroundMusic.play();
+        stage.getRoot().getColor().a = 0;
+        stage.getRoot().addAction(Actions.fadeOut(1f));
+        //backgroundMusic.play();
+
     }
 
     @Override
@@ -387,7 +380,7 @@ public class Room1 implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        player2.draw(game.batch);
+        player.draw(game.batch);
         game.batch.end();
         if(switchable) {
             Screen b = new Room2(this.game);

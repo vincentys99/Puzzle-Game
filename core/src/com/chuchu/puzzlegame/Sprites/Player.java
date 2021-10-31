@@ -12,7 +12,7 @@ import com.chuchu.puzzlegame.PuzzleGame;
 import com.chuchu.puzzlegame.Screens.Room1;
 import com.chuchu.puzzlegame.Screens.Room2;
 
-public class Player2 extends Sprite {
+public class Player extends Sprite {
 
     public enum State { Standing,
         WalkDown, WalkLeft, WalkRight, WalkUp,
@@ -45,7 +45,7 @@ public class Player2 extends Sprite {
     private final int PlayerWidth = 24;
     private final int PlayerHeight = 48;
 
-    public Player2(World world, TextureAtlas atlas, TiledMap tiledMap) {
+    public Player(World world, TextureAtlas atlas, TiledMap tiledMap) {
         super(atlas.findRegion("WalkBottomLeft"));
         this.world = world;
 

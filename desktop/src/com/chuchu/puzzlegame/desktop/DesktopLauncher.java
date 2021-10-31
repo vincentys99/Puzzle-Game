@@ -13,6 +13,8 @@ public class DesktopLauncher {
 		config.setWindowSizeLimits(1024, 576, 3840, 2160);
 //		config.setResizable(false);
 		config.setWindowIcon(Files.applicationIcon);
+		PuzzleGame puzzleg =  new PuzzleGame();
+		puzzleg.setSplashWorker(new DesktopSplashWorker());
 		new Lwjgl3Application(new PuzzleGame(), config);
 	}
 }
