@@ -11,10 +11,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.chuchu.puzzlegame.Global.Constants;
 import com.chuchu.puzzlegame.Global.Files;
+import com.chuchu.puzzlegame.Screens.LoadingScreen;
 import com.chuchu.puzzlegame.Screens.MainMenuScreen;
 
 public class PuzzleGame extends Game {
-	private SplashWorker splashWorker;
 	public SpriteBatch batch;
 	public static BitmapFont font;
 
@@ -27,18 +27,9 @@ public class PuzzleGame extends Game {
 
 	public float bgMusicVol = 0.1f;
 
-	public SplashWorker getSplashWorker() {
-		return splashWorker;
-	}
-
-	public void setSplashWorker(SplashWorker splashWorker) {
-		this.splashWorker = splashWorker;
-	}
 
 	@Override
 	public void create () {
-		if(!(splashWorker == null))
-			splashWorker.closeSpashScreen();
 		batch = new SpriteBatch();
 		generator = new FreeTypeFontGenerator(Gdx.files.internal(Files.customFont));
 		parameter = new FreeTypeFontParameter();
@@ -53,7 +44,7 @@ public class PuzzleGame extends Game {
 		Gdx.graphics.setCursor(cursor);
 		pixmap.dispose();
 
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new LoadingScreen(this));
 	}
 
 	@Override

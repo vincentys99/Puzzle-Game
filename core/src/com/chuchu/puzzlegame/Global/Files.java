@@ -14,6 +14,11 @@ public class Files {
     //--------//
     // Images //
     //--------//
+    public static final String chuchuLogo = "images/wallpaper/chuchu.png";
+    public static final String grayBackground = "images/wallpaper/gray.png";
+    public static final String chibi_1 = "images/wallpaper/chibi_1.png";
+    public static final String chibi_2 = "images/wallpaper/chibi_2.png";
+
     public static final String applicationIcon = "images/icon/icon_transparent.png";
     public static final String mainMenuBg = "images/wallpaper/code geass walpaper.jpg";
     public static final String gameOverBg = "images/wallpaper/game-over.jpg";
@@ -40,6 +45,8 @@ public class Files {
     //--------//
     public static final String buttonClickSound = "sound/button_click.mp3";
     public static final String typingSounds = "sound/typing-sound.mp3";
+    public static final String chuchu_logo_sounds = "sound/chuchu_audio.wav";
+
     //---------//
     // Tilemap //
     //---------//

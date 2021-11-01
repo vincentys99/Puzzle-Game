@@ -94,7 +94,6 @@ public class MainMenuScreen implements Screen {
                     @Override
                     public void run() {
                         game.setScreen(new IntroductionScreen(game));
-
                         dispose();
 
                     }
@@ -262,7 +261,7 @@ public class MainMenuScreen implements Screen {
     public void render(float delta) {
         update(delta);
 
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(255f, 255f, 255f, 1);
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
@@ -270,7 +269,6 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(texture, 0, 0);
         game.batch.end();
-
         stage.act();
         stage.draw();
     }
