@@ -1,5 +1,5 @@
 # Fixes
-- MainMenuScreen background texture doesnt load after the loading screen class(works if u go directly to mainmenu without laoding so its loading's fault)
+- MainMenuScreen background texture doesnt load after the loading screen class(LoadingScreen class' fault)
 
 # Features
 - Add a pause menu
