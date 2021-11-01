@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
@@ -127,12 +128,10 @@ public class LoadingScreen implements Screen {
             }
         }
         if(loading_duration <= 0) {
-            this.game.setScreen(new MainMenuScreen(this.game));
-
             dispose();
+            game.batch.setColor(Color.WHITE);
+            game.setScreen(new MainMenuScreen(game));
         }
-
-
     }
 
     @Override
