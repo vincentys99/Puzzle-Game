@@ -1,9 +1,8 @@
 # Fixes
-- Player should only be able to play/pause one tape at a time
-- Player should spawn in the center
-- C2 or c2 should be a correct password
+- MainMenuScreen background texture doesnt load after the loading screen class(works if u go directly to mainmenu without laoding so its loading's fault)
 
 # Features
-- Door open sprite animation(change collision as well)
 - Add a pause menu
-- Add intro scene
+- Add OK sound when you click on a dialog
+- Add exit sound when you go to the previous option
+- Add 5 tapes in Room2(to play our birthday greeting for kiiro)
