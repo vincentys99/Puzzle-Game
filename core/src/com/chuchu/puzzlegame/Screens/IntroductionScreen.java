@@ -82,7 +82,7 @@ public class IntroductionScreen implements Screen {
         });
         dialogue.setTypingListener(new TypingAdapter() {
             public void event(String event) {
-               // typing_sound.play();
+                typing_sound.play();
             }
             public void end() {
                 typing_sound.stop();

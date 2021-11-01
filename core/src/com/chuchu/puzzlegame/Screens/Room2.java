@@ -143,7 +143,7 @@ public class Room2 implements Screen {
 
     @Override
     public void show() {
-       // backgroundMusic.play();
+       backgroundMusic.play();
     }
 
     @Override

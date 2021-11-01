@@ -254,7 +254,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        //backgroundMusic.play();
+        backgroundMusic.play();
     }
 
     @Override

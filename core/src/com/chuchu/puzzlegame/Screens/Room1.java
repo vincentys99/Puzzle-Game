@@ -171,6 +171,7 @@ public class Room1 implements Screen {
                         TileObjectClickListener.doorUnlocked = true;
                         moveDown = true;
                         bitch.setSize(400, 400);
+                        timerBool = false;
                         stageTesting.clear();
                         bitch.setPosition((Gdx.graphics.getWidth() / 2) - (bitch.getWidth() / 2),Gdx.graphics.getHeight() / 2);
                         stageTesting.addActor(bitch);
@@ -256,7 +257,7 @@ public class Room1 implements Screen {
                     if(!is_playing[0]) {
                         play_style.up = new TextureRegionDrawable(new TextureRegion(activePlay));
                         pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
-                       // tape_player.play();
+                        tape_player.play();
                         is_playing[0] = true;
                     }
 
@@ -284,11 +285,12 @@ public class Room1 implements Screen {
 
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            /*
             try {
                 Desktop.getDesktop().open(new File("test.mp4"));
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
             stageTesting.clear();
             Gdx.input.setInputProcessor(stage);
             if (!moveable) {
@@ -361,7 +363,7 @@ public class Room1 implements Screen {
     public void show() {
         stage.getRoot().getColor().a = 0;
         stage.getRoot().addAction(Actions.fadeOut(1f));
-        //backgroundMusic.play();
+        backgroundMusic.play();
 
     }
 

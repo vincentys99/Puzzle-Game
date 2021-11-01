@@ -236,7 +236,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void show() {
-        //backgroundMusic.play();
+        backgroundMusic.play();
     }
 
     @Override
