@@ -46,6 +46,8 @@ public class Files {
     public static final String buttonClickSound = "sound/button_click.mp3";
     public static final String typingSounds = "sound/typing-sound.mp3";
     public static final String chuchu_logo_sounds = "sound/chuchu_audio.wav";
+    public static final String ok_sound = "sound/OK_Audio.wav";
+    public static final String exit_sound = "sound/Exit_Audio.wav";
 
     //---------//
     // Tilemap //

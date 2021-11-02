@@ -213,10 +213,10 @@ public class Room1 implements Screen {
 
     public static void setup_tapes() {
         int counter = 1;
-        int tapeX = Gdx.graphics.getWidth() / 4;
+        int tapeX = (Gdx.graphics.getWidth() / 2) - 160 - 80;
         Gdx.input.setInputProcessor(stageTesting);
         Image transparentBG = new Image(new Texture(Gdx.files.internal("images/ingame-assets/transparent.png")));
-        transparentBG.setSize(1920, 1080);
+        transparentBG.setSize(PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
         transparentBG.setPosition(0, 0);
         stageTesting.addActor(transparentBG);
 

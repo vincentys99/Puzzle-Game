@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,9 +39,10 @@ public class IntroductionScreen implements Screen {
     private Skin defaultSkin;
     private Image dialogueBox;
     private int counter = 0;
-    private final String[] lines = {"{EVENT=Start}    Once upon a time there was a young beautiful girl who lost her memory and ended up trapped in a small room",
-            "{EVENT=Start}She is very confused and doesn't know where she is",
-            "{EVENT=Start}Then she found a chest in that small room",
+    private Sound ok_sound;
+    private final String[] lines = {"{EVENT=Start}    Once upon a time there was a young beautiful girl who lost her memory and ended up trapped in a small room.",
+            "{EVENT=Start}She is very confused and doesn't know where she is.",
+            "{EVENT=Start}Then she found a chest in that small room...",
             "{EVENT=Start}She asked herself 'What is inside that chest?'"};
     public IntroductionScreen(PuzzleGame game) {
         this.game = game;
@@ -53,12 +55,14 @@ public class IntroductionScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         load_intro();
 
+        ok_sound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
     }
     private void load_intro() {
         create_dialogue(lines[counter], 100);
     }
     private void create_dialogue(String text, int limit) {
         final Music typing_sound = Gdx.audio.newMusic(Gdx.files.internal(Files.typingSounds));
+        typing_sound.setVolume(game.bgMusicVol);
         if(text.length() >= limit)
             text = text_limiter(text, limit);
         dialogueBox = new Image(new Texture(Gdx.files.internal(Files.dialogImg)));
@@ -71,13 +75,14 @@ public class IntroductionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 typing_sound.stop();
+                ok_sound.play((game.bgMusicVol < 0.5f) ? 0.5f : game.bgMusicVol);
                 counter ++;
                 stage.clear();
-                if(counter <= lines.length - 1)
+                if(counter <= lines.length - 1) {
                     create_dialogue(lines[counter], 100);
+                }
                 else
                     switchScreen(game, new Room1(game));
-
             }
         });
         dialogue.setTypingListener(new TypingAdapter() {
