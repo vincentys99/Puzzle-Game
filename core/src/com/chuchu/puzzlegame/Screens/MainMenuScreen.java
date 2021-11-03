@@ -95,6 +95,7 @@ public class MainMenuScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                btnClickSound.play();
                 startGame();
             }
         });
@@ -109,6 +110,7 @@ public class MainMenuScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                btnClickSound.play();
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -158,6 +160,10 @@ public class MainMenuScreen implements Screen {
     }
 
     private void startGame() {
+        stage.clear();
+        menuTable.reset();
+        menuTable.setFillParent(true);
+        stage.addActor(menuTable);
         startGameRun = true;
     }
 
@@ -265,7 +271,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         if (soundVol <= game.bgMusicVol && !startGameRun) {
-            soundVol += delta * 0.15;
+            soundVol += 0.001;
             backgroundMusic.setVolume(soundVol);
             game.batch.begin();
             game.batch.setColor(1f, 1f, 1f, soundVol*2);
@@ -273,7 +279,7 @@ public class MainMenuScreen implements Screen {
         }
 
         if (startGameRun) {
-            soundVol -= delta * 0.3;
+            soundVol -= 0.002;
             if (soundVol > 0) {
                 backgroundMusic.setVolume(soundVol);
                 game.batch.begin();

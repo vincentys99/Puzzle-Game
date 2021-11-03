@@ -54,7 +54,13 @@ public class IntroductionScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        load_intro();
+
+        Timer.schedule(new Timer.Task(){
+            @Override
+            public void run() {
+                load_intro();
+            }
+        }, 1f);
 
         ok_sound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
     }
