@@ -60,7 +60,7 @@ public class Room1 implements Screen {
     FileHandle logFile = Gdx.files.local("log.txt");
     ///public static Music tape_2 = Gdx.audio.newMusic(Gdx.files.internal("music/promise.mp3"));
     //public static Music tape_3 = Gdx.audio.newMusic(Gdx.files.internal("music/summer.mp3"));
-    final PuzzleGame game;
+    static PuzzleGame game = null;
     TextureAtlas atlas;
     Music backgroundMusic;
 
@@ -342,7 +342,7 @@ public class Room1 implements Screen {
                     play_style.up = new TextureRegionDrawable(new TextureRegion(activePlay));
                     pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
 
-                    playTape(playButton);
+                    playTape(playButton, game.bgMusicVol);
                 }
             });
             playButton.setName("tape" + (i+1));
@@ -389,17 +389,13 @@ public class Room1 implements Screen {
         moveable = false;
     }
 
-    private static void playTape(ImageButton button) {
+    private static void playTape(ImageButton button, float volume) {
         try {
+            stopAllTapes();
+
             int tapeID = Integer.parseInt(button.getName().substring(4,5));
             tapeID -= 1;
-            for (Music tape : tapes) {
-                if (tape != null) {
-                    if (tape.isPlaying()) {
-                        tape.stop();
-                    }
-                }
-            }
+            tapes[tapeID].setVolume(volume);
             tapes[tapeID].play();
         }
         catch (Exception e) {
