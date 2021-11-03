@@ -9,7 +9,9 @@ public class Files {
     //-------//
     // Fonts //
     //-------//
+
     public static final String customFont = "fonts/GrechenFuemen-Regular.ttf";
+    public static final String customFont2 = "fonts/CuteFont-Regular.ttf";
 
     //--------//
     // Images //

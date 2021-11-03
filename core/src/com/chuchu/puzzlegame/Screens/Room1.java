@@ -20,14 +20,14 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -48,11 +48,11 @@ public class Room1 implements Screen {
     public static final short DOOR_BIT = 4;
     public static final short DESTROYED_BIT = 8;
 
-    public static Boolean showDialogue = false;
-    public static Boolean showTape = false;
+    public static boolean showDialogue = false;
+    public static boolean showTape = false;
     public static Music tape_player;
     public static float timer = 60;
-    public static Boolean timerBool = false;
+    public static boolean timerBool = false;
     public static Label timerLabel;
     public static boolean moveable = true;
     public static boolean switchable = false;
@@ -61,7 +61,6 @@ public class Room1 implements Screen {
     ///public static Music tape_2 = Gdx.audio.newMusic(Gdx.files.internal("music/promise.mp3"));
     //public static Music tape_3 = Gdx.audio.newMusic(Gdx.files.internal("music/summer.mp3"));
     final PuzzleGame game;
-    private  static PuzzleGame static_game;
     TextureAtlas atlas;
     Music backgroundMusic;
 
@@ -79,7 +78,8 @@ public class Room1 implements Screen {
     Player player;
     public static Stage stage;
     public static Stage stageTesting;
-    private Skin skin;
+    public static Stage stagePause;
+    private final Skin skin;
 
     private enum State
     {
@@ -92,14 +92,16 @@ public class Room1 implements Screen {
     private static Texture transparentBGTexture;
     private static Image transparentBG;
 
+    public static Music[] tapes;
+
     public Room1(final PuzzleGame game) {
         this.game = game;
-        static_game = game;
         skin = new Skin(Gdx.files.internal(Files.uiskin));
-        this.timerLabel = new Label("", skin);
+        timerLabel = new Label("", skin);
         state = State.RUN;
         transparentBGTexture = new Texture(Gdx.files.internal("images/ingame-assets/transparent.png"));
         transparentBG = new Image(transparentBGTexture);
+        tapes = new Music[3];
 
         timerLabel.setSize(30, 30);
 
@@ -140,36 +142,44 @@ public class Room1 implements Screen {
 
         world.setContactListener(new WorldContactListener());
         stageTesting = new Stage(new ScreenViewport());
+        stagePause = new Stage(new ScreenViewport());
         // set initial camera position
         camera.position.x = player.b2body.getPosition().x;
         camera.position.y = player.b2body.getPosition().y;
     }
 
-    public static void setup_passwordfield(String text, final String[] passwordText) {
+    public static void setup_passwordfield(String text, final String answer, boolean enableCloseBtn) {
+        moveable = false;
         Gdx.input.setInputProcessor(stageTesting);
-        transparentBG.setSize(1920, 1080);
+
+        transparentBG.setSize(PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
         transparentBG.setPosition(0, 0);
         stageTesting.addActor(transparentBG);
-        moveable = false;
+
         final Skin skin = new Skin(Gdx.files.internal(Files.uiskin));
 
-        final TextField password = create_textfield(text, 0, 0, skin);
-        TextButton enter = new TextButton("Enter", skin);
-        enter.setPosition(password.getX() + password.getWidth(), password.getY());
-        enter.addListener(new ClickListener() {
+        TextButton.TextButtonStyle textButtonStyle;
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = PuzzleGame.font3;
+        textButtonStyle.overFontColor = Color.RED;
+
+        final TextField textBox = create_textfield(text, skin);
+
+        final TextButton button = new TextButton("SUBMIT", textButtonStyle);
+        button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(password.getText().equals(passwordText[0]) || password.getText().equals(passwordText[1])) {
+                if(textBox.getText().toLowerCase().trim().equals(answer)) {
                     stageTesting.clear();
                     if(!Door.first_password) {
                         Door.first_password = true;
-                        String[] pass = {"meneng", "Meneng"};
-                        setup_passwordfield("Input your second password", pass);
+                        String newAnswer = "meneng";
+                        setup_passwordfield("Input your second password", newAnswer, true);
                     }
                     else if(!Door.second_password) {
                         Door.second_password = true;
-                        String[] pass = {"C2", "c2"};
-                        Room1.setup_passwordfield("Input your third password", pass);
+                        String newAnswer = "c2";
+                        setup_passwordfield("Input your third password", newAnswer, false);
                     }
                     else if (!Door.third_password) {
                         Door.third_password = true;
@@ -179,30 +189,97 @@ public class Room1 implements Screen {
                         Label bitch = new Label("DOOR IS NOW UNLOCKED SON OF A BITCH", skin);
                         TileObjectClickListener.doorUnlocked = true;
                         moveDown = true;
-                        bitch.setSize(400, 400);
                         timerBool = false;
+                        bitch.setPosition(textBox.getX() - ((bitch.getWidth() - textBox.getWidth()) / 2), textBox.getY() + textBox.getHeight() + (bitch.getHeight() * 2));
                         stageTesting.clear();
-                        bitch.setPosition((Gdx.graphics.getWidth() / 2) - (bitch.getWidth() / 2),Gdx.graphics.getHeight() / 2);
                         stageTesting.addActor(bitch);
                     }
                 } else {
                     Label wrong_password = new Label("YOU ENTERED THE WRONG PASSWORD!", skin);
-                    wrong_password.setSize(30, 30);
-                    wrong_password.setPosition(password.getX(), password.getY() + password.getHeight() + wrong_password.getHeight());
+                    wrong_password.setPosition(textBox.getX() - ((wrong_password.getWidth() - textBox.getWidth()) / 2), textBox.getY() + textBox.getHeight() + wrong_password.getHeight());
                     stageTesting.addActor(wrong_password);
                 }
             }
         });
-        stageTesting.addActor(enter);
-        stageTesting.addActor(password);
+
+        Table table = new Table();
+        table.center();
+        table.setFillParent(true);
+
+        table.add(textBox).width(textBox.getWidth()).height(textBox.getHeight());
+        table.row();
+        table.add(button);
+
+        if (enableCloseBtn) {
+            final TextButton backButton = new TextButton("CLOSE", textButtonStyle);
+            backButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    stageTesting.clear();
+                    Gdx.input.setInputProcessor(stage);
+                    moveable = true;
+                }
+            });
+            table.row();
+            table.add(backButton);
+        }
+        else {
+            TextButton.TextButtonStyle textButtonStyle2;
+            textButtonStyle2 = new TextButton.TextButtonStyle();
+            textButtonStyle2.font = PuzzleGame.font3;
+            final TextButton backButton = new TextButton("ESC to close", textButtonStyle2);
+            table.row();
+            table.add(backButton);
+        }
+
+        stageTesting.addActor(table);
         showDialogue = true;
+
+        // add enter event
+        stageTesting.addListener(new InputListener() {
+            @Override
+            public boolean keyUp(InputEvent event, int keycode) {
+                if (keycode == Keys.ENTER) {
+                    if(textBox.getText().toLowerCase().trim().equals(answer)) {
+                        stageTesting.clear();
+                        if(!Door.first_password) {
+                            Door.first_password = true;
+                            String newAnswer = "meneng";
+                            setup_passwordfield("Input your second password", newAnswer, true);
+                        }
+                        else if(!Door.second_password) {
+                            Door.second_password = true;
+                            String newAnswer = "c2";
+                            setup_passwordfield("Input your third password", newAnswer, false);
+                        }
+                        else if (!Door.third_password) {
+                            Door.third_password = true;
+                            moveable = true;
+                            tiledMap.getLayers().get(5).setVisible(false);
+                            tiledMap.getLayers().get(6).setVisible(true);
+                            Label bitch = new Label("DOOR IS NOW UNLOCKED SON OF A BITCH", skin);
+                            TileObjectClickListener.doorUnlocked = true;
+                            moveDown = true;
+                            timerBool = false;
+                            bitch.setPosition(textBox.getX() - ((bitch.getWidth() - textBox.getWidth()) / 2), textBox.getY() + textBox.getHeight() + (bitch.getHeight() * 2));
+                            stageTesting.clear();
+                            stageTesting.addActor(bitch);
+                        }
+                    } else {
+                        Label wrong_password = new Label("YOU ENTERED THE WRONG PASSWORD!", skin);
+                        wrong_password.setPosition(textBox.getX() - ((wrong_password.getWidth() - textBox.getWidth()) / 2), textBox.getY() + textBox.getHeight() + wrong_password.getHeight());
+                        stageTesting.addActor(wrong_password);
+                    }
+                }
+                return false;
+            }
+        });
     }
 
-    private static TextField create_textfield(String text, int x, int y, Skin skin) {
+    private static TextField create_textfield(String text, Skin skin) {
         final TextField field = new TextField(text, skin);
         field.setSize(250, 80);
         field.setColor(255, 0, 0 , 255);
-        field.setPosition((Gdx.graphics.getWidth() / 2f) - (field.getWidth() / 2),Gdx.graphics.getHeight() / 2f);
         field.addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -217,6 +294,7 @@ public class Room1 implements Screen {
                 field.setText("");
             }
         });
+        field.setAlignment(Align.center);
         return field;
     }
 
@@ -248,7 +326,7 @@ public class Room1 implements Screen {
             final ImageButton.ImageButtonStyle play_style = new ImageButton.ImageButtonStyle();
             pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
             play_style.up = new TextureRegionDrawable(new TextureRegion(idlePlay));
-            ImageButton playButton = new ImageButton(play_style);
+            final ImageButton playButton = new ImageButton(play_style);
             ImageButton pauseButton = new ImageButton(pause_style);
 
             playButton.setSize(30, 25);
@@ -257,29 +335,24 @@ public class Room1 implements Screen {
 
             playButton.setPosition(tapesButton.getX(), tapesButton.getY() - playButton.getHeight() - 20);
             pauseButton.setPosition(playButton.getX() + playButton.getWidth() + 20, playButton.getY());
-            tape_player = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeMusic[i]));
-            final boolean[] is_playing = {false};
+            tapes[i] = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeMusic[i]));
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(!is_playing[0]) {
-                        play_style.up = new TextureRegionDrawable(new TextureRegion(activePlay));
-                        pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
-                        tape_player.play();
-                        is_playing[0] = true;
-                    }
+                    play_style.up = new TextureRegionDrawable(new TextureRegion(activePlay));
+                    pause_style.up = new TextureRegionDrawable(new TextureRegion(idlePause));
 
+                    playTape(playButton);
                 }
             });
+            playButton.setName("tape" + (i+1));
             pauseButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(is_playing[0]) {
-                        pause_style.up = new TextureRegionDrawable(new TextureRegion(activePause));
-                        play_style.up = new TextureRegionDrawable(new TextureRegion(idlePlay));
-                        tape_player.stop();
-                        is_playing[0] = false;
-                    }
+                    pause_style.up = new TextureRegionDrawable(new TextureRegion(activePause));
+                    play_style.up = new TextureRegionDrawable(new TextureRegion(idlePlay));
+
+                    stopTape(playButton);
                 }
             });
             stageTesting.addActor(playButton);
@@ -289,6 +362,197 @@ public class Room1 implements Screen {
             tapeX += tapesButton.getWidth();
             counter++;
         }
+
+        TextButton.TextButtonStyle textButtonStyle;
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = PuzzleGame.font3;
+        textButtonStyle.overFontColor = Color.RED;
+
+        TextButton backButton = new TextButton("CLOSE", textButtonStyle);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stopAllTapes();
+                stageTesting.clear();
+                Gdx.input.setInputProcessor(stage);
+                moveable = true;
+            }
+        });
+
+        Table table = new Table();
+        table.setFillParent(true);
+        table.center();
+        table.add(backButton);
+
+        stageTesting.addActor(table);
+
+        moveable = false;
+    }
+
+    private static void playTape(ImageButton button) {
+        try {
+            int tapeID = Integer.parseInt(button.getName().substring(4,5));
+            tapeID -= 1;
+            for (Music tape : tapes) {
+                if (tape != null) {
+                    if (tape.isPlaying()) {
+                        tape.stop();
+                    }
+                }
+            }
+            tapes[tapeID].play();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void stopTape(ImageButton button) {
+        try {
+            int tapeID = Integer.parseInt(button.getName().substring(4,5));
+            tapeID -= 1;
+            tapes[tapeID].stop();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void stopAllTapes() {
+        for (Music tape : tapes) {
+            if (tape != null) {
+                if (tape.isPlaying()) {
+                    tape.stop();
+                }
+            }
+        }
+    }
+
+    private void loadPauseMenu() {
+        stagePause.clear();
+        Gdx.input.setInputProcessor(stagePause);
+
+        Table tmpTable = new Table();
+        tmpTable.setPosition(Gdx.graphics.getWidth() / PuzzleGame.PPM, Gdx.graphics.getHeight() / PuzzleGame.PPM);
+        tmpTable.center();
+        tmpTable.setFillParent(true);
+
+        TextButton.TextButtonStyle textButtonStyle;
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = PuzzleGame.font2;
+        textButtonStyle.overFontColor = Color.RED;
+
+        TextButton tmpButton = new TextButton("Resume", textButtonStyle);
+        tmpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                state = State.RESUME;
+                resume();
+            }
+        });
+        tmpTable.add(tmpButton);
+        tmpTable.row();
+        tmpButton = new TextButton("Options", textButtonStyle);
+        tmpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                loadOptions();
+            }
+        });
+        tmpTable.add(tmpButton);
+        tmpTable.row();
+        tmpButton = new TextButton("Main Menu", textButtonStyle);
+        tmpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                moveable = true;
+                dispose();
+                game.batch.setColor(Color.WHITE);
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+        tmpTable.add(tmpButton);
+        tmpTable.row();
+
+        stagePause.addActor(tmpTable);
+    }
+
+    private void loadOptions() {
+        stagePause.clear();
+        Gdx.input.setInputProcessor(stagePause);
+
+        Table table = new Table();
+        table.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        table.center();
+
+        final TextField resolutionWidth = new TextField(String.valueOf(Gdx.graphics.getWidth()), skin);
+        final TextField resolutionHeight = new TextField(String.valueOf(Gdx.graphics.getHeight()), skin);
+        final Slider volume = new Slider(0, 100, 5, false, skin);
+        final Label volumeValueText = new Label(String.valueOf(game.bgMusicVol * 100), skin);
+        final TextButton btnToggleFullscreen = new TextButton((Gdx.graphics.isFullscreen()) ? "OFF" : "ON", skin);
+        volume.setValue(game.bgMusicVol * 100);
+        TextButton apply = new TextButton("Apply", skin);
+        TextButton close = new TextButton("Close", skin);
+        apply.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (btnToggleFullscreen.getText() == "ON"){
+                    Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
+                }
+                loadPauseMenu();
+            }
+        });
+        close.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                loadPauseMenu();
+            }
+        });
+        volume.addListener( new DragListener() {
+            @Override
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                volumeValueText.setText(String.valueOf(volume.getValue()));
+                backgroundMusic.setVolume(volume.getValue() / 100);
+                game.bgMusicVol = volume.getValue() / 100;
+            }
+        });
+        btnToggleFullscreen.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (Gdx.graphics.isFullscreen()) {
+                    Gdx.graphics.setWindowedMode(PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
+                    btnToggleFullscreen.setText("ON");
+                }
+                else {
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                    btnToggleFullscreen.setText("OFF");
+                }
+                resolutionWidth.setText(String.valueOf(Gdx.graphics.getWidth()));
+                resolutionHeight.setText(String.valueOf(Gdx.graphics.getHeight()));
+            }
+        });
+        Label resolutionWidthText = new Label("Width", skin);
+        Label resolutionHeightText = new Label("Height", skin);
+        Label volumeText = new Label("Volume", skin);
+        Label fullscreenText = new Label("Fullscreen", skin);
+        table.add(resolutionWidthText);
+        table.add(resolutionWidth);
+        table.row();
+        table.add(resolutionHeightText);
+        table.add(resolutionHeight);
+        table.row();
+        table.add(volumeText);
+        table.add(volume);
+        table.add(volumeValueText);
+        table.row();
+        table.add(fullscreenText);
+        table.add(btnToggleFullscreen);
+        table.row();
+        table.add(apply);
+        table.add(close);
+
+
+        stagePause.addActor(table);
     }
 
     public void handleInput() {
@@ -299,20 +563,31 @@ public class Room1 implements Screen {
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
-            if (stageTesting.getActors().size > 0 && state != State.PAUSE) {
+            if (!Door.second_password) {
+                switch (state) {
+                    case RUN:
+                    case RESUME:
+                        state = State.PAUSE;
+                        pause();
+                        break;
+                    case PAUSE:
+                        state = State.RESUME;
+                        resume();
+                        break;
+                }
+            }
+            else {
                 stageTesting.clear();
+                stagePause.clear();
                 Gdx.input.setInputProcessor(stage);
                 if (!moveable) {
                     moveable = true;
                     if (Door.second_password && !Door.third_password && who_counter == 0) {
-                        System.out.println("Dildo");
                         Dialogue dialog = new Dialogue("WHO ARE YOU ? WHERE IS YOUR DILDO?!!");
                         dialog.setup_dialogue();
-
                         dialog.dialogueBox().addListener(new ClickListener() {
                             @Override
                             public void clicked(InputEvent event, float x, float y) {
-                                System.out.println("yes i clicked ur ass");
                                 stageTesting.clear();
                                 Gdx.input.setInputProcessor(Room1.stage);
                                 moveable = true;
@@ -323,35 +598,8 @@ public class Room1 implements Screen {
                     }
                 }
             }
-            else {
-                switch (state) {
-                    case RUN:
-                    case RESUME:
-                        state = State.PAUSE;
-                        stageTesting.clear();
-                        Gdx.input.setInputProcessor(stage);
-
-                        Table tmpTable = new Table();
-
-                        TextButton.TextButtonStyle textButtonStyle;
-                        textButtonStyle = new TextButton.TextButtonStyle();
-                        textButtonStyle.font = game.font;
-
-                        TextButton tmpText = new TextButton("PAUSED", textButtonStyle);
-                        tmpTable.add(tmpText);
-                        tmpTable.center();
-                        tmpTable.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
-                        stageTesting.addActor(tmpTable);
-                        break;
-                    case PAUSE:
-                        state = State.RESUME;
-                        stageTesting.clear();
-                        Gdx.input.setInputProcessor(stage);
-                        break;
-                }
-            }
         } else {
-            if (moveable && !(state == State.PAUSE)) {
+            if (moveable) {
                 float x = 0f;
                 float y = 0f;
 
@@ -451,12 +699,18 @@ public class Room1 implements Screen {
         stage.act();
         stage.draw();
 
-        if (state == State.PAUSE) {
-            pause();
-        }
-        if (state == State.RESUME) {
-            resume();
-            state = State.RUN;
+        switch (state) {
+            case PAUSE:
+                stagePause.act();
+                stagePause.draw();
+
+                game.batch.begin();
+                game.batch.draw(transparentBGTexture, 0, 0);
+                game.batch.end();
+                break;
+            case RUN:
+            case RESUME:
+                break;
         }
     }
 
@@ -465,24 +719,36 @@ public class Room1 implements Screen {
         viewport.update(width, height);
         //stage.getViewport().update(width, height, true);
         stageTesting.getViewport().update(width, height, true);
+        stagePause.getViewport().update(width, height, true);
     }
 
     @Override
     public void pause() {
-        stageTesting.act();
-        stageTesting.draw();
+        moveable = false;
 
-        game.batch.begin();
-        game.batch.draw(transparentBGTexture, 0, 0);
-        game.batch.end();
+        loadPauseMenu();
+        stopAllTapes();
 
         if (backgroundMusic.isPlaying()) {
             backgroundMusic.pause();
+        }
+        if (tape_player != null){
+            if (tape_player.isPlaying()) {
+                tape_player.pause();
+            }
         }
     }
 
     @Override
     public void resume() {
+        stagePause.clear();
+        if (stageTesting.getActors().size > 0) {
+            Gdx.input.setInputProcessor(stageTesting);
+        }
+        else {
+            Gdx.input.setInputProcessor(stage);
+        }
+
         backgroundMusic.play();
     }
 
@@ -500,6 +766,7 @@ public class Room1 implements Screen {
         b2dr.dispose();
         stage.dispose();
         stageTesting.dispose();
-
+        stagePause.dispose();
+        transparentBGTexture.dispose();
     }
 }

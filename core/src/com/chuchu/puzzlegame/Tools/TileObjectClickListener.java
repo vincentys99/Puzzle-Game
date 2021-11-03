@@ -31,7 +31,7 @@ public class TileObjectClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.app.log(actor.getName(), "Player has clicked!");
-        System.out.println("CLIKED");
+        System.out.println("CLICKED");
         switch (actor.getName()) {
             case "Chest":
                 Room1.showDialogue = true;
@@ -78,14 +78,14 @@ public class TileObjectClickListener extends ClickListener {
     }
     private void password_check() {
             if (!Door.first_password) {
-                String[] pass = {"feleng", "Feleng"};
-                Room1.setup_passwordfield("Input your first password", pass);
+                String answer = "feleng";
+                Room1.setup_passwordfield("Input your first password", answer, true);
             } else if (!Door.second_password) {
-                String[] pass = {"meneng", "Meneng"};
-                Room1.setup_passwordfield("Input your second password", pass);
+                String answer = "meneng";
+                Room1.setup_passwordfield("Input your second password", answer, true);
             } else if (!Door.third_password) {
-                String[] pass = {"c2", "C2"};
-                Room1.setup_passwordfield("Input your third password", pass);
+                String answer = "c2";
+                Room1.setup_passwordfield("Input your third password", answer, false);
             }
         }
 
