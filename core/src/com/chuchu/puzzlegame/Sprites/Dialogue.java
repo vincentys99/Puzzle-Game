@@ -2,10 +2,8 @@ package com.chuchu.puzzlegame.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.Screens.Room1;
 import com.rafaskoberg.gdx.typinglabel.TypingLabel;
@@ -32,7 +30,7 @@ public class Dialogue {
         Room1.stageTesting.addActor(dialogueBox);
         Room1.stageTesting.addActor(dialogue);
         Room1.showDialogue = true;
-        Room1.moveable = false;
+        Room1.movable = false;
 
     }
 

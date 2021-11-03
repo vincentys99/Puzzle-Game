@@ -124,14 +124,10 @@ public class GameOverScreen implements Screen {
         // Menu Table
         menuTable.reset();
 
-        menuTable.bottom();
-        menuTable.left();
-        menuTable.padBottom(50f);
-        menuTable.padLeft(100f);
+        menuTable.center();
 
         if (!displayOption) {
             menuTable.add(btnStart);
-            menuTable.row();
             menuTable.row();
             menuTable.add(btnOption);
             menuTable.row();

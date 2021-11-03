@@ -42,22 +42,23 @@ import com.chuchu.puzzlegame.Tools.TileObjectClickListener;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
 public class Room1 implements Screen {
-    private static boolean moveDown = false;
+    private static boolean moveDown;
     public static final short DEFAULT_BIT = 1;
     public static final short PLAYER_BIT = 2;
     public static final short DOOR_BIT = 4;
     public static final short DESTROYED_BIT = 8;
 
-    public static boolean showDialogue = false;
-    public static boolean showTape = false;
+    public static boolean showDialogue;
+    public static boolean showTape;
     public static Music tape_player;
-    public static float timer = 60;
-    public static boolean timerBool = false;
+    public static float timer;
+    public static boolean timerBool;
     public static Label timerLabel;
-    public static boolean moveable = true;
-    public static boolean switchable = false;
+    public static boolean movable;
+    public static boolean switchable;
     private int who_counter = 0;
     FileHandle logFile = Gdx.files.local("log.txt");
+
     ///public static Music tape_2 = Gdx.audio.newMusic(Gdx.files.internal("music/promise.mp3"));
     //public static Music tape_3 = Gdx.audio.newMusic(Gdx.files.internal("music/summer.mp3"));
     static PuzzleGame game = null;
@@ -102,6 +103,14 @@ public class Room1 implements Screen {
         transparentBGTexture = new Texture(Gdx.files.internal("images/ingame-assets/transparent.png"));
         transparentBG = new Image(transparentBGTexture);
         tapes = new Music[3];
+
+        moveDown = false;
+        showDialogue = false;
+        showTape = false;
+        timer = 60;
+        timerBool = false;
+        movable = true;
+        switchable = false;
 
         timerLabel.setSize(30, 30);
 
@@ -149,7 +158,7 @@ public class Room1 implements Screen {
     }
 
     public static void setup_passwordfield(String text, final String answer, boolean enableCloseBtn) {
-        moveable = false;
+        movable = false;
         Gdx.input.setInputProcessor(stageTesting);
 
         transparentBG.setSize(PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
@@ -183,7 +192,7 @@ public class Room1 implements Screen {
                     }
                     else if (!Door.third_password) {
                         Door.third_password = true;
-                        moveable = true;
+                        movable = true;
                         tiledMap.getLayers().get(5).setVisible(false);
                         tiledMap.getLayers().get(6).setVisible(true);
                         Label bitch = new Label("DOOR IS NOW UNLOCKED SON OF A BITCH", skin);
@@ -208,7 +217,7 @@ public class Room1 implements Screen {
 
         table.add(textBox).width(textBox.getWidth()).height(textBox.getHeight());
         table.row();
-        table.add(button);
+        table.add(button).padTop(20);
 
         if (enableCloseBtn) {
             final TextButton backButton = new TextButton("CLOSE", textButtonStyle);
@@ -217,11 +226,11 @@ public class Room1 implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     stageTesting.clear();
                     Gdx.input.setInputProcessor(stage);
-                    moveable = true;
+                    movable = true;
                 }
             });
             table.row();
-            table.add(backButton);
+            table.add(backButton).padTop(20);
         }
         else {
             TextButton.TextButtonStyle textButtonStyle2;
@@ -229,7 +238,7 @@ public class Room1 implements Screen {
             textButtonStyle2.font = PuzzleGame.font3;
             final TextButton backButton = new TextButton("ESC to close", textButtonStyle2);
             table.row();
-            table.add(backButton);
+            table.add(backButton).padTop(20);
         }
 
         stageTesting.addActor(table);
@@ -254,7 +263,7 @@ public class Room1 implements Screen {
                         }
                         else if (!Door.third_password) {
                             Door.third_password = true;
-                            moveable = true;
+                            movable = true;
                             tiledMap.getLayers().get(5).setVisible(false);
                             tiledMap.getLayers().get(6).setVisible(true);
                             Label bitch = new Label("DOOR IS NOW UNLOCKED SON OF A BITCH", skin);
@@ -375,7 +384,7 @@ public class Room1 implements Screen {
                 stopAllTapes();
                 stageTesting.clear();
                 Gdx.input.setInputProcessor(stage);
-                moveable = true;
+                movable = true;
             }
         });
 
@@ -386,7 +395,7 @@ public class Room1 implements Screen {
 
         stageTesting.addActor(table);
 
-        moveable = false;
+        movable = false;
     }
 
     private static void playTape(ImageButton button, float volume) {
@@ -461,7 +470,6 @@ public class Room1 implements Screen {
         tmpButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                moveable = true;
                 dispose();
                 game.batch.setColor(Color.WHITE);
                 game.setScreen(new MainMenuScreen(game));
@@ -576,8 +584,8 @@ public class Room1 implements Screen {
                 stageTesting.clear();
                 stagePause.clear();
                 Gdx.input.setInputProcessor(stage);
-                if (!moveable) {
-                    moveable = true;
+                if (!movable) {
+                    movable = true;
                     if (Door.second_password && !Door.third_password && who_counter == 0) {
                         Dialogue dialog = new Dialogue("WHO ARE YOU ? WHERE IS YOUR DILDO?!!");
                         dialog.setup_dialogue();
@@ -586,7 +594,7 @@ public class Room1 implements Screen {
                             public void clicked(InputEvent event, float x, float y) {
                                 stageTesting.clear();
                                 Gdx.input.setInputProcessor(Room1.stage);
-                                moveable = true;
+                                movable = true;
                                 timerBool = true;
                             }
                         });
@@ -595,7 +603,7 @@ public class Room1 implements Screen {
                 }
             }
         } else {
-            if (moveable) {
+            if (movable) {
                 float x = 0f;
                 float y = 0f;
 
@@ -671,7 +679,7 @@ public class Room1 implements Screen {
             timer -= Gdx.graphics.getDeltaTime();
             if(timer <= 0){
                 timerBool = false;
-                Screen b = new GameOverScreen(this.game);
+                Screen b = new GameOverScreen(game);
                 dispose();
 
                 game.setScreen(b);
@@ -720,7 +728,7 @@ public class Room1 implements Screen {
 
     @Override
     public void pause() {
-        moveable = false;
+        movable = false;
 
         loadPauseMenu();
         stopAllTapes();
