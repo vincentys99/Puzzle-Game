@@ -528,12 +528,14 @@ public class Room1 implements Screen {
                     Gdx.graphics.setWindowedMode(Integer.parseInt(resolutionWidth.getText()), Integer.parseInt(resolutionHeight.getText()));
                 }
                 loadPauseMenu();
+                exitSound.play();
             }
         });
         close.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 loadPauseMenu();
+                exitSound.play();
             }
         });
         volume.addListener( new DragListener() {

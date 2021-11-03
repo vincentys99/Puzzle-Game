@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
+import jdk.tools.jmod.Main;
 
 public class MainMenuScreen implements Screen {
 
@@ -39,9 +40,13 @@ public class MainMenuScreen implements Screen {
     Table menuTable;
     Table optionTable;
     Skin defaultSkin;
+    float soundVol;
+    boolean startGameRun;
 
     public MainMenuScreen (final PuzzleGame game) {
         this.game = game;
+        soundVol = 0.1f;
+        startGameRun = false;
 
         // Camera
         camera = new OrthographicCamera();
@@ -90,23 +95,13 @@ public class MainMenuScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //btnClickSound.play(game.bgMusicVol);
-                Timer.schedule(new Timer.Task(){
-                    @Override
-                    public void run() {
-                        game.setScreen(new IntroductionScreen(game));
-                        dispose();
-
-                    }
-                }, 0.5F);
+                startGame();
             }
         });
 
         btnOption.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Clicked options");
-                //btnClickSound.play(game.bgMusicVol);
                 loadOptions();
             }
         });
@@ -114,7 +109,6 @@ public class MainMenuScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -128,11 +122,10 @@ public class MainMenuScreen implements Screen {
         btnTemp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               // btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
-                        game.setScreen(new Room2(game));
+                        game.setScreen(new IntroductionScreen(game));
                         dispose();
                     }
                 }, 0.5F);
@@ -162,6 +155,15 @@ public class MainMenuScreen implements Screen {
 
         menuTable.setFillParent(true);
         stage.addActor(menuTable);
+    }
+
+    private void startGame() {
+        startGameRun = true;
+    }
+
+    private void runGame() {
+        dispose();
+        game.setScreen(new IntroductionScreen(game));
     }
 
     private void loadOptions() {
@@ -256,11 +258,35 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+        backgroundMusic.setVolume(soundVol);
         backgroundMusic.play();
     }
 
     @Override
     public void render(float delta) {
+        if (soundVol <= game.bgMusicVol && !startGameRun) {
+            soundVol += delta * 0.15;
+            backgroundMusic.setVolume(soundVol);
+            game.batch.begin();
+            game.batch.setColor(1f, 1f, 1f, soundVol*2);
+            game.batch.end();
+        }
+
+        if (startGameRun) {
+            soundVol -= delta * 0.3;
+            if (soundVol > 0) {
+                backgroundMusic.setVolume(soundVol);
+                game.batch.begin();
+                game.batch.setColor(1f, 1f, 1f, soundVol*2);
+                game.batch.end();
+            }
+            else {
+                backgroundMusic.setVolume(0.1f);
+                startGameRun = false;
+                runGame();
+            }
+        }
+
         update(delta);
 
         ScreenUtils.clear(255f, 255f, 255f, 1);

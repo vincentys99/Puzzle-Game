@@ -38,7 +38,7 @@ public class IntroductionScreen implements Screen {
     private OrthographicCamera camera;
     private Skin defaultSkin;
     private Image dialogueBox;
-    private int counter = 0;
+    private int counter;
     private Sound ok_sound;
     private final String[] lines = {"{EVENT=Start}    Once upon a time there was a young beautiful girl who lost her memory and ended up trapped in a small room.",
             "{EVENT=Start}She is very confused and doesn't know where she is.",
@@ -47,6 +47,7 @@ public class IntroductionScreen implements Screen {
     public IntroductionScreen(PuzzleGame game) {
         this.game = game;
         defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));
+        counter = 0;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);

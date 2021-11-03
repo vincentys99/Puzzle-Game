@@ -30,7 +30,7 @@ public class PuzzleGame extends Game {
 	FreeTypeFontParameter parameter;
 	FreeTypeFontParameter parameter2;
 
-	public float bgMusicVol = 0.1f;
+	public float bgMusicVol = 1f;
 
 
 	@Override
