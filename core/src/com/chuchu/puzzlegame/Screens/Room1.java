@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -64,6 +65,8 @@ public class Room1 implements Screen {
     static PuzzleGame game = null;
     TextureAtlas atlas;
     Music backgroundMusic;
+    Sound okSound;
+    Sound exitSound;
 
     Viewport viewport;
     OrthographicCamera camera;
@@ -124,6 +127,10 @@ public class Room1 implements Screen {
 
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
+
+        okSound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
+        exitSound = Gdx.audio.newSound(Gdx.files.internal(Files.exit_sound));
+
         // create cam to follow players
         camera = new OrthographicCamera();
         // create viewport
@@ -158,6 +165,9 @@ public class Room1 implements Screen {
     }
 
     public static void setup_passwordfield(String text, final String answer, boolean enableCloseBtn) {
+        Sound okSound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
+        okSound.play();
+
         movable = false;
         Gdx.input.setInputProcessor(stageTesting);
 
@@ -227,6 +237,9 @@ public class Room1 implements Screen {
                     stageTesting.clear();
                     Gdx.input.setInputProcessor(stage);
                     movable = true;
+
+                    Sound exitSound = Gdx.audio.newSound(Gdx.files.internal(Files.exit_sound));
+                    exitSound.play();
                 }
             });
             table.row();
@@ -250,6 +263,9 @@ public class Room1 implements Screen {
             public boolean keyUp(InputEvent event, int keycode) {
                 if (keycode == Keys.ENTER) {
                     if(textBox.getText().toLowerCase().trim().equals(answer)) {
+                        Sound okSound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
+                        okSound.play();
+
                         stageTesting.clear();
                         if(!Door.first_password) {
                             Door.first_password = true;
@@ -308,6 +324,9 @@ public class Room1 implements Screen {
     }
 
     public static void setup_tapes() {
+        Sound okSound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
+        okSound.play();
+
         int counter = 1;
         int tapeX = (Gdx.graphics.getWidth() / 2) - 160 - 80;
         Gdx.input.setInputProcessor(stageTesting);
@@ -385,6 +404,9 @@ public class Room1 implements Screen {
                 stageTesting.clear();
                 Gdx.input.setInputProcessor(stage);
                 movable = true;
+
+                Sound exitSound = Gdx.audio.newSound(Gdx.files.internal(Files.exit_sound));
+                exitSound.play();
             }
         });
 
@@ -482,6 +504,8 @@ public class Room1 implements Screen {
     }
 
     private void loadOptions() {
+        okSound.play();
+
         stagePause.clear();
         Gdx.input.setInputProcessor(stagePause);
 
@@ -555,7 +579,6 @@ public class Room1 implements Screen {
         table.add(apply);
         table.add(close);
 
-
         stagePause.addActor(table);
     }
 
@@ -581,6 +604,9 @@ public class Room1 implements Screen {
                 }
             }
             else {
+                Sound exitSound = Gdx.audio.newSound(Gdx.files.internal(Files.exit_sound));
+                exitSound.play();
+
                 stageTesting.clear();
                 stagePause.clear();
                 Gdx.input.setInputProcessor(stage);
@@ -741,6 +767,8 @@ public class Room1 implements Screen {
                 tape_player.pause();
             }
         }
+
+        okSound.play();
     }
 
     @Override
@@ -751,9 +779,11 @@ public class Room1 implements Screen {
         }
         else {
             Gdx.input.setInputProcessor(stage);
+            movable = true;
         }
 
         backgroundMusic.play();
+        exitSound.play();
     }
 
     @Override

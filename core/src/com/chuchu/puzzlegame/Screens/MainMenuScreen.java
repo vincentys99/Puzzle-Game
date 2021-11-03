@@ -26,6 +26,7 @@ public class MainMenuScreen implements Screen {
     final PuzzleGame game;
     OrthographicCamera camera;
     Sound btnClickSound;
+    Sound exitSound;
     Music backgroundMusic;
     Texture texture;
     Stage stage;
@@ -38,7 +39,6 @@ public class MainMenuScreen implements Screen {
     Table menuTable;
     Table optionTable;
     Skin defaultSkin;
-//    private TextField optionWindow;
 
     public MainMenuScreen (final PuzzleGame game) {
         this.game = game;
@@ -49,6 +49,7 @@ public class MainMenuScreen implements Screen {
 
         // Sound & Music
         btnClickSound = Gdx.audio.newSound(Gdx.files.internal(Files.buttonClickSound));
+        exitSound = Gdx.audio.newSound(Gdx.files.internal(Files.exit_sound));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.mainMenuMusic));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
@@ -240,10 +241,11 @@ public class MainMenuScreen implements Screen {
     private void closeOptionMenu() {
         generateMenuButtons(false);
         optionTable.reset();
+        exitSound.play();
     }
 
     public void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             closeOptionMenu();
         }
     }
