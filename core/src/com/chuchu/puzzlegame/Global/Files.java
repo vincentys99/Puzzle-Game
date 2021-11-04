@@ -24,6 +24,7 @@ public class Files {
     public static final String applicationIcon = "images/icon/icon_transparent.png";
     public static final String mainMenuBg = "images/wallpaper/code geass walpaper.jpg";
     public static final String gameOverBg = "images/wallpaper/game-over.jpg";
+    public static final String transparentBg = "images/ingame-assets/transparent.png";
 
     public static final String dialogImg = "images/ingame-assets/dialog.png";
 
@@ -42,6 +43,7 @@ public class Files {
     public static final String inGameMusic = "music/CRSED Music Theme.mp3";
     public static final String horrorMusic = "music/piano_horror2.mp3";
     public static final String[] tapeMusic = {"music/Title BGM.wav", "music/CRSED Music Theme.mp3", "music/piano_horror2.mp3"};
+    public static final String[] tapeWishes = {"music/Title BGM.wav", "music/CRSED Music Theme.mp3", "music/piano_horror2.mp3", "music/Title BGM.wav"};
     //--------//
     // Sounds //
     //--------//
@@ -57,6 +59,7 @@ public class Files {
     public static final String room1Tilemap = "Tilesmaps/Room1 Tilemap/untitled.tmx";
     public static final String room2Tilemap = "Tilesmaps/Room2 Tilemap/untitled.tmx";
     public static final String DemaMap = "Tilesmaps/map 1/map_1.tmx";
+    public static final String HinnMap = "Tilesmaps/map 2/map 2.tmx";
 
 
     //--------//

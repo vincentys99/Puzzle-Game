@@ -21,23 +21,26 @@ public class Room2WorldCreator {
             for (MapLayer objectLayer : ((MapGroupLayer)tiledMap.getLayers().get("Static Objects")).getLayers()) {
                 for (RectangleMapObject object : objectLayer.getObjects().getByType(RectangleMapObject.class)) {
                     Rectangle rectangle = object.getRectangle();
-                   if (objectLayer.getName().equals("Door")) {
-                       new Door(world, tiledMap, rectangle, unitScale, stage);
+                    if (objectLayer.getName().equals("Door")) {
+                        new Door(world, tiledMap, rectangle, unitScale, stage);
                     }
-                    if (objectLayer.getName().equals("DoorOpen")) {
+                    else if (objectLayer.getName().equals("DoorOpen")) {
                         new DoorUnlocked(world, tiledMap, rectangle, unitScale, stage);
                     }
-                    if (objectLayer.getName().equals("Tables")) {
+                    else if (objectLayer.getName().equals("Tables")) {
                         new TableObject(world, tiledMap, rectangle, unitScale, stage);
                     }
-                    if (objectLayer.getName().equals("Chest")) {
+                    else if (objectLayer.getName().equals("Chest")) {
                         new Chest(world, tiledMap, rectangle, unitScale, stage);
                     }
-                    if (objectLayer.getName().equals("Torch")) {
+                    else if (objectLayer.getName().equals("Torch")) {
                         new Torch(world, tiledMap, rectangle, unitScale, stage);
                     }
-                    if (objectLayer.getName().equals("Wall")) {
+                    else if (objectLayer.getName().equals("Wall")) {
                         new Wall(world, tiledMap, rectangle, unitScale, stage);
+                    }
+                    else if (objectLayer.getName().equals("tapes")) {
+                        new Tape(world, tiledMap, rectangle, unitScale, stage);
                     }
                     else {
                         bodyDef.type = BodyDef.BodyType.StaticBody;

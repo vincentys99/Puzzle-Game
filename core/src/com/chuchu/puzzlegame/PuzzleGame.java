@@ -2,6 +2,8 @@ package com.chuchu.puzzlegame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -9,10 +11,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.chuchu.puzzlegame.Global.Constants;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.Screens.LoadingScreen;
 import com.chuchu.puzzlegame.Screens.MainMenuScreen;
+import com.chuchu.puzzlegame.Screens.Room2;
 
 public class PuzzleGame extends Game {
 	public SpriteBatch batch;
@@ -31,7 +39,6 @@ public class PuzzleGame extends Game {
 	FreeTypeFontParameter parameter2;
 
 	public float bgMusicVol = 1f;
-
 
 	@Override
 	public void create () {

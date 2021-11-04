@@ -127,7 +127,7 @@ public class MainMenuScreen implements Screen {
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
-                        game.setScreen(new IntroductionScreen(game));
+                        game.setScreen(new Room2(game));
                         dispose();
                     }
                 }, 0.5F);

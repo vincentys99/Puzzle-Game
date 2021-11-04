@@ -43,6 +43,8 @@ import com.chuchu.puzzlegame.Tools.TileObjectClickListener;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
 public class Room1 implements Screen {
+
+    //region Variables
     private static boolean moveDown;
     public static final short DEFAULT_BIT = 1;
     public static final short PLAYER_BIT = 2;
@@ -97,6 +99,7 @@ public class Room1 implements Screen {
     private static Image transparentBG;
 
     public static Music[] tapes;
+    //endregion
 
     public Room1(final PuzzleGame game) {
         this.game = game;
@@ -328,7 +331,7 @@ public class Room1 implements Screen {
         okSound.play();
 
         int counter = 1;
-        int tapeX = (Gdx.graphics.getWidth() / 2) - 160 - 80;
+        int tapeX = (Gdx.graphics.getWidth() / 2) - ((3 * 160) / 2);
         Gdx.input.setInputProcessor(stageTesting);
         transparentBG.setSize(PuzzleGame.defaultWidth, PuzzleGame.defaultHeight);
         transparentBG.setPosition(0, 0);
@@ -689,10 +692,10 @@ public class Room1 implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
-        //=============================================================//
-        //  the line below is used to display the lines of the objects //
-        //=============================================================//
-        //b2dr.render(world, camera.combined);
+
+        //region Object Line
+        b2dr.render(world, camera.combined);
+        //endregion
 
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();

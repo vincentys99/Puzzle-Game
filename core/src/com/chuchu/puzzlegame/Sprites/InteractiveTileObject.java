@@ -78,10 +78,10 @@ public abstract class InteractiveTileObject extends Actor {
     }
 
     public void removeDialog() {
-        if (Room2.stageTesting != null) {
-            Room2.showDialogue = false;
-            Room2.stageTesting.clear();
-        }
+//        if (Room2.stageTesting != null) {
+//            Room2.showDialogue = false;
+//            Room2.stageTesting.clear();
+//        }
         if (Room1.stageTesting != null) {
             Room1.showDialogue = false;
             Room1.stageTesting.clear();

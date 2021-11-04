@@ -2,15 +2,14 @@ package com.chuchu.puzzlegame.Tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.chuchu.puzzlegame.Global.Files;
-import com.chuchu.puzzlegame.Screens.GameOverScreen;
 import com.chuchu.puzzlegame.Screens.Room1;
+import com.chuchu.puzzlegame.Screens.Room2;
 import com.chuchu.puzzlegame.Sprites.Dialogue;
 import com.chuchu.puzzlegame.Sprites.Door;
 import com.chuchu.puzzlegame.Sprites.InteractiveTileObject;
@@ -72,6 +71,10 @@ public class TileObjectClickListener extends ClickListener {
                         password_check();
                     }
                 }
+                break;
+            case "Tape":
+                Room2.SetupTapes();
+                Room2.showTape = true;
                 break;
         }
 
