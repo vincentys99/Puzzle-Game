@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -64,10 +63,6 @@ public class Room1 implements Screen {
     private static Music who_are_you_bgm;
     private final Music who_are_you_spam;
 
-    FileHandle logFile = Gdx.files.local("log.txt");
-
-    ///public static Music tape_2 = Gdx.audio.newMusic(Gdx.files.internal("music/promise.mp3"));
-    //public static Music tape_3 = Gdx.audio.newMusic(Gdx.files.internal("music/summer.mp3"));
     static PuzzleGame game = null;
     TextureAtlas atlas;
     Music backgroundMusic;
@@ -130,9 +125,7 @@ public class Room1 implements Screen {
 
         timerLabel.setFontScale(2);
         timerLabel.setPosition(Gdx.graphics.getWidth() - timerLabel.getWidth() - 20, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20);
-        logFile.writeString("before", true);
         atlas = new TextureAtlas("player/Player3/Testing.pack");
-        logFile.writeString("yes", true);
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.horrorMusic));
 
