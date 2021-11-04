@@ -47,7 +47,7 @@ public class Files {
     public static final String horrorMusic = "music/piano_horror2.mp3";
     public static final String room2Music = "music/room2-music.wav";
 
-    public static final String[] tapeMusic = {"sound/feleng.mp3", "sound/meneng.mp3", "music/piano_horror2.mp3"};
+    public static final String[] tapeMusic = {"sound/feleng.mp3", "sound/meneng.mp3", "music/tape_3.mp3"};
     //--------//
     // Sounds //
     //--------//

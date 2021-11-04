@@ -78,7 +78,6 @@ public class GameOverScreen implements Screen {
         optionTable.setX((float)Gdx.graphics.getWidth() / 2);
         optionTable.setY((float)Gdx.graphics.getHeight() / 2);
         game.batch = new SpriteBatch();
-
     }
 
     private void generateMenuButtons(boolean displayOption) {
@@ -93,8 +92,8 @@ public class GameOverScreen implements Screen {
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
-                        game.setScreen(new Room1(game));
                         dispose();
+                        game.setScreen(new Room1(game));
 
                     }
                 }, 0.5F);
