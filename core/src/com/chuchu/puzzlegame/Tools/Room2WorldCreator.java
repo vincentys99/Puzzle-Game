@@ -41,6 +41,9 @@ public class Room2WorldCreator {
                         case "henry":
                             new Henry(world, tiledMap, rectangle, unitScale, stage);
                             break;
+                        case "miu":
+                            new Miu(world, tiledMap, rectangle, unitScale, stage);
+                            break;
                         case "DoorOpen":
                             new DoorUnlocked(world, tiledMap, rectangle, unitScale, stage);
                             break;

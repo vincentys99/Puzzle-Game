@@ -59,6 +59,8 @@ public class Files {
             put("Shiho", "sound/shiho.mp3");
             put("Dema", "sound/dema.mp3");
             put("Hinn", "sound/hinn.mp3");
+            put("Miu", "sound/miu.mp3");
+
         }};
     public static final Map<String, String> tapeOwners = new HashMap<String, String>() {
         {
@@ -67,6 +69,8 @@ public class Files {
             put("Dema", "images/ingame-assets/dema.jpg");
             put("Vince", "images/ingame-assets/vince.jpg");
             put("Shiho", "images/ingame-assets/shiho.jpg");
+            put("Miu", "images/ingame-assets/miu.jpg");
+
         }};
     public static final String buttonClickSound = "sound/button_click.mp3";
     public static final String typingSounds = "sound/typing-sound.mp3";

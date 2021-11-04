@@ -21,6 +21,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -30,15 +33,23 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
+import com.chuchu.puzzlegame.Sprites.Dialogue;
 import com.chuchu.puzzlegame.Sprites.Player;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
+import com.rafaskoberg.gdx.typinglabel.TypingLabel;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Room2 implements Screen {
+    static TextButton.TextButtonStyle textButtonStyle2;
     private static Image greeting_owner;
+    private static Skin defaultSkin;
+    private static boolean pauseable = true;
     private static Music greeting;
     //region Variables
     public static Boolean showDialogue = false;
@@ -64,7 +75,7 @@ public class Room2 implements Screen {
     Player player;
     static boolean movable;
 
-    Stage stageTesting;
+    static Stage stageTesting;
     Stage stagePause;
     static Stage stageTapes;
     public static Stage stage;
@@ -83,6 +94,8 @@ public class Room2 implements Screen {
 
     public Room2(final PuzzleGame game) {
         Room2.game = game;
+        defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));
+        greeting = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeWishes.get("Henry")));
 
         atlas = new TextureAtlas(Files.Player3);
         skin = new Skin(Gdx.files.internal(Files.uiskin));
@@ -90,6 +103,9 @@ public class Room2 implements Screen {
         transparentBGTexture = new Texture(Gdx.files.internal(Files.transparentBg));
 
         state = State.RUN;
+        textButtonStyle2 = new TextButton.TextButtonStyle();
+        textButtonStyle2.font = game.font;
+        textButtonStyle2.overFontColor = Color.RED;
 
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.room2Music));
@@ -400,6 +416,9 @@ public class Room2 implements Screen {
         movable = false;
         TextureRegion owner  = new TextureRegion(new Texture(Gdx.files.internal( Files.tapeOwners.get(tape))));
         greeting_owner = new Image(owner);
+        System.out.println(Gdx.graphics.getWidth());
+        System.out.println(Gdx.graphics.getHeight());
+        greeting_owner.setSize((Gdx.graphics.getWidth() * 20) / 100, (Gdx.graphics.getHeight() * 67) / 100);
         greeting_owner.setPosition(Gdx.graphics.getWidth() - greeting_owner.getWidth(), Gdx.graphics.getHeight() - greeting_owner.getHeight());
         greeting = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeWishes.get(tape)));
         greeting.play();
@@ -410,16 +429,47 @@ public class Room2 implements Screen {
 
     }
     public static void end_party() {
-        Skin uiSkin = new Skin(Gdx.files.internal(Files.uiskin));
-        Dialog dialog = new Dialog("Warning", uiSkin, "dialog") {
-            public void result(Object obj) {
-                System.out.println("result "+obj);
+        pauseable = false;
+        movable = false;
+        TextButton yes = new TextButton("Yes", textButtonStyle2);
+        TextButton no = new TextButton("No", textButtonStyle2);
+        yes.setPosition(Gdx.graphics.getWidth() / 2 - yes.getWidth(), Gdx.graphics.getHeight() / 2);
+        no.setPosition(Gdx.graphics.getWidth() / 2 + no.getWidth(), Gdx.graphics.getHeight() / 2);
+        yes.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("clicked yes");
+                try {
+                    Desktop.getDesktop().open(new File("test.mp4"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        };
-        dialog.text("Are you sure you want to yada yada?");
-        dialog.button("Yes", true); //sends "true" as the result
-        dialog.button("No", false); //sends "false" as the result
-        stage.addActor(dialog);
+        });
+        no.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.input.setInputProcessor(stage);
+                movable = true;
+                pauseable = true;
+                stageTesting.clear();
+                stageTapes.clear();
+            }
+        });
+        Image dialogueBox = new Image(new Texture(Gdx.files.internal(Files.dialogImg)));
+        dialogueBox.setSize(700, 200);
+        dialogueBox.setPosition((Gdx.graphics.getWidth() / 2f) - (dialogueBox.getWidth() / 2),0);
+        TypingLabel dialogue = new TypingLabel("Do you want to end the party?", defaultSkin);
+        dialogue.setPosition(dialogueBox.getX() + 22, dialogueBox.getHeight() - 100);
+        showDialogue = true;
+
+        stageTesting.addActor(dialogueBox);
+        stageTesting.addActor(dialogue);
+        stageTesting.addActor(yes);
+        stageTesting.addActor(no);
+        Gdx.input.setInputProcessor(stageTesting);
+
+
     }
     private static void playTape(ImageButton button, float volume) {
         try {
@@ -465,8 +515,8 @@ public class Room2 implements Screen {
     }
 
     public void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            if(!movable) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && pauseable) {
+            if(!movable && greeting.isPlaying()) {
                 movable = true;
                 greeting.stop();
                 stageTapes.clear();
@@ -550,7 +600,7 @@ public class Room2 implements Screen {
         stage.act();
         stage.draw();
 
-        if (!movable) {
+        if (!movable && pauseable) {
             stagePause.act();
             stagePause.draw();
 

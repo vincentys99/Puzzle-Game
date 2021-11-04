@@ -20,7 +20,6 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chuchu.puzzlegame.Global.Files;
 import com.chuchu.puzzlegame.PuzzleGame;
-import jdk.tools.jmod.Main;
 
 public class MainMenuScreen implements Screen {
 

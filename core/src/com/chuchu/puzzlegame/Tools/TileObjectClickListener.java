@@ -38,6 +38,9 @@ public class TileObjectClickListener extends ClickListener {
             case "Henry":
                 Room2.playTape_("Henry");
                 break;
+            case "Miu":
+                Room2.playTape_("Miu");
+                break;
             case "Dema":
                 Room2.playTape_("Dema");
                 break;
