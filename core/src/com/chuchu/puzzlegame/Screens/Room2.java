@@ -97,7 +97,7 @@ public class Room2 implements Screen {
         defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));
         greeting = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeWishes.get("Henry")));
 
-        atlas = new TextureAtlas(Files.Player3);
+        atlas = new TextureAtlas("player/Player3/Testing.pack");
         skin = new Skin(Gdx.files.internal(Files.uiskin));
 
         transparentBGTexture = new Texture(Gdx.files.internal(Files.transparentBg));

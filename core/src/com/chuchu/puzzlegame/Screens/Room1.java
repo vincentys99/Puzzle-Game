@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -60,14 +59,10 @@ public class Room1 implements Screen {
     public static boolean movable;
     public static boolean switchable;
     private int who_counter = 0;
-    private Music who_are_you;
+    private final Music who_are_you;
     private static Music who_are_you_bgm;
-    private Music who_are_you_spam;
+    private final Music who_are_you_spam;
 
-    FileHandle logFile = Gdx.files.local("log.txt");
-
-    ///public static Music tape_2 = Gdx.audio.newMusic(Gdx.files.internal("music/promise.mp3"));
-    //public static Music tape_3 = Gdx.audio.newMusic(Gdx.files.internal("music/summer.mp3"));
     static PuzzleGame game = null;
     TextureAtlas atlas;
     Music backgroundMusic;
@@ -106,7 +101,7 @@ public class Room1 implements Screen {
     //endregion
 
     public Room1(final PuzzleGame game) {
-        this.game = game;
+        Room1.game = game;
         skin = new Skin(Gdx.files.internal(Files.uiskin));
         timerLabel = new Label("", skin);
         state = State.RUN;
@@ -130,9 +125,7 @@ public class Room1 implements Screen {
 
         timerLabel.setFontScale(2);
         timerLabel.setPosition(Gdx.graphics.getWidth() - timerLabel.getWidth() - 20, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20);
-        logFile.writeString("before", true);
         atlas = new TextureAtlas("player/Player3/Testing.pack");
-        logFile.writeString("yes", true);
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.horrorMusic));
 
@@ -344,8 +337,8 @@ public class Room1 implements Screen {
         stageTesting.addActor(transparentBG);
 
         for (int i = 0; i < 3; i++) {
-            TextureRegion idleRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + ".png")));
-            TextureRegion hoverRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + Integer.toString(counter) + "Hover.png")));
+            TextureRegion idleRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + counter + ".png")));
+            TextureRegion hoverRegion = new TextureRegion(new Texture(Gdx.files.internal("images/ingame-assets/tape_" + counter + "Hover.png")));
 
             ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
             style.imageUp = new TextureRegionDrawable(new TextureRegion(idleRegion));
@@ -709,7 +702,7 @@ public class Room1 implements Screen {
         player.draw(game.batch);
         game.batch.end();
         if(switchable) {
-            Screen b = new Room2(this.game);
+            Screen b = new Room2(game);
             game.setScreen(b);
             dispose();
         }
