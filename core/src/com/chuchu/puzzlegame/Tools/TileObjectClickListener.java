@@ -32,6 +32,24 @@ public class TileObjectClickListener extends ClickListener {
         Gdx.app.log(actor.getName(), "Player has clicked!");
         System.out.println("CLICKED");
         switch (actor.getName()) {
+            case "Tape":
+                Room2.end_party();
+                break;
+            case "Henry":
+                Room2.playTape_("Henry");
+                break;
+            case "Dema":
+                Room2.playTape_("Dema");
+                break;
+            case "Vince":
+                Room2.playTape_("Vince");
+                break;
+            case "Hinn":
+                Room2.playTape_("Hinn");
+                break;
+            case "Shiho":
+                Room2.playTape_("Shiho");
+                break;
             case "Chest":
                 Room1.showDialogue = true;
                 Room1.setup_tapes();
@@ -47,10 +65,10 @@ public class TileObjectClickListener extends ClickListener {
                 }
                 break;
             case "DoorUnlocked":
-            if (Room1.tiledMap.getLayers().get(6).isVisible()) {
-                System.out.println("lets fucking switch");
-                Room1.switchable = true;
-            }
+                if (Room1.tiledMap.getLayers().get(6).isVisible()) {
+                    System.out.println("lets fucking switch");
+                    Room1.switchable = true;
+                }
             case "Door":
                 if (!doorUnlocked) {
                     if (lock_counter == 0) {
@@ -71,10 +89,6 @@ public class TileObjectClickListener extends ClickListener {
                         password_check();
                     }
                 }
-                break;
-            case "Tape":
-                Room2.SetupTapes();
-                Room2.showTape = true;
                 break;
         }
 

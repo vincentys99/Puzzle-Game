@@ -1,5 +1,9 @@
 package com.chuchu.puzzlegame.Global;
 
+import java.util.HashMap;
+import java.util.Map;
+import static java.util.Map.entry;
+
 public class Files {
 
     //----------------------//
@@ -42,16 +46,36 @@ public class Files {
     public static final String mainMenuMusic = "music/Title BGM.wav";
     public static final String inGameMusic = "music/CRSED Music Theme.mp3";
     public static final String horrorMusic = "music/piano_horror2.mp3";
+    public static final String room2Music = "music/room2-music.wav";
+
     public static final String[] tapeMusic = {"music/Title BGM.wav", "music/CRSED Music Theme.mp3", "music/piano_horror2.mp3"};
-    public static final String[] tapeWishes = {"music/Title BGM.wav", "music/CRSED Music Theme.mp3", "music/piano_horror2.mp3", "music/Title BGM.wav"};
     //--------//
     // Sounds //
     //--------//
+    public static final Map<String, String> tapeWishes = new HashMap<String, String>() {
+        {
+            put("Henry", "sound/henry.mp3");
+            put("Vince", "sound/vince.mp3");
+            put("Shiho", "sound/shiho.mp3");
+            put("Dema", "sound/dema.mp3");
+            put("Hinn", "sound/hinn.mp3");
+        }};
+    public static final Map<String, String> tapeOwners = new HashMap<String, String>() {
+        {
+            put("Henry", "images/ingame-assets/henry.jpg");
+            put("Hinn", "images/ingame-assets/hinn.jpg");
+            put("Dema", "images/ingame-assets/dema.jpg");
+            put("Vince", "images/ingame-assets/vince.jpg");
+            put("Shiho", "images/ingame-assets/shiho.jpg");
+        }};
     public static final String buttonClickSound = "sound/button_click.mp3";
     public static final String typingSounds = "sound/typing-sound.mp3";
     public static final String chuchu_logo_sounds = "sound/chuchu_audio.wav";
     public static final String ok_sound = "sound/OK_Audio.wav";
     public static final String exit_sound = "sound/Exit_Audio.wav";
+    public static final String who_are_you_dialog = "sound/who-are-you-dialog.wav";
+    public static final String who_are_you_bgm = "sound/who-are-you-timer.wav";
+    public static final String who_are_you_spam = "sound/who-are-you-spam.wav";
 
     //---------//
     // Tilemap //

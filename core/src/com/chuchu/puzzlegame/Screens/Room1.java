@@ -60,6 +60,10 @@ public class Room1 implements Screen {
     public static boolean movable;
     public static boolean switchable;
     private int who_counter = 0;
+    private Music who_are_you;
+    private Music who_are_you_bgm;
+    private Music who_are_you_spam;
+
     FileHandle logFile = Gdx.files.local("log.txt");
 
     ///public static Music tape_2 = Gdx.audio.newMusic(Gdx.files.internal("music/promise.mp3"));
@@ -107,6 +111,10 @@ public class Room1 implements Screen {
         timerLabel = new Label("", skin);
         state = State.RUN;
         transparentBGTexture = new Texture(Gdx.files.internal("images/ingame-assets/transparent.png"));
+        who_are_you = Gdx.audio.newMusic(Gdx.files.internal(Files.who_are_you_dialog));
+        who_are_you_bgm = Gdx.audio.newMusic(Gdx.files.internal(Files.who_are_you_bgm));
+        who_are_you_spam = Gdx.audio.newMusic(Gdx.files.internal(Files.who_are_you_spam));
+
         transparentBG = new Image(transparentBGTexture);
         tapes = new Music[3];
 
@@ -618,6 +626,7 @@ public class Room1 implements Screen {
                 if (!movable) {
                     movable = true;
                     if (Door.second_password && !Door.third_password && who_counter == 0) {
+                        who_are_you.play();
                         Dialogue dialog = new Dialogue("WHO ARE YOU ? WHERE IS YOUR DILDO?!!");
                         dialog.setup_dialogue();
                         dialog.dialogueBox().addListener(new ClickListener() {
@@ -708,11 +717,21 @@ public class Room1 implements Screen {
         }
         if(timerBool) {
             timer -= Gdx.graphics.getDeltaTime();
+            if(!who_are_you_bgm.isPlaying()) {
+                who_are_you_bgm.play();
+                System.out.println("now playing bgm");
+            }
+
+            if(timer <= 30) {
+                if(!who_are_you_spam.isPlaying()) {
+                    who_are_you_spam.play();
+                    System.out.println("Now spamming");
+                }
+            }
             if(timer <= 0){
                 timerBool = false;
                 Screen b = new GameOverScreen(game);
                 dispose();
-
                 game.setScreen(b);
             }
             else if(timer <= 11) {
@@ -798,6 +817,9 @@ public class Room1 implements Screen {
 
     @Override
     public void dispose() {
+        who_are_you.dispose();
+        who_are_you_spam.dispose();
+        who_are_you_bgm.dispose();
         backgroundMusic.dispose();
         tiledMap.dispose();
         tiledMapRenderer.dispose();

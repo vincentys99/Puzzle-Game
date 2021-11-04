@@ -68,7 +68,7 @@ public class PuzzleGame extends Game {
 		Gdx.graphics.setCursor(cursor);
 		pixmap.dispose();
 
-		this.setScreen(new LoadingScreen(this));
+		this.setScreen(new com.chuchu.puzzlegame.Screens.Room2(this));
 	}
 
 	@Override

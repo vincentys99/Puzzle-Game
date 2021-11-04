@@ -34,11 +34,14 @@ import com.chuchu.puzzlegame.Sprites.Player;
 import com.chuchu.puzzlegame.Tools.Room2WorldCreator;
 import com.chuchu.puzzlegame.Tools.WorldContactListener;
 
-public class Room2 implements Screen {
+import java.util.ArrayList;
+import java.util.HashMap;
 
+public class Room2 implements Screen {
+    private static Image greeting_owner;
+    private static Music greeting;
     //region Variables
     public static Boolean showDialogue = false;
-
     static PuzzleGame game = null;
     TextureAtlas atlas;
     Skin skin;
@@ -59,7 +62,7 @@ public class Room2 implements Screen {
     Box2DDebugRenderer b2dr;
 
     Player player;
-    boolean movable;
+    static boolean movable;
 
     Stage stageTesting;
     Stage stagePause;
@@ -80,6 +83,7 @@ public class Room2 implements Screen {
 
     public Room2(final PuzzleGame game) {
         Room2.game = game;
+
         atlas = new TextureAtlas(Files.Player3);
         skin = new Skin(Gdx.files.internal(Files.uiskin));
 
@@ -88,9 +92,10 @@ public class Room2 implements Screen {
         state = State.RUN;
 
         // create music
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.horrorMusic));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.room2Music));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(game.bgMusicVol);
+        //=----
 
         // create sounds
         okSound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
@@ -142,10 +147,11 @@ public class Room2 implements Screen {
         //region Tapes
         tapes = new Music[4];
         int i = 0;
+        /*
         for (Music music : tapes) {
             music = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeWishes[i]));
             i++;
-        }
+        }*/
         showTape = false;
         //endregion
     }
@@ -288,7 +294,7 @@ public class Room2 implements Screen {
 
         stagePause.addActor(table);
     }
-
+    /*
     public static void SetupTapes() {
         Sound okSound = Gdx.audio.newSound(Gdx.files.internal(Files.ok_sound));
         okSound.play();
@@ -389,8 +395,32 @@ public class Room2 implements Screen {
         table.add(backButton);
 
         stageTapes.addActor(table);
-    }
+    }*/
+    public static void playTape_(String tape) {
+        movable = false;
+        TextureRegion owner  = new TextureRegion(new Texture(Gdx.files.internal( Files.tapeOwners.get(tape))));
+        greeting_owner = new Image(owner);
+        greeting_owner.setPosition(Gdx.graphics.getWidth() - greeting_owner.getWidth(), Gdx.graphics.getHeight() - greeting_owner.getHeight());
+        greeting = Gdx.audio.newMusic(Gdx.files.internal(Files.tapeWishes.get(tape)));
+        greeting.play();
+        showTape = true;
+        stageTapes.addActor(greeting_owner);
+        Gdx.input.setInputProcessor(stageTapes);
 
+
+    }
+    public static void end_party() {
+        Skin uiSkin = new Skin(Gdx.files.internal(Files.uiskin));
+        Dialog dialog = new Dialog("Warning", uiSkin, "dialog") {
+            public void result(Object obj) {
+                System.out.println("result "+obj);
+            }
+        };
+        dialog.text("Are you sure you want to yada yada?");
+        dialog.button("Yes", true); //sends "true" as the result
+        dialog.button("No", false); //sends "false" as the result
+        stage.addActor(dialog);
+    }
     private static void playTape(ImageButton button, float volume) {
         try {
             stopAllTapes();
@@ -436,13 +466,22 @@ public class Room2 implements Screen {
 
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            switch (state) {
-                case RUN:
-                    pause();
-                    break;
-                case PAUSE:
-                    resume();
-                    break;
+            if(!movable) {
+                movable = true;
+                greeting.stop();
+                stageTapes.clear();
+                showTape = false;
+                Gdx.input.setInputProcessor(stage);
+
+            } else {
+                switch (state) {
+                    case RUN:
+                        pause();
+                        break;
+                    case PAUSE:
+                        resume();
+                        break;
+                }
             }
         }
         else {
@@ -532,7 +571,6 @@ public class Room2 implements Screen {
         stageTesting.getViewport().update(width, height, true);
         stagePause.getViewport().update(width, height, true);
     }
-
     @Override
     public void pause() {
         movable = false;

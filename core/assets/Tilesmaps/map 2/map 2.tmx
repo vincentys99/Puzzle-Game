@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="3" tileheight="5" infinite="0" nextlayerid="32" nextobjectid="48">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="120" height="80" tilewidth="3" tileheight="5" infinite="0" nextlayerid="42" nextobjectid="80">
  <tileset firstgid="1" source="ee963979ef24bc0fc8deda19646c5393.tsx"/>
  <tileset firstgid="10721" source="Interiors_free_16x16.tsx"/>
  <tileset firstgid="34861" source="tileset.tsx"/>
@@ -851,6 +851,21 @@
 </data>
  </layer>
  <group id="6" name="Static Objects">
+  <objectgroup id="37" name="henry">
+   <object id="75" x="54" y="198.25" width="6.5" height="19.25"/>
+  </objectgroup>
+  <objectgroup id="38" name="shiho">
+   <object id="74" x="99.5" y="149" width="6.75" height="16.25"/>
+  </objectgroup>
+  <objectgroup id="39" name="hinn">
+   <object id="76" x="134.5" y="168" width="8.25" height="20.25"/>
+  </objectgroup>
+  <objectgroup id="40" name="vince">
+   <object id="77" x="98.75" y="227.25" width="8" height="21.75"/>
+  </objectgroup>
+  <objectgroup id="41" name="dema">
+   <object id="78" x="79.25" y="163.75" width="4.75" height="18"/>
+  </objectgroup>
   <objectgroup id="26" name="tapes">
    <object id="41" x="95.1304" y="190.609" width="10.7391" height="7.43478"/>
   </objectgroup>
@@ -888,13 +903,6 @@
    <object id="15" x="325" y="149.125" width="7.875" height="19.875"/>
    <object id="16" x="342.75" y="73.25" width="8" height="21.25"/>
    <object id="17" x="78.1364" y="335.045" width="18.1364" height="6.18182"/>
-  </objectgroup>
-  <objectgroup id="31" name="Wall">
-   <object id="43" x="78.6875" y="167.875" width="6.3125" height="12.3125"/>
-   <object id="44" x="100.545" y="150.545" width="4.72727" height="15.0909"/>
-   <object id="45" x="136.364" y="171.636" width="5.09091" height="14.9091"/>
-   <object id="46" x="54.9091" y="202.364" width="4.90909" height="14.3636"/>
-   <object id="47" x="100" y="230.545" width="5.09091" height="16"/>
   </objectgroup>
  </group>
 </map>
