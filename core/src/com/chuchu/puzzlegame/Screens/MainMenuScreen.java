@@ -35,7 +35,7 @@ public class MainMenuScreen implements Screen {
     TextButton btnStart;
     TextButton btnOption;
     TextButton btnExit;
-    TextButton btnTemp;
+   // TextButton btnTemp;
     Table menuTable;
     Table optionTable;
     Skin defaultSkin;
@@ -89,7 +89,7 @@ public class MainMenuScreen implements Screen {
         btnStart = new TextButton("Start Game", textButtonStyle);
         btnOption = new TextButton("Option", textButtonStyle);
         btnExit = new TextButton("Exit Game", textButtonStyle);
-        btnTemp = new TextButton("Enter 2nd Room", textButtonStyle);
+       // btnTemp = new TextButton("Enter 2nd Room", textButtonStyle);
 
         btnStart.addListener(new ClickListener() {
             @Override
@@ -120,7 +120,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        btnTemp.addListener(new ClickListener() {
+      /*  btnTemp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Timer.schedule(new Timer.Task(){
@@ -131,7 +131,7 @@ public class MainMenuScreen implements Screen {
                     }
                 }, 0.5F);
             }
-        });
+        });*/
 
         // Menu Table
         menuTable.reset();
@@ -144,7 +144,7 @@ public class MainMenuScreen implements Screen {
         if (!displayOption) {
             menuTable.add(btnStart);
             menuTable.row();
-            menuTable.add(btnTemp);
+           // menuTable.add(btnTemp);
             menuTable.row();
             menuTable.add(btnOption);
             menuTable.row();

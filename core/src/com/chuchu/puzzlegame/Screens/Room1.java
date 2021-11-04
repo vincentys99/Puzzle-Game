@@ -61,7 +61,7 @@ public class Room1 implements Screen {
     public static boolean switchable;
     private int who_counter = 0;
     private Music who_are_you;
-    private Music who_are_you_bgm;
+    private static Music who_are_you_bgm;
     private Music who_are_you_spam;
 
     FileHandle logFile = Gdx.files.local("log.txt");
@@ -216,13 +216,12 @@ public class Room1 implements Screen {
                         movable = true;
                         tiledMap.getLayers().get(5).setVisible(false);
                         tiledMap.getLayers().get(6).setVisible(true);
-                        Label bitch = new Label("DOOR IS NOW UNLOCKED SON OF A BITCH", skin);
+                        if(who_are_you_bgm.isPlaying())
+                            who_are_you_bgm.stop();
                         TileObjectClickListener.doorUnlocked = true;
                         moveDown = true;
                         timerBool = false;
-                        bitch.setPosition(textBox.getX() - ((bitch.getWidth() - textBox.getWidth()) / 2), textBox.getY() + textBox.getHeight() + (bitch.getHeight() * 2));
                         stageTesting.clear();
-                        stageTesting.addActor(bitch);
                     }
                 } else {
                     Label wrong_password = new Label("YOU ENTERED THE WRONG PASSWORD!", skin);
@@ -293,13 +292,12 @@ public class Room1 implements Screen {
                             movable = true;
                             tiledMap.getLayers().get(5).setVisible(false);
                             tiledMap.getLayers().get(6).setVisible(true);
-                            Label bitch = new Label("DOOR IS NOW UNLOCKED SON OF A BITCH", skin);
+                            if(who_are_you_bgm.isPlaying())
+                                who_are_you_bgm.stop();
                             TileObjectClickListener.doorUnlocked = true;
                             moveDown = true;
                             timerBool = false;
-                            bitch.setPosition(textBox.getX() - ((bitch.getWidth() - textBox.getWidth()) / 2), textBox.getY() + textBox.getHeight() + (bitch.getHeight() * 2));
                             stageTesting.clear();
-                            stageTesting.addActor(bitch);
                         }
                     } else {
                         Label wrong_password = new Label("YOU ENTERED THE WRONG PASSWORD!", skin);
@@ -627,7 +625,7 @@ public class Room1 implements Screen {
                     movable = true;
                     if (Door.second_password && !Door.third_password && who_counter == 0) {
                         who_are_you.play();
-                        Dialogue dialog = new Dialogue("WHO ARE YOU ? WHERE IS YOUR DILDO?!!");
+                        Dialogue dialog = new Dialogue("WHO ARE YOU ? WHO ARE YOU????!");
                         dialog.setup_dialogue();
                         dialog.dialogueBox().addListener(new ClickListener() {
                             @Override
@@ -703,7 +701,7 @@ public class Room1 implements Screen {
         tiledMapRenderer.render();
 
         //region Object Line
-        b2dr.render(world, camera.combined);
+      //  b2dr.render(world, camera.combined);
         //endregion
 
         game.batch.setProjectionMatrix(camera.combined);
@@ -717,6 +715,9 @@ public class Room1 implements Screen {
         }
         if(timerBool) {
             timer -= Gdx.graphics.getDeltaTime();
+            if(backgroundMusic.isPlaying()) {
+                backgroundMusic.stop();
+            }
             if(!who_are_you_bgm.isPlaying()) {
                 who_are_you_bgm.play();
                 System.out.println("now playing bgm");

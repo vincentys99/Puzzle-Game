@@ -440,7 +440,9 @@ public class Room2 implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("clicked yes");
                 try {
+
                     Desktop.getDesktop().open(new File("test.mp4"));
+                    Gdx.app.exit();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -516,7 +518,7 @@ public class Room2 implements Screen {
 
     public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && pauseable) {
-            if(!movable && greeting.isPlaying()) {
+            if(!movable) {
                 movable = true;
                 greeting.stop();
                 stageTapes.clear();

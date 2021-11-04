@@ -42,8 +42,7 @@ public class IntroductionScreen implements Screen {
     private Sound ok_sound;
     private final String[] lines = {"{EVENT=Start}    Once upon a time there was a young beautiful girl who lost her memory and ended up trapped in a small room.",
             "{EVENT=Start}She is very confused and doesn't know where she is.",
-            "{EVENT=Start}Then she found a chest in that small room...",
-            "{EVENT=Start}She asked herself 'What is inside that chest?'"};
+    };
     public IntroductionScreen(PuzzleGame game) {
         this.game = game;
         defaultSkin = new Skin(Gdx.files.internal(Files.uiskin));

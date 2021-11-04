@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -109,7 +110,7 @@ public class GameOverScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-              //  btnClickSound.play(game.bgMusicVol);
+                //  btnClickSound.play(game.bgMusicVol);
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -211,7 +212,7 @@ public class GameOverScreen implements Screen {
         optionTable.add(apply);
         optionTable.add(close);
 
-
+        game.batch = new SpriteBatch();
         stage.addActor(optionTable);
     }
 
@@ -282,5 +283,5 @@ public class GameOverScreen implements Screen {
         texture.dispose();
         defaultSkin.dispose();
         stage.dispose();
-     }
+    }
 }
