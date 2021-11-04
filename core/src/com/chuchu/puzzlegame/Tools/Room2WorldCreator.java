@@ -53,6 +53,9 @@ public class Room2WorldCreator {
                         case "Chest":
                             new Chest(world, tiledMap, rectangle, unitScale, stage);
                             break;
+                        case "Pillar":
+                            new Pillar(world, tiledMap, rectangle, unitScale, stage);
+                            break;
                         case "Torch":
                             new Torch(world, tiledMap, rectangle, unitScale, stage);
                             break;
