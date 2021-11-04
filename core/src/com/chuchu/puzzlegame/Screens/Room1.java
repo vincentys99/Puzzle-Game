@@ -729,8 +729,9 @@ public class Room1 implements Screen {
                     System.out.println("Now spamming");
                 }
             }
-            if(timer <= 0){
+            if(timer <= 58){
                 timerBool = false;
+                Gdx.input.setInputProcessor(GameOverScreen.stage);
                 Screen b = new GameOverScreen(game);
                 dispose();
                 game.setScreen(b);

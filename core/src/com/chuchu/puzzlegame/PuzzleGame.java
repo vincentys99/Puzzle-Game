@@ -18,10 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.chuchu.puzzlegame.Global.Constants;
 import com.chuchu.puzzlegame.Global.Files;
-import com.chuchu.puzzlegame.Screens.GameOverScreen;
-import com.chuchu.puzzlegame.Screens.LoadingScreen;
-import com.chuchu.puzzlegame.Screens.MainMenuScreen;
-import com.chuchu.puzzlegame.Screens.Room2;
+import com.chuchu.puzzlegame.Screens.*;
 
 public class PuzzleGame extends Game {
 	public SpriteBatch batch;

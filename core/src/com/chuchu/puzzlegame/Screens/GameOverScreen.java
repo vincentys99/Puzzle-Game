@@ -28,7 +28,7 @@ public class GameOverScreen implements Screen {
     Sound btnClickSound;
     Music backgroundMusic;
     Texture texture;
-    Stage stage;
+    public static Stage stage;
     TextButtonStyle textButtonStyle;
     TextButtonStyle textButtonStyle2;
     TextButton btnStart;
@@ -77,6 +77,8 @@ public class GameOverScreen implements Screen {
         optionTable = new Table();
         optionTable.setX((float)Gdx.graphics.getWidth() / 2);
         optionTable.setY((float)Gdx.graphics.getHeight() / 2);
+        game.batch = new SpriteBatch();
+
     }
 
     private void generateMenuButtons(boolean displayOption) {
@@ -212,7 +214,6 @@ public class GameOverScreen implements Screen {
         optionTable.add(apply);
         optionTable.add(close);
 
-        game.batch = new SpriteBatch();
         stage.addActor(optionTable);
     }
 
