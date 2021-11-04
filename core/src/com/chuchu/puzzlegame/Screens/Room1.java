@@ -125,7 +125,7 @@ public class Room1 implements Screen {
 
         timerLabel.setFontScale(2);
         timerLabel.setPosition(Gdx.graphics.getWidth() - timerLabel.getWidth() - 20, Gdx.graphics.getHeight() - timerLabel.getHeight() - 20);
-        atlas = new TextureAtlas("player/Player3/Testing.pack");
+        atlas = new TextureAtlas("secrets/player/Player3/Testing.pack");
         // create music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(Files.horrorMusic));
 
